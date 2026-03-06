@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: demo
+  thymeleaf:
+    cache: false
+  devtools:
+    restart:
+      enabled: true
+    livereload:
+      enabled: true
