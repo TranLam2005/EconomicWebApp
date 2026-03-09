@@ -9,7 +9,6 @@ public class Home {
     @GetMapping("/home")
     public String home(Model model) {
         model.addAttribute("message", "123");
-        String a = "a";
         return "index";
     }
 }
