@@ -1,0 +1,27 @@
+{
+  "name": "demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:css": "npx @tailwindcss/cli -i ./src/main/resources/static/input.css -o ./src/main/resources/static/output.css",
+    "watch:css": "npx @tailwindcss/cli -i ./src/main/resources/static/input.css -o ./src/main/resources/static/output.css --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TranLam2005/EconomicWebApp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/TranLam2005/EconomicWebApp/issues"
+  },
+  "homepage": "https://github.com/TranLam2005/EconomicWebApp#readme",
+  "dependencies": {
+    "@tailwindcss/cli": "^4.2.1",
+    "tailwindcss": "^4.2.1"
+  }
+}

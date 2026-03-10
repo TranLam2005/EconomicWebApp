@@ -1,10 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Header</title>
-</head>
-<body>
+<header
+        th:fragment="header"
+        xmlns:th="http://www.thymeleaf.org"
+        class="w-full bg-emerald-900"
+>
+    <div class="w-292.5 h-22 mx-31.875 px-2.5 flex items-center">
+        <div class="flex-1 px-2.5 flex items-center">
+            <form>
+                <label>
+                    <input class="w-62.5 h-10 px-2.5 bg-white rounded-[3px]" placeholder="Tìm kiếm sản phẩm..."/>
+                </label>
+            </form>
+        </div>
+        <div class="flex-1 px-2.5 flex items-center"></div>
+        <div class="flex-1 px-2.5 flex items-center"></div>
+    </div>
+    <nav>
 
-</body>
-</html>
+    </nav>
+</header>

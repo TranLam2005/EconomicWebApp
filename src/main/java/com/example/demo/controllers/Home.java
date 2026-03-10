@@ -9,6 +9,6 @@ public class Home {
     @GetMapping("/home")
     public String home(Model model) {
         model.addAttribute("message", "123");
-        return "index";
+        return "pages/home";
     }
 }
