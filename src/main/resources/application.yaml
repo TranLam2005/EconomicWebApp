@@ -9,10 +9,10 @@ spring:
     livereload:
       enabled: true
   datasource:
-    url: jdbc:postgresql://localhost:5432/commercePerfume
-    username: postgres
+    url: jdbc:mysql://localhost:3306/ecommerce_perfume
+    username: root
     password: 123456789
-    driver-class-name: org.postgresql.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: update
@@ -20,4 +20,11 @@ spring:
     properties:
       hibernate:
         format_sql: true
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+        dialect: org.hibernate.dialect.MySQLDialect
+logging:
+  level:
+    org.springframework.security: DEBUG
+jwt:
+  secret: "1234567890123456789012345678901234567890123456789012345678901234"
+  access-token-expiration: 900000
+  refresh-token-expiration: 604800000

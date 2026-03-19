@@ -1,3 +1,104 @@
-<footer th:fragment="footer" xmlns:th="http://www.thymeleaf.org">
-    <h1>Footer</h1>
+<footer
+        th:fragment="footer"
+        xmlns:th="http://www.thymeleaf.org"
+        class="bg-[#005b45] text-white"
+>
+    <div class="mx-auto max-w-[1280px] px-6 py-12 lg:px-10">
+        <div class="grid grid-cols-1 gap-10 md:grid-cols-2 xl:grid-cols-4">
+            <div>
+                <h3 class="mb-5 text-[22px] font-bold uppercase tracking-wide">Về Parfumerie</h3>
+                <ul class="space-y-3 text-[20px] leading-none text-white/95">
+                    <li><a href="#" class="transition hover:text-white/75">Trang chủ</a></li>
+                    <li><a href="#" class="transition hover:text-white/75">Giới thiệu</a></li>
+                    <li><a href="#" class="transition hover:text-white/75">Sản phẩm</a></li>
+                    <li><a href="#" class="transition hover:text-white/75">Liên hệ</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h3 class="mb-5 text-[22px] font-bold uppercase tracking-wide">Hướng dẫn</h3>
+                <ul class="space-y-3 text-[20px] leading-none text-white/95">
+                    <li><a href="#" class="transition hover:text-white/75">Hướng dẫn mua hàng</a></li>
+                    <li><a href="#" class="transition hover:text-white/75">Hướng dẫn thanh toán</a></li>
+                    <li><a href="#" class="transition hover:text-white/75">Hướng dẫn kiểm hàng</a></li>
+                    <li><a href="#" class="transition hover:text-white/75">Điều khoản sử dụng</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h3 class="mb-5 text-[22px] font-bold uppercase tracking-wide">Chính sách</h3>
+                <ul class="space-y-3 text-[20px] leading-none text-white/95">
+                    <li><a href="#" class="transition hover:text-white/75">Chính sách mua hàng</a></li>
+                    <li><a href="#" class="transition hover:text-white/75">Chính sách bảo mật thông tin</a></li>
+                    <li><a href="#" class="transition hover:text-white/75">Chính sách giao hàng</a></li>
+                    <li><a href="#" class="transition hover:text-white/75">Chính sách đổi trả - bảo hành</a></li>
+                    <li><a href="#" class="transition hover:text-white/75">Chính sách bảo mật thanh toán</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h3 class="mb-5 text-[22px] font-bold uppercase tracking-wide">Hỗ trợ</h3>
+                <ul class="space-y-3 text-[20px] leading-none text-white/95">
+                    <li><a href="#" class="transition hover:text-white/75">Tìm kiếm</a></li>
+                    <li><a href="#" class="transition hover:text-white/75">Đăng nhập</a></li>
+                    <li><a href="#" class="transition hover:text-white/75">Đăng ký</a></li>
+                    <li><a href="#" class="transition hover:text-white/75">Cộng tác viên</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="mt-14 grid grid-cols-1 gap-12 lg:grid-cols-3 lg:items-start">
+            <div>
+                <h3 class="mb-6 text-[22px] font-bold uppercase tracking-wide">Phương thức thanh toán</h3>
+                <div class="grid max-w-[380px] grid-cols-4 gap-3">
+                    <div class="flex h-[48px] items-center justify-center rounded-md bg-white px-2 text-[12px] font-bold text-[#224a9b] shadow">VISA</div>
+                    <div class="flex h-[48px] items-center justify-center rounded-md bg-white px-2 text-[12px] font-bold text-[#d9480f] shadow">Mastercard</div>
+                    <div class="flex h-[48px] items-center justify-center rounded-md bg-white px-2 text-[12px] font-bold text-[#0b7d3b] shadow">JCB</div>
+                    <div class="flex h-[48px] items-center justify-center rounded-md bg-white px-2 text-[12px] font-bold text-[#1d4ed8] shadow">napas</div>
+                    <div class="flex h-[48px] items-center justify-center rounded-md bg-white px-2 text-[12px] font-semibold text-slate-500 shadow">TIỀN MẶT</div>
+                    <div class="flex h-[48px] items-center justify-center rounded-md bg-white px-2 text-[12px] font-semibold text-slate-600 shadow">INTERNET BANKING</div>
+                    <div class="flex h-[48px] items-center justify-center rounded-md bg-white px-2 text-[12px] font-bold text-[#dc2626] shadow">VNPAY</div>
+                    <div class="flex h-[48px] items-center justify-center rounded-md bg-white px-2 text-[12px] font-bold text-[#be185d] shadow">momo</div>
+                </div>
+            </div>
+
+            <div class="lg:pl-10">
+                <h3 class="mb-6 text-[22px] font-bold uppercase tracking-wide">Kết nối với chúng tôi</h3>
+                <div class="flex flex-wrap items-center gap-4">
+                    <a href="#" class="flex h-16 w-16 items-center justify-center rounded-full bg-[#4267B2] text-3xl font-bold shadow">f</a>
+                    <a href="#" class="flex h-16 w-16 items-center justify-center rounded-full bg-[#1d9bf0] text-xl font-bold shadow">◎</a>
+                    <a href="#" class="flex h-16 w-16 items-center justify-center rounded-full bg-[#ff0000] text-xs font-bold uppercase shadow">YouTube</a>
+                    <a href="#" class="flex h-16 w-16 items-center justify-center rounded-full bg-white text-3xl shadow">📍</a>
+                </div>
+
+                <div class="mt-8 space-y-6">
+                    <div class="inline-flex h-10 items-center rounded-sm border border-white/30 bg-[#4a4a4a] px-5 text-lg font-bold tracking-wide text-white/90">
+                        DMCA PROTECTED
+                    </div>
+                    <div class="flex h-20 w-[250px] items-center justify-center rounded-full bg-white/95 px-5 text-center text-base font-bold text-[#1d4ed8] shadow">
+                        ĐÃ THÔNG BÁO<br />BỘ CÔNG THƯƠNG
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h3 class="mb-6 text-[22px] font-bold uppercase tracking-wide">Thông tin liên hệ</h3>
+                <div class="space-y-2 text-[20px] leading-[1.55] text-white/95">
+                    <p>Hộ Kinh doanh PARFUMERIE</p>
+                    <p>Số ĐKKD 41H8185878 cấp ngày 24/3/2022 tại UBND Quận 8, TPHCM</p>
+                    <p>Địa chỉ: 1F Quốc lộ 50, P.5, Q.8, TPHCM</p>
+                    <p>Điện thoại: 0888070308</p>
+                    <p>Email: info@parfumerie.vn</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="fixed right-6 top-1/2 z-20 hidden -translate-y-1/2 flex-col gap-4 xl:flex">
+        <a href="#" class="flex h-16 w-16 items-center justify-center rounded-full bg-[#0A7CFF] text-sm font-bold shadow-lg">Chat</a>
+        <a href="#" class="flex h-16 w-16 items-center justify-center rounded-full bg-[#1e90ff] text-sm font-bold shadow-lg">Zalo</a>
+        <a href="#" class="flex h-16 w-16 items-center justify-center rounded-full bg-[#60c344] text-3xl shadow-lg">📞</a>
+    </div>
+
+    <a href="#" class="fixed bottom-4 right-6 hidden h-12 w-12 items-center justify-center rounded-md bg-[#003d2f] text-xl shadow-lg xl:flex">↑</a>
 </footer>
