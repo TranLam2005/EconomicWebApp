@@ -2,6 +2,7 @@ package com.example.demo.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users")
@@ -32,4 +33,21 @@ public class UserEntity {
     // role of user
     @Column(columnDefinition = "varchar(100)", nullable = false)
     private String role = "USER";
+
+    @Column(columnDefinition = "datetime", updatable = false)
+    private LocalDateTime createdAt;
+
+    @Column(columnDefinition = "datetime", nullable = false)
+    private LocalDateTime updatedAt;
+
+    @PrePersist
+    public void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
 }
