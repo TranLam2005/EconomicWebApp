@@ -28,3 +28,7 @@ jwt:
   secret: "1234567890123456789012345678901234567890123456789012345678901234"
   access-token-expiration: 900000
   refresh-token-expiration: 604800000
+Cloudinary:
+  api-key: 617846343455642
+  api-secret: d8Bymgntl4zcnn8QVRNVrZWGWQg
+  cloud-name: drjj8x6wb

@@ -5,7 +5,6 @@ import com.example.demo.dtos.reponse.TokenResponse;
 import com.example.demo.dtos.request.LoginRequest;
 import com.example.demo.dtos.request.RegisterRequest;
 import com.example.demo.entities.UserEntity;
-import com.example.demo.repositories.UserRepository;
 import com.example.demo.services.AuthService;
 import com.example.demo.services.UserService;
 import com.example.demo.util.JWTService;
