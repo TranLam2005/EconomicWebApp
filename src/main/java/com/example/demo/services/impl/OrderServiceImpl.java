@@ -93,11 +93,11 @@ public class OrderServiceImpl implements OrderService {
             .order(order)
             .status(PaymentStatus.PENDING)
             .build();
-    if (orderRequest.getPaymentMethod() === PaymentMethod.COD) {
+    if (orderRequest.getPaymentMethod() == PaymentMethod.COD) {
       payment.setProvider("COD");
       payment.setPaymentUrl(null);
       payment.setExpiredAt(null);
-    } else if (orderRequest.getPaymentMethod() === PaymentMethod.VNPAY) {
+    } else if (orderRequest.getPaymentMethod() == PaymentMethod.VNPAY) {
       payment.setProvider("VNPAY");
       payment.setExpiredAt(LocalDateTime.now().plusMinutes(15));
     }
