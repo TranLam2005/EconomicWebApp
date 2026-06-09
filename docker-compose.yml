@@ -1,16 +1,17 @@
 version: '3.8'
 
 services:
-  mysql:
-    image: mysql:8.0
-    container_name: my_mysql
+  postgres:
+    image: postgres:15
+    container_name: my_postgres
     environment:
-      MYSQL_ROOT_PASSWORD: ""
-      MYSQL_DATABASE: ecommerce_perfume
+      POSTGRES_DB: commercePerfume
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456789
     ports:
-      - "3306:3306"
+      - "5432:5432"
     volumes:
-      - mysql_data:/var/lib/mysql
+      - postgres_data:/var/lib/postgresql/data
 
 volumes:
-  mysql_data:
+  postgres_data:

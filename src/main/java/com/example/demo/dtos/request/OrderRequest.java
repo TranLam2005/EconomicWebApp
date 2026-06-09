@@ -1,6 +1,5 @@
 package com.example.demo.dtos.request;
 
-import com.example.demo.enums.PaymentMethod;
 import jakarta.annotation.Nullable;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -38,8 +37,8 @@ public class OrderRequest {
 
   private String note;
 
-  @NotNull(message = "Payment method is required")
-  private PaymentMethod paymentMethod;
+  @NotBlank(message = "Payment method is required")
+  private Long paymentMethod;
 
   @NotBlank
   private BigDecimal subtotalAmount;
