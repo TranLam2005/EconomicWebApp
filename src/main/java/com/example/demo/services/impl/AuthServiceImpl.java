@@ -20,51 +20,51 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 @Service
 public class AuthServiceImpl implements AuthService {
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private UserService userService;
+  @Autowired
+  private PasswordEncoder passwordEncoder;
+  @Autowired
+  private UserService userService;
 
-    private final AuthenticationManager authenticationManager;
-    private final UserDetailsService userDetailsService;
-    private final JWTService jwtService;
+  private final AuthenticationManager authenticationManager;
+  private final UserDetailsService userDetailsService;
+  private final JWTService jwtService;
 
-    public TokenResponse login(LoginRequest request) {
-        Authentication authentication =  authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
-                )
-        );
-        UserDetails user = (UserDetails) authentication.getPrincipal();
-        assert user != null;
-        String accessToken = jwtService.generateAccessToken(user);
-        String refreshToken = jwtService.generateRefreshToken(user);
-        
-        return new TokenResponse(accessToken, refreshToken);
-    }
-    
-    public TokenResponse refresh(String refreshToken) {
-        String username = jwtService.extractUsername(refreshToken);
-        UserDetails user = userDetailsService.loadUserByUsername(username);
+  public TokenResponse login(LoginRequest request) {
+    Authentication authentication =  authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(
+                    request.getEmail(),
+                    request.getPassword()
+            )
+    );
+    UserDetails user = (UserDetails) authentication.getPrincipal();
+    assert user != null;
+    String accessToken = jwtService.generateAccessToken(user);
+    String refreshToken = jwtService.generateRefreshToken(user);
 
-        if (!jwtService.isTokenValid(refreshToken, user)) {
-            throw new BadCredentialsException("Invalid refresh token");
-        }
+    return new TokenResponse(accessToken, refreshToken);
+  }
 
-        String newAccessToken = jwtService.generateAccessToken(user);
-        String newRefreshToken = jwtService.generateRefreshToken(user);
+  public TokenResponse refresh(String refreshToken) {
+    String username = jwtService.extractUsername(refreshToken);
+    UserDetails user = userDetailsService.loadUserByUsername(username);
 
-        return new TokenResponse(newAccessToken, newRefreshToken);
+    if (!jwtService.isTokenValid(refreshToken, user)) {
+      throw new BadCredentialsException("Invalid refresh token");
     }
 
-    public RegisterResponse register(RegisterRequest request) {
-        UserEntity user = new UserEntity();
-        user.setEmail(request.getEmail());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
-        userService.addUser(user);
-        return new RegisterResponse(user.getEmail(), user.getFirstName(), user.getLastName());
-    }
+    String newAccessToken = jwtService.generateAccessToken(user);
+    String newRefreshToken = jwtService.generateRefreshToken(user);
+
+    return new TokenResponse(newAccessToken, newRefreshToken);
+  }
+
+  public RegisterResponse register(RegisterRequest request) {
+    UserEntity user = new UserEntity();
+    user.setEmail(request.getEmail());
+    user.setPassword(passwordEncoder.encode(request.getPassword()));
+    user.setFirstName(request.getFirstName());
+    user.setLastName(request.getLastName());
+    userService.addUser(user);
+    return new RegisterResponse(user.getEmail(), user.getFirstName(), user.getLastName());
+  }
 }

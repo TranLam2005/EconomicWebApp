@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -23,6 +24,9 @@ public class ProductEntity {
     // Tom Ford Ombre Leather
     @Column(name = "product_name",  nullable = false, columnDefinition = "varchar(255)")
     private String productName;
+
+    @Column()
+    private BigDecimal price;
 
     // Tom Ford
     @Column(name = "brand", nullable = false, columnDefinition = "varchar(100)")
@@ -63,4 +67,7 @@ public class ProductEntity {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductImage> images;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderItemEntity>  orderProductEntities;
 }

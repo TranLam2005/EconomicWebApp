@@ -13,19 +13,19 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class CloudinaryServiceImpl implements CloudinaryService {
-    @Autowired
-    private final Cloudinary cloudinary;
+  @Autowired
+  private final Cloudinary cloudinary;
 
-    public Map uploadImage(MultipartFile file, String folder) {
-        try {
-            Map<String, Object> options = new HashMap<>();
-            options.put("folder", folder);
-            options.put("resource_type", "image");
+  public Map uploadImage(MultipartFile file, String folder) {
+    try {
+      Map<String, Object> options = new HashMap<>();
+      options.put("folder", folder);
+      options.put("resource_type", "image");
 
-            return cloudinary.uploader().upload(file.getBytes(), options);
-        }
-        catch (Exception e) {
-            throw new RuntimeException("Upload image failed", e);
-        }
+      return cloudinary.uploader().upload(file.getBytes(), options);
     }
+    catch (Exception e) {
+      throw new RuntimeException("Upload image failed", e);
+    }
+  }
 }
