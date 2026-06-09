@@ -10,21 +10,21 @@ import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
-    @Autowired
-    private UserRepository userRepository;
+  @Autowired
+  private UserRepository userRepository;
 
-    @Override
-    public List<UserEntity> findAll() {
-        return userRepository.findAll();
-    }
+  @Override
+  public List<UserEntity> findAll() {
+    return userRepository.findAll();
+  }
 
-    @Override
-    public Optional<UserEntity> findByEmail(String email) {
-        return userRepository.findByEmail(email);
-    }
+  @Override
+  public Optional<UserEntity> findByEmail(String email) {
+    return userRepository.findByEmail(email);
+  }
 
-    @Override
-    public void addUser (UserEntity user) {
-        userRepository.save(user);
-    }
+  @Override
+  public void addUser (UserEntity user) {
+    userRepository.save(user);
+  }
 }
