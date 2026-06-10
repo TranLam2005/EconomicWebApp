@@ -1,5 +1,6 @@
 package com.example.demo.dtos.request;
 
+import com.example.demo.enums.PaymentMethod;
 import jakarta.annotation.Nullable;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;

@@ -65,6 +65,6 @@ public class AuthServiceImpl implements AuthService {
     user.setFirstName(request.getFirstName());
     user.setLastName(request.getLastName());
     userService.addUser(user);
-    return new RegisterResponse(user.getEmail(), user.getFirstName(), user.getLastName());
+    return new RegisterResponse(user.getFirstName(), user.getLastName(),  user.getEmail());
   }
 }

@@ -1,7 +1,6 @@
 package com.example.demo.dtos.reponse;
 
 import com.example.demo.enums.OrderStatus;
-import com.example.demo.enums.PaymentMethod;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
