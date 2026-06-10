@@ -9,6 +9,8 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.example.demo.enums.PaymentMethod;
+
 @Getter
 @Setter
 public class OrderRequest {
@@ -38,7 +40,7 @@ public class OrderRequest {
   private String note;
 
   @NotBlank(message = "Payment method is required")
-  private Long paymentMethod;
+  private PaymentMethod paymentMethod;
 
   @NotBlank
   private BigDecimal subtotalAmount;

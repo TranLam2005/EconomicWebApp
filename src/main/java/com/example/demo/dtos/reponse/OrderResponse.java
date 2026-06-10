@@ -1,5 +1,6 @@
 package com.example.demo.dtos.reponse;
 
+import com.example.demo.enums.OrderStatus;
 import com.example.demo.enums.PaymentMethod;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -13,10 +14,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class OrderResponse {
     @NotBlank
-    private String status;
-    @NotBlank
-    private String amount;
-    @NotBlank
-    private PaymentMethod paymentMethod;
+    private OrderStatus orderStatus;
+
     private String paymentUrl;
 }

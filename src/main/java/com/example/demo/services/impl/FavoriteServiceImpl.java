@@ -6,9 +6,10 @@ import com.example.demo.entities.ProductEntity;
 import com.example.demo.entities.ProductImage;
 import com.example.demo.entities.UserEntity;
 import com.example.demo.repositories.FavoriteRepository;
-import com.example.demo.repositories.ProductRepository;
 import com.example.demo.services.FavoriteService;
 import com.example.demo.services.UserService;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,16 +18,16 @@ import java.util.List;
 @Service
 public class FavoriteServiceImpl implements FavoriteService {
     private final FavoriteRepository favoriteRepository;
-    private final ProductRepository productRepository;
     private final UserService userService;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     public FavoriteServiceImpl(
             FavoriteRepository favoriteRepository,
-            ProductRepository productRepository,
             UserService userService
     ) {
         this.favoriteRepository = favoriteRepository;
-        this.productRepository = productRepository;
         this.userService = userService;
     }
 
@@ -74,12 +75,21 @@ public class FavoriteServiceImpl implements FavoriteService {
 
     private UserEntity getUserByEmail(String email) {
         return userService.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new RuntimeException("User not found: " + email));
     }
 
     private ProductEntity getProductById(Long productId) {
-        return productRepository.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+        if (productId == null || productId <= 0) {
+            throw new RuntimeException("Product not found");
+        }
+
+        ProductEntity product = entityManager.find(ProductEntity.class, Math.toIntExact(productId));
+
+        if (product == null) {
+            throw new RuntimeException("Product not found");
+        }
+
+        return product;
     }
 
     private FavoriteResponse toResponse(FavoriteEntity favorite) {

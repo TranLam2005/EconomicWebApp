@@ -24,29 +24,36 @@
         <section class="rounded-2xl bg-white p-8 shadow">
             <h2 class="text-2xl font-bold">Test API yêu thích</h2>
             <p class="mt-2 text-neutral-600">
-                Trang này gọi API <b>/private/api/favorites</b> bằng JWT sau khi login user test.
+                Trang này gọi API <b>/api/favorites</b>. Không dùng SecurityConfig/JWT của Lâm.
+                User lấy theo header <b>X-User-Email</b>.
             </p>
 
             <div class="mt-6 grid gap-4 md:grid-cols-3">
                 <div>
-                    <label class="mb-2 block font-semibold">Email</label>
+                    <label class="mb-2 block font-semibold">Email user test</label>
                     <input id="email" value="dang@test.com" class="w-full rounded border px-4 py-3">
-                </div>
-                <div>
-                    <label class="mb-2 block font-semibold">Password</label>
-                    <input id="password" value="123456" type="password" class="w-full rounded border px-4 py-3">
                 </div>
                 <div>
                     <label class="mb-2 block font-semibold">Product ID</label>
                     <input id="productId" value="1" type="number" class="w-full rounded border px-4 py-3">
                 </div>
+                <div class="flex items-end">
+                    <button onclick="loadFavorites()" class="w-full rounded bg-neutral-900 px-5 py-3 font-bold text-white">
+                        Xem yêu thích
+                    </button>
+                </div>
             </div>
 
             <div class="mt-6 flex flex-wrap gap-3">
-                <button onclick="login()" class="rounded bg-[#005b4b] px-5 py-3 font-bold text-white">Login lấy token</button>
-                <button onclick="addFavorite()" class="rounded bg-rose-600 px-5 py-3 font-bold text-white">Thêm yêu thích</button>
-                <button onclick="loadFavorites()" class="rounded bg-neutral-900 px-5 py-3 font-bold text-white">Xem yêu thích</button>
-                <button onclick="deleteFavorite()" class="rounded bg-red-700 px-5 py-3 font-bold text-white">Xóa yêu thích</button>
+                <button onclick="addFavorite()" class="rounded bg-rose-600 px-5 py-3 font-bold text-white">
+                    Thêm yêu thích
+                </button>
+                <button onclick="deleteFavorite()" class="rounded bg-red-700 px-5 py-3 font-bold text-white">
+                    Xóa yêu thích
+                </button>
+                <button onclick="loadFavorites()" class="rounded bg-[#005b4b] px-5 py-3 font-bold text-white">
+                    Tải lại danh sách
+                </button>
             </div>
 
             <div id="message" class="mt-6 rounded bg-neutral-100 p-4 font-semibold text-neutral-700">
@@ -62,54 +69,40 @@
 </div>
 
 <script>
-    let token = "";
+    function getEmail() {
+        return document.getElementById("email").value || "dang@test.com";
+    }
+
+    function getProductId() {
+        return Number(document.getElementById("productId").value);
+    }
 
     function showMessage(text) {
         document.getElementById("message").innerText = text;
     }
 
-    async function login() {
-        const body = {
-            email: document.getElementById("email").value,
-            password: document.getElementById("password").value
+    function userHeaders() {
+        return {
+            "X-User-Email": getEmail()
         };
-
-        const response = await fetch("/auth/login", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(body)
-        });
-
-        if (!response.ok) {
-            showMessage("Login thất bại: " + response.status);
-            return;
-        }
-
-        const data = await response.json();
-        token = data.accessToken;
-        showMessage("Login thành công, đã lấy token.");
-    }
-
-    async function ensureLogin() {
-        if (!token) {
-            await login();
-        }
     }
 
     async function addFavorite() {
-        await ensureLogin();
+        const productId = getProductId();
 
-        const productId = document.getElementById("productId").value;
+        if (!productId || productId <= 0) {
+            showMessage("Product ID không hợp lệ. Hãy nhập Product ID = 1 để test.");
+            return;
+        }
 
-        const response = await fetch("/private/api/favorites/" + productId, {
+        const response = await fetch("/api/favorites/" + productId, {
             method: "POST",
-            headers: {
-                "Authorization": "Bearer " + token
-            }
+            headers: userHeaders()
         });
 
         if (!response.ok) {
-            showMessage("Thêm yêu thích thất bại: " + response.status);
+            const text = await response.text();
+            showMessage("Thêm yêu thích thất bại: " + response.status + " - " + text);
             return;
         }
 
@@ -118,17 +111,14 @@
     }
 
     async function loadFavorites() {
-        await ensureLogin();
-
-        const response = await fetch("/private/api/favorites", {
+        const response = await fetch("/api/favorites", {
             method: "GET",
-            headers: {
-                "Authorization": "Bearer " + token
-            }
+            headers: userHeaders()
         });
 
         if (!response.ok) {
-            showMessage("Lấy danh sách thất bại: " + response.status);
+            const text = await response.text();
+            showMessage("Lấy danh sách thất bại: " + response.status + " - " + text);
             return;
         }
 
@@ -136,7 +126,7 @@
         const list = document.getElementById("favoriteList");
         list.innerHTML = "";
 
-        if (data.length === 0) {
+        if (!data || data.length === 0) {
             list.innerHTML = "<p class='text-neutral-500'>Chưa có sản phẩm yêu thích.</p>";
             showMessage("Danh sách yêu thích đang rỗng.");
             return;
@@ -147,6 +137,8 @@
                 <div class="rounded-xl border p-5">
                     <p class="text-xl font-bold">${item.productName}</p>
                     <p class="mt-1 text-neutral-600">Brand: ${item.brand || ""}</p>
+                    <p class="mt-1 text-neutral-600">Giới tính: ${item.gender || ""}</p>
+                    <p class="mt-1 text-neutral-600">Nồng độ: ${item.concentration || ""}</p>
                     <p class="mt-1 text-neutral-600">Giá: ${item.price || 0}</p>
                     <p class="mt-1 text-sm text-neutral-400">Favorite ID: ${item.favoriteId} | Product ID: ${item.productId}</p>
                 </div>
@@ -157,25 +149,29 @@
     }
 
     async function deleteFavorite() {
-        await ensureLogin();
+        const productId = getProductId();
 
-        const productId = document.getElementById("productId").value;
+        if (!productId || productId <= 0) {
+            showMessage("Product ID không hợp lệ. Hãy nhập Product ID = 1 để test.");
+            return;
+        }
 
-        const response = await fetch("/private/api/favorites/" + productId, {
+        const response = await fetch("/api/favorites/" + productId, {
             method: "DELETE",
-            headers: {
-                "Authorization": "Bearer " + token
-            }
+            headers: userHeaders()
         });
 
         if (!response.ok) {
-            showMessage("Xóa yêu thích thất bại: " + response.status);
+            const text = await response.text();
+            showMessage("Xóa yêu thích thất bại: " + response.status + " - " + text);
             return;
         }
 
         showMessage("Đã xóa sản phẩm yêu thích.");
         await loadFavorites();
     }
+
+    window.onload = loadFavorites;
 </script>
 </body>
 </html>
