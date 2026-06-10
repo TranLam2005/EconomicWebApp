@@ -13,7 +13,4 @@ public interface UserService {
 
     // save user into db
     void addUser(UserEntity user);
-
-    // authorize user' role
-//    void updateAuthority
 }

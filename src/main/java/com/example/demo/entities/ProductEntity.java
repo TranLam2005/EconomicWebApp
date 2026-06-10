@@ -19,7 +19,7 @@ import java.util.List;
 public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     // Tom Ford Ombre Leather
     @Column(name = "product_name",  nullable = false, columnDefinition = "varchar(255)")

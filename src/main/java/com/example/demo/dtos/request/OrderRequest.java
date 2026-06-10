@@ -38,7 +38,7 @@ public class OrderRequest {
 
   private String note;
 
-  @NotNull(message = "Payment method is required")
+  @NotBlank(message = "Payment method is required")
   private PaymentMethod paymentMethod;
 
   @NotBlank
