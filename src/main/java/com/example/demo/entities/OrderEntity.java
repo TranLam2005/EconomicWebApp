@@ -42,7 +42,7 @@ public class OrderEntity {
     private BigDecimal subtotalAmount = BigDecimal.ZERO;
 
     @Builder.Default
-    @Column(name = "discount_amount", nullable = false, precision = 12, scale = 2)
+    @Column(name = "discount_amount", nullable = true, precision = 12, scale = 2)
     private BigDecimal discountAmount = BigDecimal.ZERO;
 
     @Builder.Default

@@ -6,5 +6,5 @@ import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
     Optional<ProductEntity> findByNormalizedKey(String normalizedKey);
-    Optional<ProductEntity> findByProductId(Long productId);
+    Optional<ProductEntity> findProductById(Long id);
 }

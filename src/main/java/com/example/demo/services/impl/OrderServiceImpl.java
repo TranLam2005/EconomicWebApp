@@ -8,11 +8,14 @@ import com.example.demo.enums.OrderStatus;
 import com.example.demo.enums.PaymentMethod;
 import com.example.demo.enums.PaymentStatus;
 import com.example.demo.repositories.OrderRepository;
+import com.example.demo.repositories.PaymentRepository;
 import com.example.demo.services.DiscountService;
 import com.example.demo.services.OrderService;
 import com.example.demo.services.ProductService;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import jakarta.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,16 +23,13 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
   private final OrderRepository orderRepository;
   private final ProductService productService;
   private final DiscountService discountService;
-
-  public  OrderServiceImpl(OrderRepository orderRepository,  ProductService productService,  DiscountService discountService) {
-    this.orderRepository = orderRepository;
-    this.productService = productService;
-    this.discountService = discountService;
-  }
+  private final VnpayServiceImpl  vnpayService;
+  private final PaymentRepository paymentRepository;
 
   @Override
   public List<OrderEntity> findAll() {
@@ -43,13 +43,17 @@ public class OrderServiceImpl implements OrderService {
 
   @Transactional
   @Override
-  public OrderResponse createOrder(OrderRequest orderRequest, UserEntity user) {
+  public OrderResponse createOrder(OrderRequest orderRequest, UserEntity user, HttpServletRequest httpRequest) {
     // calculate total amount the cost
     BigDecimal totalAmount = calculateTotalAmount(orderRequest);
 
     // get discount entity
-    DiscountEntity discount = discountService.findByDiscountCodeIgnoreCase(orderRequest.getDiscountCode())
-            .orElseThrow(() -> new RuntimeException("Can't find discount with your code"));
+    BigDecimal discountAmount = BigDecimal.ZERO;
+    DiscountEntity discount = null;
+    if (orderRequest.getDiscountCode() != null && !orderRequest.getDiscountCode().isEmpty()) {
+      discountService.findByDiscountCodeIgnoreCase(orderRequest.getDiscountCode());
+      discountAmount = discountService.applyDiscount(orderRequest.getDiscountCode(), totalAmount).getDiscountAmount();
+    }
 
     // create order entity
     OrderEntity order = OrderEntity.builder()
@@ -58,15 +62,16 @@ public class OrderServiceImpl implements OrderService {
             .customerEmail(orderRequest.getCustomerEmail())
             .customerName(orderRequest.getCustomerName())
             .customerPhone(orderRequest.getCustomerPhone())
-            .discount(discount)
             .subtotalAmount(orderRequest.getSubtotalAmount())
-            .discountAmount(discountService.applyDiscount(orderRequest.getDiscountCode(), orderRequest.getSubtotalAmount()).getDiscountAmount())
+            .discount(discount)
+            .discountAmount(discountAmount)
             .shippingAddress(orderRequest.getShippingAddress())
             .totalAmount(totalAmount)
             .note(orderRequest.getNote())
             .shippingFee(shippingFee(orderRequest.getSubtotalAmount()))
             .user(user)
             .build();
+
     List<OrderItemEntity> orderItems = orderRequest.getItems()
             .stream()
             .map(item -> {
@@ -93,20 +98,27 @@ public class OrderServiceImpl implements OrderService {
             .order(order)
             .status(PaymentStatus.PENDING)
             .build();
-    if (orderRequest.getPaymentMethod() === PaymentMethod.COD) {
+    if (orderRequest.getPaymentMethod() == PaymentMethod.COD) {
       payment.setProvider("COD");
       payment.setPaymentUrl(null);
       payment.setExpiredAt(null);
-    } else if (orderRequest.getPaymentMethod() === PaymentMethod.VNPAY) {
+    } else if (orderRequest.getPaymentMethod() == PaymentMethod.VNPAY) {
       payment.setProvider("VNPAY");
       payment.setExpiredAt(LocalDateTime.now().plusMinutes(15));
+
+      String paymentUrl = vnpayService.createPaymentUrl(httpRequest, payment);
+      payment.setPaymentUrl(paymentUrl);
     }
-    return null;
+    paymentRepository.save(payment);
+    return new OrderResponse(
+            order.getOrderStatus(),
+            payment.getPaymentUrl()
+    );
   }
 
   // the formula for calculating the total cost = quantity*price + shipping fee - discount
   private BigDecimal calculateTotalAmount(OrderRequest orderRequest) {
-    BigDecimal discountAmount;
+    BigDecimal discountAmount = BigDecimal.ZERO;
     BigDecimal totalAmount;
     BigDecimal shippingAmount;
     BigDecimal subtotalAmount = BigDecimal.ZERO;
@@ -120,7 +132,11 @@ public class OrderServiceImpl implements OrderService {
       subtotalAmount = subtotalAmount.add(lineTotal);
     }
     shippingAmount = shippingFee(subtotalAmount);
-    discountAmount = discountService.applyDiscount(orderRequest.getDiscountCode(), orderRequest.getSubtotalAmount()).getDiscountAmount();
+
+    if (orderRequest.getDiscountCode() != null && !orderRequest.getDiscountCode().isEmpty()) {
+      discountAmount = calculateDiscountAmount(subtotalAmount, orderRequest.getDiscountCode());
+    }
+
     totalAmount = subtotalAmount
             .add(shippingAmount)
             .subtract(discountAmount);
@@ -130,5 +146,9 @@ public class OrderServiceImpl implements OrderService {
   private BigDecimal shippingFee(BigDecimal subtotalAmount) {
     if (subtotalAmount.compareTo(BigDecimal.valueOf(1000000)) > 0) return BigDecimal.ZERO;
     return BigDecimal.valueOf(35000);
+  }
+
+  private BigDecimal calculateDiscountAmount(BigDecimal subtotalAmount, String discountCode) {
+    return discountService.applyDiscount(discountCode, subtotalAmount).getDiscountAmount();
   }
 }
