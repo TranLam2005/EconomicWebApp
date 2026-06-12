@@ -1,11 +1,6 @@
 package com.example.demo.entities;
-
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
+import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,7 +11,8 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductVariant {
+@Builder
+public class ProductVariantEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,11 +22,11 @@ public class ProductVariant {
     private String sku;
 
     // 10
-    @Column(name = "volume_ml")
+    @Column(name = "volume_ml", nullable = false)
     private Integer volumeMl;
 
     // 10ml
-    @Column(name = "variant_name")
+    @Column(name = "variant_name", nullable = false)
     private String variantName;
 
     // 3200000
@@ -38,7 +34,7 @@ public class ProductVariant {
     private BigDecimal price;
 
     // 10
-    @Column(name = "stock_quantity")
+    @Column(name = "stock_quantity", nullable = false)
     private Integer stockQuantity;
 
     @Column(name = "is_active")
@@ -55,7 +51,6 @@ public class ProductVariant {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
         this.isActive = true;
-        this.stockQuantity = 0;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -63,5 +58,5 @@ public class ProductVariant {
     private ProductEntity product;
 
     @OneToMany(mappedBy = "variant", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProductImage> images;
+    private List<ProductImageEntity> images;
 }
