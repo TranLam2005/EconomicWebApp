@@ -1,7 +1,5 @@
 package com.example.demo.dtos.reponse;
-
 import lombok.*;
-
 import java.util.List;
 
 @Getter
