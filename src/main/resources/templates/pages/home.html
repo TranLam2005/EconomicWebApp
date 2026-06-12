@@ -1,17 +1,174 @@
-<!doctype html>
+<!DOCTYPE html>
 <html
-        lang="en"
+        lang="vi"
         layout:decorate="~{layout}"
-        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+        xmlns:layout="http://www.w3.org/1999/xhtml"
+>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/output.css">
-    <title>Home page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parfumerie Home Content Clone</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <section layout:fragment="content">
-        <h1 class="text-red-500">Home page</h1>
+<body layout:fragment="content" class="bg-gray-50 font-sans">
+
+<main class="w-full bg-white pb-12">
+
+    <section class="w-full max-w-7xl mx-auto mt-4 px-4 sm:px-6 lg:px-8">
+        <div class="w-full h-48 md:h-100 bg-gray-200 rounded-xl overflow-hidden relative flex items-center justify-center">
+            <img
+                    src="https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=1200&q=80"
+                    alt="Parfumerie Banner"
+                    class="w-full h-full object-cover"
+            />
+            <div class="absolute inset-0 bg-black/30 flex flex-col items-center justify-center text-white p-4">
+                <h1 class="text-2xl md:text-5xl font-bold tracking-widest uppercase mb-2 text-center">PARFUMERIE</h1>
+                <p class="text-xs md:text-lg tracking-wider text-center">Thế giới nước hoa chính hãng cao cấp</p>
+            </div>
+        </div>
     </section>
+
+    <section class="w-full max-w-7xl mx-auto mt-12 px-4 sm:px-6 lg:px-8">
+        <h2 class="text-xl md:text-2xl font-bold text-center mb-8 uppercase tracking-widest text-gray-800">Bộ Sưu Tập</h2>
+
+        <div class="flex flex-wrap justify-center gap-6 md:gap-12">
+            <div class="flex flex-col items-center cursor-pointer group">
+                <div class="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden border border-gray-200 group-hover:shadow-md transition-all duration-300">
+                    <img src="https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&w=150&q=80" alt="Nước Hoa Nam" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                </div>
+                <span class="mt-3 text-xs md:text-sm font-medium text-gray-700 group-hover:text-black">Nước Hoa Nam</span>
+            </div>
+            <div class="flex flex-col items-center cursor-pointer group">
+                <div class="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden border border-gray-200 group-hover:shadow-md transition-all duration-300">
+                    <img src="https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&w=150&q=80" alt="Nước Hoa Nữ" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                </div>
+                <span class="mt-3 text-xs md:text-sm font-medium text-gray-700 group-hover:text-black">Nước Hoa Nữ</span>
+            </div>
+            <div class="flex flex-col items-center cursor-pointer group">
+                <div class="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden border border-gray-200 group-hover:shadow-md transition-all duration-300">
+                    <img src="https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=150&q=80" alt="Unisex" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                </div>
+                <span class="mt-3 text-xs md:text-sm font-medium text-gray-700 group-hover:text-black">Unisex</span>
+            </div>
+            <div class="flex flex-col items-center cursor-pointer group">
+                <div class="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden border border-gray-200 group-hover:shadow-md transition-all duration-300">
+                    <img src="https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=150&q=80" alt="Giftset" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                </div>
+                <span class="mt-3 text-xs md:text-sm font-medium text-gray-700 group-hover:text-black">Giftset</span>
+            </div>
+            <div class="flex flex-col items-center cursor-pointer group">
+                <div class="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden border border-gray-200 group-hover:shadow-md transition-all duration-300">
+                    <img src="https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?auto=format&fit=crop&w=150&q=80" alt="Mini size" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                </div>
+                <span class="mt-3 text-xs md:text-sm font-medium text-gray-700 group-hover:text-black">Mini size</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="w-full max-w-7xl mx-auto mt-16 px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between mb-8 border-b pb-4 border-gray-200">
+            <h2 class="text-lg md:text-2xl font-bold uppercase tracking-wider text-gray-800">Sản phẩm Bán Chạy</h2>
+            <a href="#" class="text-xs md:text-sm font-medium text-gray-500 hover:text-black underline transition-colors">Xem tất cả</a>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+
+            <div class="group flex flex-col bg-white border border-gray-100 hover:border-gray-200 hover:shadow-lg p-3 md:p-4 transition-all duration-300 relative rounded-lg overflow-hidden">
+                <div class="absolute top-4 left-4 bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 z-10 rounded">
+                    -15%
+                </div>
+                <div class="w-full aspect-3/4 overflow-hidden bg-gray-50 mb-4 relative rounded">
+                    <img src="https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=400&h=533&q=80" alt="Product" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    <button class="absolute bottom-0 left-0 w-full bg-black text-white py-2.5 text-xs font-semibold opacity-0 translate-y-full group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 hidden md:block">
+                        THÊM VÀO GIỎ
+                    </button>
+                </div>
+                <div class="flex flex-col text-center grow">
+                    <span class="text-[10px] text-gray-400 uppercase tracking-widest mb-1 font-bold">Dior</span>
+                    <h3 class="text-xs md:text-sm font-medium text-gray-800 line-clamp-2 hover:text-gray-600 cursor-pointer h-10">
+                        Nước hoa nam Dior Sauvage Eau de Parfum cuốn hút đầy nam tính
+                    </h3>
+                    <div class="mt-auto pt-3 flex flex-wrap items-center justify-center gap-2">
+                        <span class="font-bold text-sm md:text-base text-red-600">3.200.000đ</span>
+                        <span class="text-xs text-gray-400 line-through">3.800.000đ</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group flex flex-col bg-white border border-gray-100 hover:border-gray-200 hover:shadow-lg p-3 md:p-4 transition-all duration-300 relative rounded-lg overflow-hidden">
+                <div class="w-full aspect-3/4 overflow-hidden bg-gray-50 mb-4 relative rounded">
+                    <img src="https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=400&h=533&q=80" alt="Product" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    <button class="absolute bottom-0 left-0 w-full bg-black text-white py-2.5 text-xs font-semibold opacity-0 translate-y-full group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 hidden md:block">
+                        THÊM VÀO GIỎ
+                    </button>
+                </div>
+                <div class="flex flex-col text-center grow">
+                    <span class="text-[10px] text-gray-400 uppercase tracking-widest mb-1 font-bold">Chanel</span>
+                    <h3 class="text-xs md:text-sm font-medium text-gray-800 line-clamp-2 hover:text-gray-600 cursor-pointer h-10">
+                        Nước hoa nữ Chanel Coco Mademoiselle Intense sang trọng quyến rũ
+                    </h3>
+                    <div class="mt-auto pt-3 flex items-center justify-center gap-2">
+                        <span class="font-bold text-sm md:text-base text-gray-900">4.150.000đ</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group flex flex-col bg-white border border-gray-100 hover:border-gray-200 hover:shadow-lg p-3 md:p-4 transition-all duration-300 relative rounded-lg overflow-hidden">
+                <div class="absolute top-4 left-4 bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 z-10 rounded">
+                    -8%
+                </div>
+                <div class="w-full aspect-3/4 overflow-hidden bg-gray-50 mb-4 relative rounded">
+                    <img src="https://images.unsplash.com/photo-1616949755610-8c9bbc08f138?auto=format&fit=crop&w=400&h=533&q=80" alt="Product" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    <button class="absolute bottom-0 left-0 w-full bg-black text-white py-2.5 text-xs font-semibold opacity-0 translate-y-full group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 hidden md:block">
+                        THÊM VÀO GIỎ
+                    </button>
+                </div>
+                <div class="flex flex-col text-center grow">
+                    <span class="text-[10px] text-gray-400 uppercase tracking-widest mb-1 font-bold">Tom Ford</span>
+                    <h3 class="text-xs md:text-sm font-medium text-gray-800 line-clamp-2 hover:text-gray-600 cursor-pointer h-10">
+                        Nước hoa Unisex Tom Ford Oud Wood độc lạ đẳng cấp thượng lưu
+                    </h3>
+                    <div class="mt-auto pt-3 flex flex-wrap items-center justify-center gap-2">
+                        <span class="font-bold text-sm md:text-base text-red-600">6.250.000đ</span>
+                        <span class="text-xs text-gray-400 line-through">6.800.000đ</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group flex flex-col bg-white border border-gray-100 hover:border-gray-200 hover:shadow-lg p-3 md:p-4 transition-all duration-300 relative rounded-lg overflow-hidden">
+                <div class="w-full aspect-3/4 overflow-hidden bg-gray-50 mb-4 relative rounded">
+                    <img src="https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&w=400&h=533&q=80" alt="Product" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    <button class="absolute bottom-0 left-0 w-full bg-black text-white py-2.5 text-xs font-semibold opacity-0 translate-y-full group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 hidden md:block">
+                        THÊM VÀO GIỎ
+                    </button>
+                </div>
+                <div class="flex flex-col text-center flex-grow">
+                    <span class="text-[10px] text-gray-400 uppercase tracking-widest mb-1 font-bold">Le Labo</span>
+                    <h3 class="text-xs md:text-sm font-medium text-gray-800 line-clamp-2 hover:text-gray-600 cursor-pointer h-10">
+                        Nước hoa Unisex Le Labo Santal 33 hương gỗ cá tính kinh điển
+                    </h3>
+                    <div class="mt-auto pt-3 flex items-center justify-center gap-2">
+                        <span class="font-bold text-sm md:text-base text-gray-900">5.400.000đ</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="w-full max-w-7xl mx-auto mt-16 px-4 sm:px-6 lg:px-8">
+        <div class="w-full h-36 md:h-64 bg-stone-900 text-white flex flex-col items-center justify-center p-6 text-center hover:bg-stone-800 cursor-pointer transition-colors rounded-xl relative overflow-hidden">
+            <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1615396899839-c99c121888b0?auto=format&fit=crop&w=1200&q=5')] bg-cover bg-center opacity-20"></div>
+
+            <div class="relative z-10">
+                <h3 class="text-lg md:text-3xl font-light tracking-widest mb-2 uppercase">Khám phá mùi hương đặc trưng của bạn</h3>
+                <p class="text-[11px] md:text-sm text-stone-300 tracking-wider font-light">Ưu đãi giảm giá tới 20% khi mua trọn bộ chiết dùng thử tuần này</p>
+                <span class="inline-block mt-4 text-xs uppercase border-b border-white pb-0.5 tracking-widest font-semibold hover:text-amber-200 hover:border-amber-200 transition-colors">Mua ngay</span>
+            </div>
+        </div>
+    </section>
+
+</main>
+
 </body>
 </html>
