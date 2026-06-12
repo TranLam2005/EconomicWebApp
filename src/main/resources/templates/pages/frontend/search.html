@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tìm kiếm sản phẩm</title>
+    <link rel="stylesheet" href="/frontend/css/parfumerie-pages.css">
+</head>
+<body data-page="search">
+<div th:replace="~{fragments/shop-header :: shopHeader}"></div>
+
+<main>
+    <section class="page-title">
+        <p class="eyebrow">Long</p>
+        <h1>Trang tìm kiếm sản phẩm</h1>
+        <p>Tìm theo tên, thương hiệu, giới tính hoặc nồng độ. Header phía trên cũng điều hướng về trang này.</p>
+    </section>
+
+    <section class="search-panel">
+        <input data-search-keyword type="text" placeholder="Nhập Dior, Chanel, EDP...">
+        <select data-search-brand>
+            <option value="">Tất cả thương hiệu</option>
+            <option>Dior</option>
+            <option>Chanel</option>
+            <option>Gucci</option>
+            <option>YSL</option>
+        </select>
+        <select data-search-gender>
+            <option value="">Tất cả giới tính</option>
+            <option>Men</option>
+            <option>Women</option>
+            <option>Unisex</option>
+        </select>
+        <button class="primary-btn" data-search-button>Tìm kiếm</button>
+    </section>
+
+    <section class="section-block">
+        <div class="section-heading row-heading">
+            <div>
+                <p class="eyebrow">Kết quả</p>
+                <h2 data-result-title>Danh sách sản phẩm</h2>
+            </div>
+            <span data-result-count></span>
+        </div>
+        <div class="product-grid" data-search-results></div>
+    </section>
+</main>
+
+<script src="/frontend/js/parfumerie-pages.js"></script>
+</body>
+</html>
