@@ -1,5 +1,10 @@
 package com.example.demo.services;
 
+import java.util.List;
+import java.util.Optional;
+
+import javax.servlet.http.HttpServletRequest;
+
 import com.example.demo.dtos.reponse.OrderResponse;
 import com.example.demo.dtos.request.OrderRequest;
 import com.example.demo.entities.OrderEntity;
@@ -13,5 +18,6 @@ public interface OrderService {
 
     Optional<OrderEntity> findById(Long id);
 
-    OrderResponse createOrder(OrderRequest orderRequest, UserEntity user, HttpServletRequest httpRequest);
+    @Transactional
+    OrderResponse createOrder(OrderRequest orderRequest, UserEntity user);
 }

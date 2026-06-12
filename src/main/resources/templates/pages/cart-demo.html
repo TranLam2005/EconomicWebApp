@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Cart Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#f6f2ec] text-neutral-900">
+<div class="min-h-screen">
+    <header class="bg-[#005b4b] px-10 py-8 text-white">
+        <div class="mx-auto flex max-w-6xl items-center justify-between">
+            <div>
+                <h1 class="text-4xl font-bold tracking-widest">PARFUMERIE</h1>
+                <p class="mt-1 text-white/80">Demo giỏ hàng</p>
+            </div>
+            <div class="flex gap-4">
+                <a href="/" class="rounded border border-white/40 px-4 py-2 hover:bg-white/10">Trang chủ</a>
+                <a href="/wishlist-demo" class="rounded bg-white px-4 py-2 font-bold text-[#005b4b]">Yêu thích</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="mx-auto max-w-6xl px-10 py-10">
+        <section class="rounded-2xl bg-white p-8 shadow">
+            <h2 class="text-2xl font-bold">Test API giỏ hàng</h2>
+            <p class="mt-2 text-neutral-600">
+                Trang này gọi API <b>/api/cart</b>. Không dùng SecurityConfig/JWT của Lâm.
+                User lấy theo header <b>X-User-Email</b>.
+            </p>
+
+            <div class="mt-6 grid gap-4 md:grid-cols-4">
+                <div>
+                    <label class="mb-2 block font-semibold">Email user test</label>
+                    <input id="email" value="dang@test.com" class="w-full rounded border px-4 py-3">
+                </div>
+                <div>
+                    <label class="mb-2 block font-semibold">Variant ID</label>
+                    <input id="variantId" value="1" type="number" class="w-full rounded border px-4 py-3">
+                </div>
+                <div>
+                    <label class="mb-2 block font-semibold">Số lượng</label>
+                    <input id="quantity" value="2" type="number" class="w-full rounded border px-4 py-3">
+                </div>
+                <div class="flex items-end">
+                    <button onclick="loadCart()" class="w-full rounded bg-neutral-900 px-5 py-3 font-bold text-white">
+                        Xem giỏ hàng
+                    </button>
+                </div>
+            </div>
+
+            <div class="mt-6 flex flex-wrap gap-3">
+                <button onclick="addToCart()" class="rounded bg-emerald-700 px-5 py-3 font-bold text-white">
+                    Thêm vào giỏ
+                </button>
+                <button onclick="loadCart()" class="rounded bg-[#005b4b] px-5 py-3 font-bold text-white">
+                    Tải lại giỏ hàng
+                </button>
+                <button onclick="clearCart()" class="rounded bg-red-700 px-5 py-3 font-bold text-white">
+                    Xóa toàn bộ giỏ
+                </button>
+            </div>
+
+            <div id="message" class="mt-6 rounded bg-neutral-100 p-4 font-semibold text-neutral-700">
+                Chưa thao tác.
+            </div>
+        </section>
+
+        <section class="mt-8 rounded-2xl bg-white p-8 shadow">
+            <div class="flex items-center justify-between">
+                <h2 class="text-2xl font-bold">Giỏ hàng</h2>
+                <div class="text-right">
+                    <p>Tổng số lượng: <b id="totalQuantity">0</b></p>
+                    <p>Tổng tiền: <b id="totalAmount">0</b></p>
+                </div>
+            </div>
+
+            <div id="cartList" class="mt-5 grid gap-4"></div>
+        </section>
+    </main>
+</div>
+
+<script>
+    function getEmail() {
+        return document.getElementById("email").value || "dang@test.com";
+    }
+
+    function getVariantId() {
+        return Number(document.getElementById("variantId").value);
+    }
+
+    function getQuantity() {
+        return Number(document.getElementById("quantity").value);
+    }
+
+    function showMessage(text) {
+        document.getElementById("message").innerText = text;
+    }
+
+    function userHeaders() {
+        return {
+            "X-User-Email": getEmail()
+        };
+    }
+
+    function jsonHeaders() {
+        return {
+            "X-User-Email": getEmail(),
+            "Content-Type": "application/json"
+        };
+    }
+
+    async function addToCart() {
+        const variantId = getVariantId();
+        const quantity = getQuantity();
+
+        if (!variantId || variantId <= 0) {
+            showMessage("Variant ID không hợp lệ. Hãy nhập Variant ID = 1 để test.");
+            return;
+        }
+
+        if (!quantity || quantity <= 0) {
+            showMessage("Số lượng phải lớn hơn 0.");
+            return;
+        }
+
+        const body = {
+            variantId: variantId,
+            quantity: quantity
+        };
+
+        const response = await fetch("/api/cart", {
+            method: "POST",
+            headers: jsonHeaders(),
+            body: JSON.stringify(body)
+        });
+
+        if (!response.ok) {
+            const text = await response.text();
+            showMessage("Thêm giỏ hàng thất bại: " + response.status + " - " + text);
+            return;
+        }
+
+        showMessage("Đã thêm vào giỏ hàng.");
+        await loadCart();
+    }
+
+    async function loadCart() {
+        const response = await fetch("/api/cart", {
+            method: "GET",
+            headers: userHeaders()
+        });
+
+        if (!response.ok) {
+            const text = await response.text();
+            showMessage("Lấy giỏ hàng thất bại: " + response.status + " - " + text);
+            return;
+        }
+
+        const data = await response.json();
+
+        document.getElementById("totalQuantity").innerText = data.totalQuantity || 0;
+        document.getElementById("totalAmount").innerText = data.totalAmount || 0;
+
+        const list = document.getElementById("cartList");
+        list.innerHTML = "";
+
+        if (!data.items || data.items.length === 0) {
+            list.innerHTML = "<p class='text-neutral-500'>Giỏ hàng đang rỗng.</p>";
+            showMessage("Giỏ hàng đang rỗng.");
+            return;
+        }
+
+        data.items.forEach(item => {
+            list.innerHTML += `
+                <div class="rounded-xl border p-5">
+                    <div class="flex flex-wrap items-center justify-between gap-4">
+                        <div>
+                            <p class="text-xl font-bold">${item.productName}</p>
+                            <p class="mt-1 text-neutral-600">Brand: ${item.brand || ""}</p>
+                            <p class="mt-1 text-neutral-600">Dung tích: ${item.variantName || ""}</p>
+                            <p class="mt-1 text-neutral-600">Volume: ${item.volumeMl || ""}ml</p>
+                            <p class="mt-1 text-neutral-600">Số lượng: ${item.quantity}</p>
+                            <p class="mt-1 text-neutral-600">Đơn giá: ${item.unitPrice}</p>
+                            <p class="mt-1 text-neutral-600">Thành tiền: ${item.lineTotal}</p>
+                            <p class="mt-1 text-sm text-neutral-400">Item ID: ${item.itemId} | Variant ID: ${item.variantId}</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="updateItem(${item.itemId})" class="rounded bg-amber-600 px-4 py-2 font-bold text-white">
+                                Sửa SL
+                            </button>
+                            <button onclick="deleteItem(${item.itemId})" class="rounded bg-red-700 px-4 py-2 font-bold text-white">
+                                Xóa
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        showMessage("Đã tải giỏ hàng.");
+    }
+
+    async function updateItem(itemId) {
+        const quantity = getQuantity();
+
+        if (!quantity || quantity <= 0) {
+            showMessage("Số lượng phải lớn hơn 0.");
+            return;
+        }
+
+        const body = {
+            quantity: quantity
+        };
+
+        const response = await fetch("/api/cart/items/" + itemId, {
+            method: "PUT",
+            headers: jsonHeaders(),
+            body: JSON.stringify(body)
+        });
+
+        if (!response.ok) {
+            const text = await response.text();
+            showMessage("Sửa số lượng thất bại: " + response.status + " - " + text);
+            return;
+        }
+
+        showMessage("Đã sửa số lượng.");
+        await loadCart();
+    }
+
+    async function deleteItem(itemId) {
+        const response = await fetch("/api/cart/items/" + itemId, {
+            method: "DELETE",
+            headers: userHeaders()
+        });
+
+        if (!response.ok) {
+            const text = await response.text();
+            showMessage("Xóa item thất bại: " + response.status + " - " + text);
+            return;
+        }
+
+        showMessage("Đã xóa item khỏi giỏ.");
+        await loadCart();
+    }
+
+    async function clearCart() {
+        const response = await fetch("/api/cart", {
+            method: "DELETE",
+            headers: userHeaders()
+        });
+
+        if (!response.ok) {
+            const text = await response.text();
+            showMessage("Xóa giỏ hàng thất bại: " + response.status + " - " + text);
+            return;
+        }
+
+        showMessage("Đã xóa toàn bộ giỏ hàng.");
+        await loadCart();
+    }
+
+    window.onload = loadCart;
+</script>
+</body>
+</html>
