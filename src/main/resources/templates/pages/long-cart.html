@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="vi" layout:decorate="~{layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Giỏ hàng | Parfumerie</title>
+</head>
+<body layout:fragment="content" class="bg-[#f7f3ed] text-stone-900">
+<script src="https://cdn.tailwindcss.com"></script>
+
+<main class="min-h-screen bg-[#f7f3ed]">
+    <section class="mx-auto max-w-7xl px-5 pt-10 sm:px-8 lg:px-10">
+        <input id="longUserEmail" type="hidden" value="dang@test.com">
+        <h1 class="text-3xl font-black tracking-tight text-stone-950 sm:text-4xl">Giỏ hàng</h1>
+    </section>
+
+    <section class="mx-auto max-w-7xl px-5 py-8 sm:px-8 lg:px-10">
+        <div class="grid gap-8 xl:grid-cols-[1fr_390px]">
+            <div class="space-y-6">
+                <div class="rounded-[2rem] border border-stone-200 bg-white p-5 shadow-sm sm:p-6">
+                    <div class="grid gap-4 lg:grid-cols-[1fr_160px_auto] lg:items-end">
+                        <label>
+                            <span class="mb-2 block text-sm font-bold uppercase tracking-[0.2em] text-stone-400">Thêm nhanh</span>
+                            <input id="cartVariantInput" type="number" value="1" min="1" placeholder="Nhập Variant ID" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-stone-900 outline-none transition focus:border-[#005b4b] focus:bg-white focus:ring-4 focus:ring-[#005b4b]/10">
+                        </label>
+                        <label>
+                            <span class="mb-2 block text-sm font-bold uppercase tracking-[0.2em] text-stone-400">Số lượng</span>
+                            <input id="cartQuantityInput" type="number" value="1" min="1" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-stone-900 outline-none transition focus:border-[#005b4b] focus:bg-white focus:ring-4 focus:ring-[#005b4b]/10">
+                        </label>
+                        <button onclick="LongCartPage.addByVariant()" class="rounded-2xl bg-[#005b4b] px-6 py-3 font-extrabold text-white shadow-lg shadow-[#005b4b]/20 transition hover:-translate-y-0.5 hover:bg-stone-950">Thêm vào giỏ</button>
+                    </div>
+                    <div id="cartStatus" class="mt-6 rounded-2xl border border-stone-200 bg-stone-50 px-5 py-4 text-sm font-semibold text-stone-700">Chưa tải giỏ hàng.</div>
+                </div>
+
+                <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                        <p class="text-sm font-bold uppercase tracking-[0.25em] text-[#005b4b]">Danh sách sản phẩm</p>
+                        <h2 class="mt-2 text-3xl font-black text-stone-950">Sản phẩm trong giỏ</h2>
+                    </div>
+                    <button onclick="LongCartPage.clearCart()" class="rounded-full border border-red-200 bg-white px-5 py-3 text-sm font-bold text-red-600 transition hover:bg-red-50">Xóa toàn bộ</button>
+                </div>
+
+                <div id="cartEmpty" class="hidden rounded-[2rem] border border-dashed border-stone-300 bg-white p-10 text-center">
+                    <div class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-[#005b4b]/10 text-4xl">🛒</div>
+                    <h3 class="mt-5 text-2xl font-black text-stone-950">Giỏ hàng đang trống</h3>
+                    <p class="mt-2 text-stone-500">Bạn có thể qua trang tìm kiếm để thêm nước hoa vào giỏ.</p>
+                    <a href="/search" class="mt-6 inline-flex rounded-full bg-[#005b4b] px-6 py-3 font-bold text-white transition hover:bg-stone-950">Tìm sản phẩm</a>
+                </div>
+
+                <div id="cartItems" class="space-y-4"></div>
+            </div>
+
+            <aside class="xl:sticky xl:top-6 xl:self-start">
+                <div class="overflow-hidden rounded-[2rem] bg-white shadow-xl shadow-stone-200/70 ring-1 ring-stone-200">
+                    <div class="bg-stone-950 p-6 text-white">
+                        <p class="text-sm font-bold uppercase tracking-[0.3em] text-white/50">Tóm tắt</p>
+                        <h2 class="mt-2 text-3xl font-black">Đơn hàng</h2>
+                    </div>
+                    <div class="space-y-5 p-6">
+                        <div class="flex items-center justify-between text-stone-600">
+                            <span>Số lượng</span>
+                            <b id="cartTotalQuantity" class="text-stone-950">0</b>
+                        </div>
+                        <div class="flex items-center justify-between text-stone-600">
+                            <span>Tạm tính</span>
+                            <b id="cartSubtotal" class="text-stone-950">0đ</b>
+                        </div>
+                        <div class="flex items-center justify-between text-stone-600">
+                            <span>Phí vận chuyển</span>
+                            <b class="text-emerald-700">Miễn phí</b>
+                        </div>
+                        <div class="rounded-2xl bg-[#005b4b]/10 p-4 text-sm text-[#005b4b]">
+                            <b>Gợi ý:</b> kiểm tra lại số lượng và dung tích trước khi thanh toán.
+                        </div>
+                        <div class="border-t border-stone-200 pt-5">
+                            <div class="flex items-center justify-between">
+                                <span class="text-lg font-bold text-stone-600">Tổng cộng</span>
+                                <b id="cartGrandTotal" class="text-2xl font-black text-red-600">0đ</b>
+                            </div>
+                            <p id="checkoutItems" class="mt-1 text-sm text-stone-400">0 sản phẩm</p>
+                        </div>
+                        <button class="w-full rounded-full bg-[#005b4b] px-6 py-4 font-black text-white shadow-lg shadow-[#005b4b]/20 transition hover:-translate-y-0.5 hover:bg-stone-950">Tiến hành thanh toán</button>
+                        <a href="/wishlist" class="block rounded-full border border-stone-200 px-6 py-4 text-center font-bold text-stone-800 transition hover:border-[#005b4b] hover:text-[#005b4b]">Xem yêu thích</a>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </section>
+</main>
+
+<script src="/js/long-shop-ui.js"></script>
+<script src="/js/long-cart-ui.js"></script>
+</body>
+</html>

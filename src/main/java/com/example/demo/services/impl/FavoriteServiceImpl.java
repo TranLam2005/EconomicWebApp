@@ -3,7 +3,7 @@ package com.example.demo.services.impl;
 import com.example.demo.dtos.reponse.FavoriteResponse;
 import com.example.demo.entities.FavoriteEntity;
 import com.example.demo.entities.ProductEntity;
-import com.example.demo.entities.ProductImage;
+import com.example.demo.entities.ProductImageEntity;
 import com.example.demo.entities.UserEntity;
 import com.example.demo.repositories.FavoriteRepository;
 import com.example.demo.services.FavoriteService;
@@ -116,12 +116,12 @@ public class FavoriteServiceImpl implements FavoriteService {
         return product.getImages()
                 .stream()
                 .filter(image -> Boolean.TRUE.equals(image.getIsMain()))
-                .map(ProductImage::getSecureUrl)
+                .map(ProductImageEntity::getSecureUrl)
                 .filter(url -> url != null && !url.isBlank())
                 .findFirst()
                 .orElseGet(() -> product.getImages()
                         .stream()
-                        .map(ProductImage::getSecureUrl)
+                        .map(ProductImageEntity::getSecureUrl)
                         .filter(url -> url != null && !url.isBlank())
                         .findFirst()
                         .orElse(null));
