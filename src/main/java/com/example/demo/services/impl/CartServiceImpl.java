@@ -6,8 +6,8 @@ import com.example.demo.dtos.request.CartAddRequest;
 import com.example.demo.dtos.request.CartUpdateRequest;
 import com.example.demo.entities.CartItemEntity;
 import com.example.demo.entities.ProductEntity;
-import com.example.demo.entities.ProductImage;
-import com.example.demo.entities.ProductVariant;
+import com.example.demo.entities.ProductImageEntity;
+import com.example.demo.entities.ProductVariantEntity;
 import com.example.demo.entities.UserEntity;
 import com.example.demo.repositories.CartItemRepository;
 import com.example.demo.repositories.ProductVariantRepository;
@@ -65,7 +65,7 @@ public class CartServiceImpl implements CartService {
     @Transactional
     public CartResponse addToCart(String email, CartAddRequest request) {
         UserEntity user = getUserByEmail(email);
-        ProductVariant variant = getVariantById(request.getVariantId());
+        ProductVariantEntity variant = getVariantById(request.getVariantId());
 
         validateVariantCanBuy(variant);
 
@@ -92,7 +92,7 @@ public class CartServiceImpl implements CartService {
     public CartResponse updateItem(String email, Long itemId, CartUpdateRequest request) {
         CartItemEntity item = getCartItemOfUser(email, itemId);
 
-        ProductVariant variant = item.getVariant();
+        ProductVariantEntity variant = item.getVariant();
         validateVariantCanBuy(variant);
         validateQuantity(variant, request.getQuantity());
 
@@ -124,7 +124,7 @@ public class CartServiceImpl implements CartService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
-    private ProductVariant getVariantById(Long variantId) {
+    private ProductVariantEntity getVariantById(Long variantId) {
         return productVariantRepository.findById(variantId)
                 .orElseThrow(() -> new RuntimeException("Product variant not found"));
     }
@@ -142,13 +142,13 @@ public class CartServiceImpl implements CartService {
         return item;
     }
 
-    private void validateVariantCanBuy(ProductVariant variant) {
+    private void validateVariantCanBuy(ProductVariantEntity variant) {
         if (Boolean.FALSE.equals(variant.getIsActive())) {
             throw new RuntimeException("Product variant is inactive");
         }
     }
 
-    private void validateQuantity(ProductVariant variant, Integer quantity) {
+    private void validateQuantity(ProductVariantEntity variant, Integer quantity) {
         if (quantity == null || quantity <= 0) {
             throw new RuntimeException("Quantity must be greater than 0");
         }
@@ -160,7 +160,7 @@ public class CartServiceImpl implements CartService {
     }
 
     private CartItemResponse toItemResponse(CartItemEntity item) {
-        ProductVariant variant = item.getVariant();
+        ProductVariantEntity variant = item.getVariant();
         ProductEntity product = variant.getProduct();
 
         BigDecimal unitPrice = variant.getPrice();
@@ -182,7 +182,7 @@ public class CartServiceImpl implements CartService {
                 .build();
     }
 
-    private String getImageUrl(ProductVariant variant, ProductEntity product) {
+    private String getImageUrl(ProductVariantEntity variant, ProductEntity product) {
         String variantImage = getMainImageFromList(variant.getImages());
 
         if (variantImage != null) {
@@ -192,18 +192,18 @@ public class CartServiceImpl implements CartService {
         return getMainImageFromList(product.getImages());
     }
 
-    private String getMainImageFromList(List<ProductImage> images) {
+    private String getMainImageFromList(List<ProductImageEntity> images) {
         if (images == null || images.isEmpty()) {
             return null;
         }
 
         return images.stream()
                 .filter(image -> Boolean.TRUE.equals(image.getIsMain()))
-                .map(ProductImage::getSecureUrl)
+                .map(ProductImageEntity::getSecureUrl)
                 .filter(url -> url != null && !url.isBlank())
                 .findFirst()
                 .orElseGet(() -> images.stream()
-                        .map(ProductImage::getSecureUrl)
+                        .map(ProductImageEntity::getSecureUrl)
                         .filter(url -> url != null && !url.isBlank())
                         .findFirst()
                         .orElse(null));

@@ -30,7 +30,7 @@ public class CartItemEntity {
     // Giỏ hàng lưu theo biến thể/dung tích nước hoa: 10ml, 50ml, 100ml...
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "variant_id", nullable = false)
-    private ProductVariant variant;
+    private ProductVariantEntity variant;
 
     @Column(nullable = false)
     private Integer quantity;
