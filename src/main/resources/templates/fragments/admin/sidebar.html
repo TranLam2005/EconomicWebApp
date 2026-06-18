@@ -1,0 +1,66 @@
+<aside
+        th:fragment="sidebar"
+        class="w-64 bg-[#07503D] text-white flex flex-col min-h-screen h-full transition-all duration-300 z-20 shrink-0">
+  <div class="h-16 flex items-center px-6 border-b border-white/10 shrink-0">
+    <svg class="w-8 h-8 mr-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+    </svg>
+    <span class="text-xl font-bold tracking-wider">TechAdmin</span>
+  </div>
+
+  <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1">
+    <a href="#" class="flex items-center px-3 py-2.5 bg-white/10 rounded-lg text-white font-medium group">
+      <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+      Tổng quan
+    </a>
+    <div class="relative">
+      <button onclick="toggleSubmenu('product-submenu', 'product-chevron')" class="w-full flex items-center justify-between px-3 py-2.5 text-white/70 hover:bg-white/5 hover:text-white rounded-lg font-medium transition-colors cursor-pointer group focus:outline-none">
+        <div class="flex items-center">
+          <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+          <span>Quản lý Sản phẩm</span>
+        </div>
+        <svg id="product-chevron" class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+      </button>
+
+      <div id="product-submenu" class="hidden flex-col pl-11 pr-3 mt-1 space-y-1 ">
+        <a href="/listProduct" class="block px-3 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 rounded-lg transition-colors">Danh sách sản phẩm</a>
+        <a href="/createProduct" class="block px-3 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 rounded-lg transition-colors">Thêm sản phẩm đơn</a>
+        <a href="/importProduct" class="block px-3 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 rounded-lg transition-colors">Thêm bằng File Excel</a>
+      </div>
+    </div>
+    <a href="#" class="flex items-center px-3 py-2.5 text-white/70 hover:bg-white/5 hover:text-white rounded-lg font-medium transition-colors group">
+      <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+      Đơn hàng
+    </a>
+    <a href="#" class="flex items-center px-3 py-2.5 text-white/70 hover:bg-white/5 hover:text-white rounded-lg font-medium transition-colors group">
+      <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+      Khách hàng
+    </a>
+  </nav>
+
+  <div class="p-4 border-t border-white/10 shrink-0">
+    <a href="#" class="flex items-center px-3 py-2 text-white/70 hover:text-white transition-colors">
+      <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+      Cài đặt
+    </a>
+  </div>
+  <script>
+      function toggleSubmenu(submenuId, chevronId) {
+          const submenu = document.getElementById(submenuId);
+          const chevron = document.getElementById(chevronId);
+
+          // Bật/tắt class hidden để ẩn/hiện menu con
+          if (submenu.classList.contains('hidden')) {
+              submenu.classList.remove('hidden');
+              submenu.classList.add('flex');
+              // Xoay mũi tên lên trên
+              chevron.classList.add('rotate-180');
+          } else {
+              submenu.classList.add('hidden');
+              submenu.classList.remove('flex');
+              // Trả mũi tên về vị trí cũ
+              chevron.classList.remove('rotate-180');
+          }
+      }
+  </script>
+</aside>

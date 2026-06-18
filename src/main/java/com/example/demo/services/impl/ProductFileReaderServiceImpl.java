@@ -122,6 +122,22 @@ public class ProductFileReaderServiceImpl implements ProductFileReaderService {
     }
   }
 
+  //{
+  //  "chanel-coco": {
+  //    "COCO-100ML": [
+  //      { "normalizedKey": "chanel-coco", "sku": "COCO-100ML", "secureUrl": "anh-chinh-100ml.jpg" },
+  //      { "normalizedKey": "chanel-coco", "sku": "COCO-100ML", "secureUrl": "anh-phu-100ml.jpg" }
+  //    ],
+  //    "COCO-50ML": [
+  //      { "normalizedKey": "chanel-coco", "sku": "COCO-50ML", "secureUrl": "anh-chinh-50ml.jpg" }
+  //    ]
+  //  },
+  //  "dior-sauvage": {
+  //    "DIOR-100ML": [
+  //      { "normalizedKey": "dior-sauvage", "sku": "DIOR-100ML", "secureUrl": "dior-chinh.jpg" }
+  //    ]
+  //  }
+  //}
   private List<ProductImportFileRequest> groupToNestedStructure(List<ProductImportFileRequest> flatRows) {
     Map<String, Map<String, List<ProductImportFileRequest>>> groupedByProductAndVariant =
             flatRows.stream()

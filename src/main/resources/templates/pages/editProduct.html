@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html
+        layout:decorate="~{layout/layoutAdmin}"
+        lang="vi"
+        xmlns:layout="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chỉnh Sửa Sản Phẩm</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+
+<main layout:fragment="content" class="w-full mx-auto bg-gray-50 font-sans text-gray-800 p-6 min-h-screen">
+
+  <div id="notification" class="hidden fixed top-4 right-4 p-4 rounded-lg shadow-lg text-white z-50 max-w-sm"
+       role="alert"></div>
+
+  <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-800">Chỉnh sửa sản phẩm</h1>
+      <p class="text-sm text-gray-500 mt-1">Cập nhật thông tin chi tiết sản phẩm nước hoa.</p>
+    </div>
+    <div class="flex items-center space-x-3">
+      <button type="button" class="px-4 py-2 border border-gray-300 text-gray-700 bg-white rounded-lg hover:bg-gray-50 font-medium transition-colors shadow-sm"
+              onclick="window.history.back()">
+        Hủy bỏ
+      </button>
+      <button type="submit" form="product-form" class="px-5 py-2 bg-[#07503D] text-white rounded-lg hover:bg-[#053d2e] font-medium transition-colors shadow-sm flex items-center">
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+        Lưu thay đổi
+      </button>
+    </div>
+  </div>
+
+  <form id="product-form" class="grid grid-cols-1 lg:grid-cols-3 gap-6 pb-12" onsubmit="handleSubmit(event)">
+
+    <div class="lg:col-span-2 space-y-6">
+
+      <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+        <h2 class="text-lg font-semibold text-gray-800 mb-4 border-b pb-2">Thông tin chung</h2>
+
+        <div class="space-y-4">
+          <div>
+            <label for="productName" class="block text-sm font-medium text-gray-700 mb-1">Tên sản phẩm <span class="text-red-500">*</span></label>
+            <input type="text" id="productName" name="productName" required placeholder="VD: Tom Ford Ombre Leather"
+                   th:value="${product.productName}"
+                   class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:border-[#07503D] focus:ring-2 focus:ring-[#07503D]/20 outline-none transition-all">
+          </div>
+
+          <div>
+            <label for="normalizedKey" class="block text-sm font-medium text-gray-700 mb-1">Đường dẫn chuẩn hóa (Slug) <span class="text-red-500">*</span></label>
+            <input type="text" id="normalizedKey" name="normalizedKey" required placeholder="VD: tom-ford-ombre-leather"
+                   th:value="${product.normalizedKey}"
+                   class="w-full px-4 py-2 bg-gray-100 border border-gray-300 text-gray-600 rounded-lg focus:bg-white focus:border-[#07503D] focus:ring-2 focus:ring-[#07503D]/20 outline-none transition-all">
+            <p class="text-xs text-gray-500 mt-1">Sẽ được tự động tạo từ tên sản phẩm, dùng cho URL thân thiện SEO.</p>
+          </div>
+
+          <div>
+            <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Mô tả sản phẩm <span class="text-red-500">*</span></label>
+            <textarea id="description" name="description" rows="6" required placeholder="Nhập mô tả chi tiết về mùi hương, độ lưu hương..."
+                      th:text="${product.description}"
+                      class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:border-[#07503D] focus:ring-2 focus:ring-[#07503D]/20 outline-none transition-all resize-y"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+        <h2 class="text-lg font-semibold text-gray-800 mb-4 border-b pb-2">Hình ảnh sản phẩm</h2>
+        <div id="image-preview" class="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-4"></div>
+        <div class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:bg-gray-50 transition-all cursor-pointer">
+          <input type="file" id="images" name="images" multiple accept="image/*" class="hidden" onchange="handleImageSelect(event)">
+          <label for="images" class="cursor-pointer flex flex-col items-center">
+            <div class="w-12 h-12 mb-3 rounded-full bg-[#07503D]/10 flex items-center justify-center text-[#07503D]">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+            </div>
+            <span class="text-sm font-medium text-gray-700">Nhấn để tải lên hoặc thay đổi hình ảnh</span>
+            <span class="text-xs text-gray-500 mt-1">PNG, JPG, WEBP lên đến 50MB</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="space-y-6">
+
+      <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+        <h2 class="text-lg font-semibold text-gray-800 mb-4 border-b pb-2">Đặc tính</h2>
+
+        <div class="space-y-4">
+          <div>
+            <label for="brand" class="block text-sm font-medium text-gray-700 mb-1">Thương hiệu <span class="text-red-500">*</span></label>
+            <input type="text" id="brand" name="brand" required placeholder="VD: Dior, Chanel..."
+                   th:value="${product.brand}"
+                   class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:border-[#07503D] outline-none transition-all">
+          </div>
+
+          <div>
+            <label for="gender" class="block text-sm font-medium text-gray-700 mb-1">Giới tính <span class="text-red-500">*</span></label>
+            <select id="gender" name="gender" required
+                    class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:border-[#07503D] outline-none transition-all cursor-pointer">
+              <option value="" disabled>-- Chọn giới tính --</option>
+              <option value="Nam" th:selected="${product.gender == 'Nam'}">Nước hoa Nam</option>
+              <option value="Nữ" th:selected="${product.gender == 'Nữ'}">Nước hoa Nữ</option>
+              <option value="Unisex" th:selected="${product.gender == 'Unisex'}">Unisex</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="concentration" class="block text-sm font-medium text-gray-700 mb-1">Nồng độ</label>
+            <select id="concentration" name="concentration"
+                    class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:border-[#07503D] outline-none transition-all cursor-pointer">
+              <option value="" disabled>-- Chọn nồng độ --</option>
+              <option value="Parfum" th:selected="${product.concentration == 'Parfum'}">Parfum (Extrait)</option>
+              <option value="EDP" th:selected="${product.concentration == 'EDP'}">Eau de Parfum (EDP)</option>
+              <option value="EDT" th:selected="${product.concentration == 'EDT'}">Eau de Toilette (EDT)</option>
+              <option value="EDC" th:selected="${product.concentration == 'EDC'}">Eau de Cologne (EDC)</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="releaseYear" class="block text-sm font-medium text-gray-700 mb-1">Năm phát hành</label>
+            <input type="number" id="releaseYear" name="releaseYear" placeholder="VD: 2018" min="1900" max="2030"
+                   th:value="${product.releaseYear}"
+                   class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:border-[#07503D] outline-none transition-all">
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+        <h2 class="text-lg font-semibold text-gray-800 mb-4 border-b pb-2">Định giá</h2>
+        <div>
+          <label for="price" class="block text-sm font-medium text-gray-700 mb-1">Giá cơ bản (VNĐ) <span class="text-red-500">*</span></label>
+          <div class="relative">
+            <input type="number" id="price" name="price" required placeholder="0" min="0" step="1000"
+                   th:value="${product.price}"
+                   class="w-full pl-4 pr-12 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:border-[#07503D] outline-none transition-all font-medium text-gray-900">
+            <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-gray-500 font-medium">
+              VNĐ
+            </div>
+          </div>
+          <p class="text-xs text-gray-500 mt-2">Lưu ý: Nếu sản phẩm có nhiều dung tích (Variants), giá cụ thể sẽ được cấu hình ở phần chi tiết dung tích sau khi cập nhật sản phẩm.</p>
+        </div>
+      </div>
+
+    </div>
+  </form>
+
+  <input type="hidden" id="hidden-product-id" th:value="${product.id}" />
+
+  <div id="image-data-container" class="hidden">
+    <th:block th:if="${product.images != null}">
+      <span th:each="img : ${product.images}" th:data-url="${img.secureUrl}"></span>
+    </th:block>
+  </div>
+  <script>
+      const productNameInput = document.getElementById('productName');
+      const normalizedKeyInput = document.getElementById('normalizedKey');
+      const notificationDiv = document.getElementById('notification');
+      const submitBtn = document.querySelector('button[type="submit"]');
+      const imagePreviewDiv = document.getElementById('image-preview');
+
+      // 1. LẤY DỮ LIỆU TỪ CÁC THẺ HTML ẨN
+      const productId = document.getElementById('hidden-product-id').value;
+      let uploadedImages = [];
+
+      const imageSpans = document.querySelectorAll('#image-data-container span');
+      imageSpans.forEach((span, index) => {
+          const url = span.getAttribute('data-url');
+          if (url) {
+              uploadedImages.push(url);
+              renderImagePreview(url, index);
+          }
+      });
+
+      // 2. CÁC HÀM TIỆN ÍCH VÀ XỬ LÝ SỰ KIỆN KHÁC
+      function generateSlug(text) {
+          return text.toString().toLowerCase()
+              .replace(/á|à|ả|ạ|ã|ă|ắ|ằ|ẳ|ẵ|ặ|â|ấ|ầ|ẩ|ẫ|ậ/gi, 'a')
+              .replace(/é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ/gi, 'e')
+              .replace(/i|í|ì|ỉ|ĩ|ị/gi, 'i')
+              .replace(/ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ/gi, 'o')
+              .replace(/ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự/gi, 'u')
+              .replace(/ý|ỳ|ỷ|ỹ|ỵ/gi, 'y')
+              .replace(/đ/gi, 'd')
+              .replace(/\s+/g, '-')
+              .replace(/[^\w\-]+/g, '')
+              .replace(/\-\-+/g, '-')
+              .replace(/^-+/, '')
+              .replace(/-+$/, '');
+      }
+
+      function showNotification(message, type = 'success') {
+          notificationDiv.textContent = message;
+          notificationDiv.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg text-white z-50 max-w-sm ${
+              type === 'success' ? 'bg-green-500' : 'bg-red-500'
+          }`;
+          notificationDiv.classList.remove('hidden');
+          setTimeout(() => notificationDiv.classList.add('hidden'), 4000);
+      }
+
+      async function handleImageSelect(event) {
+          const files = event.target.files;
+          if (!files || files.length === 0) return;
+
+          for (let file of files) {
+              if (!file.type.startsWith('image/')) {
+                  showNotification('Vui lòng chỉ chọn file ảnh', 'error');
+                  continue;
+              }
+              if (file.size > 50 * 1024 * 1024) {
+                  showNotification(`${file.name} vượt quá 50MB`, 'error');
+                  continue;
+              }
+              await uploadImageToCloudinary(file);
+          }
+          event.target.value = '';
+      }
+
+      async function uploadImageToCloudinary(file) {
+          const formData = new FormData();
+          formData.append('file', file);
+          formData.append('folder', 'products');
+
+          try {
+              const response = await fetch('/pub/api/file/image/upload', {
+                  method: 'POST',
+                  body: formData
+              });
+
+              const text = await response.text();
+              if (!response.ok) throw new Error(`HTTP ${response.status}: ${text}`);
+
+              const result = JSON.parse(text);
+              uploadedImages.push(result.secure_url);
+              renderImagePreview(result.secure_url, uploadedImages.length - 1);
+              showNotification('Hình ảnh tải lên thành công', 'success');
+          } catch (error) {
+              showNotification('Lỗi tải lên: ' + error.message, 'error');
+          }
+      }
+
+      function renderImagePreview(imageUrl, index) {
+          const previewHTML = `
+        <div class="relative group" id="gallery-img-${index}">
+            <img src="${imageUrl}" alt="Preview" class="w-full h-32 object-cover rounded-lg border border-gray-200">
+            <button type="button" onclick="removeImage(${index})"
+                    class="absolute inset-0 flex items-center justify-center bg-red-500/80 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+    `;
+          imagePreviewDiv.insertAdjacentHTML('beforeend', previewHTML);
+      }
+
+      function removeImage(index) {
+          uploadedImages[index] = null; // Đánh dấu null để không làm lệch mảng
+          document.getElementById(`gallery-img-${index}`).remove();
+      }
+
+      async function handleSubmit(event) {
+          event.preventDefault();
+
+          submitBtn.disabled = true;
+          const originalText = submitBtn.innerHTML;
+          submitBtn.innerHTML = '<span class="animate-spin inline-block w-4 h-4 mr-2">⟳</span>Đang lưu...';
+
+          try {
+              // Lọc bỏ các phần tử null (do đã bị user nhấn nút xóa)
+              const cleanImages = uploadedImages.filter(url => url !== null);
+
+              const productData = {
+                  productName: document.getElementById('productName').value,
+                  normalizedKey: document.getElementById('normalizedKey').value,
+                  description: document.getElementById('description').value,
+                  brand: document.getElementById('brand').value,
+                  gender: document.getElementById('gender').value,
+                  concentration: document.getElementById('concentration').value,
+                  releaseYear: document.getElementById('releaseYear').value ?
+                      parseInt(document.getElementById('releaseYear').value) : null,
+                  price: document.getElementById('price').value ?
+                      parseFloat(document.getElementById('price').value) : null,
+                  imageUrls: cleanImages
+              };
+
+              const response = await fetch(`/public/product/update/${productId}`, {
+                  method: 'PUT',
+                  headers: {
+                      'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(productData)
+              });
+
+              if (!response.ok) {
+                  const error = await response.json();
+                  throw new Error(error.message || 'Lỗi khi cập nhật sản phẩm');
+              }
+
+              showNotification('Sản phẩm được cập nhật thành công!', 'success');
+              setTimeout(() => window.location.href = '/listProduct', 1500);
+          } catch (error) {
+              showNotification(error.message || 'Lỗi: Không thể cập nhật sản phẩm', 'error');
+          } finally {
+              submitBtn.disabled = false;
+              submitBtn.innerHTML = originalText;
+          }
+      }
+
+      productNameInput.addEventListener('keyup', function() {
+          normalizedKeyInput.value = generateSlug(this.value);
+      });
+
+  </script>
+</main>
+</body>
+</html>
