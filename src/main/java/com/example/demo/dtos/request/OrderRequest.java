@@ -10,6 +10,8 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.example.demo.enums.PaymentMethod;
+
 @Getter
 @Setter
 public class OrderRequest {

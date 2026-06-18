@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="vi" layout:decorate="~{layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Tìm kiếm sản phẩm | Parfumerie</title>
+</head>
+<body layout:fragment="content" class="bg-[#f7f3ed] text-stone-900">
+<script src="https://cdn.tailwindcss.com"></script>
+
+<main class="min-h-screen bg-[#f7f3ed]">
+    <section class="mx-auto max-w-7xl px-5 pt-10 sm:px-8 lg:px-10">
+        <input id="longUserEmail" type="hidden" value="dang@test.com">
+        <h1 class="text-3xl font-black tracking-tight text-stone-950 sm:text-4xl">Tìm kiếm nước hoa</h1>
+    </section>
+
+    <section class="mx-auto max-w-7xl px-5 py-8 sm:px-8 lg:px-10">
+        <form id="searchForm" class="rounded-[2rem] border border-stone-200 bg-white p-5 shadow-sm sm:p-6">
+            <div class="grid gap-4 lg:grid-cols-[1.4fr_0.8fr_0.8fr_0.8fr]">
+                <label>
+                    <span class="mb-2 block text-sm font-bold uppercase tracking-[0.2em] text-stone-400">Từ khóa</span>
+                    <input id="searchKeyword" name="q" placeholder="VD: Dior, Chanel, Sauvage..." class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-stone-900 outline-none transition focus:border-[#005b4b] focus:bg-white focus:ring-4 focus:ring-[#005b4b]/10">
+                </label>
+                <label>
+                    <span class="mb-2 block text-sm font-bold uppercase tracking-[0.2em] text-stone-400">Brand</span>
+                    <input id="searchBrand" name="brand" placeholder="Tom Ford" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-stone-900 outline-none transition focus:border-[#005b4b] focus:bg-white focus:ring-4 focus:ring-[#005b4b]/10">
+                </label>
+                <label>
+                    <span class="mb-2 block text-sm font-bold uppercase tracking-[0.2em] text-stone-400">Giới tính</span>
+                    <select id="searchGender" name="gender" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-stone-900 outline-none transition focus:border-[#005b4b] focus:bg-white focus:ring-4 focus:ring-[#005b4b]/10">
+                        <option value="">Tất cả</option>
+                        <option value="Nam">Nam</option>
+                        <option value="Nữ">Nữ</option>
+                        <option value="Unisex">Unisex</option>
+                    </select>
+                </label>
+                <label>
+                    <span class="mb-2 block text-sm font-bold uppercase tracking-[0.2em] text-stone-400">Nồng độ</span>
+                    <input id="searchConcentration" name="concentration" placeholder="EDP, EDT..." class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-stone-900 outline-none transition focus:border-[#005b4b] focus:bg-white focus:ring-4 focus:ring-[#005b4b]/10">
+                </label>
+            </div>
+
+            <div class="mt-4 grid gap-4 lg:grid-cols-[0.8fr_0.8fr_0.8fr_auto_auto] lg:items-end">
+                <label>
+                    <span class="mb-2 block text-sm font-bold uppercase tracking-[0.2em] text-stone-400">Giá từ</span>
+                    <input id="searchMinPrice" name="minPrice" type="number" min="0" placeholder="0" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-stone-900 outline-none transition focus:border-[#005b4b] focus:bg-white focus:ring-4 focus:ring-[#005b4b]/10">
+                </label>
+                <label>
+                    <span class="mb-2 block text-sm font-bold uppercase tracking-[0.2em] text-stone-400">Giá đến</span>
+                    <input id="searchMaxPrice" name="maxPrice" type="number" min="0" placeholder="10000000" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-stone-900 outline-none transition focus:border-[#005b4b] focus:bg-white focus:ring-4 focus:ring-[#005b4b]/10">
+                </label>
+                <label>
+                    <span class="mb-2 block text-sm font-bold uppercase tracking-[0.2em] text-stone-400">Sắp xếp</span>
+                    <select id="searchSort" name="sort" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-stone-900 outline-none transition focus:border-[#005b4b] focus:bg-white focus:ring-4 focus:ring-[#005b4b]/10">
+                        <option value="latest">Mới nhất</option>
+                        <option value="priceAsc">Giá tăng dần</option>
+                        <option value="priceDesc">Giá giảm dần</option>
+                        <option value="nameAsc">Tên A-Z</option>
+                    </select>
+                </label>
+                <button type="submit" class="rounded-2xl bg-[#005b4b] px-7 py-3 font-extrabold text-white shadow-lg shadow-[#005b4b]/20 transition hover:-translate-y-0.5 hover:bg-stone-950">Tìm kiếm</button>
+                <button id="searchResetButton" type="button" class="rounded-2xl border border-stone-200 px-7 py-3 font-extrabold text-stone-700 transition hover:border-[#005b4b] hover:text-[#005b4b]">Xóa lọc</button>
+            </div>
+        </form>
+
+        <div class="my-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+            <div>
+                <p class="text-sm font-bold uppercase tracking-[0.25em] text-[#005b4b]">Kết quả tìm kiếm</p>
+                <h2 class="mt-2 text-3xl font-black text-stone-950">“<span id="searchKeywordText">tất cả sản phẩm</span>”</h2>
+            </div>
+            <p class="rounded-full bg-white px-5 py-3 text-sm font-bold text-stone-600 shadow-sm"><span id="searchCount" class="text-[#005b4b]">0</span> sản phẩm phù hợp</p>
+        </div>
+
+        <div id="searchEmpty" class="hidden rounded-[2rem] border border-dashed border-stone-300 bg-white p-10 text-center">
+            <div class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-[#005b4b]/10 text-4xl">🔎</div>
+            <h3 class="mt-5 text-2xl font-black text-stone-950">Không tìm thấy sản phẩm</h3>
+            <p class="mt-2 text-stone-500">Thử bỏ bớt bộ lọc hoặc tìm bằng brand/tên sản phẩm khác.</p>
+            <button onclick="LongSearchPage.resetFilters()" class="mt-6 rounded-full bg-[#005b4b] px-6 py-3 font-bold text-white transition hover:bg-stone-950">Xóa bộ lọc</button>
+        </div>
+
+        <div id="searchGrid" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"></div>
+    </section>
+</main>
+
+<script src="/js/long-shop-ui.js"></script>
+<script src="/js/long-search-ui.js"></script>
+</body>
+</html>
