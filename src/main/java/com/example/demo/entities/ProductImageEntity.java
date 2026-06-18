@@ -68,15 +68,5 @@ public class ProductImageEntity {
     this.createdAt = LocalDateTime.now();
     this.updatedAt = LocalDateTime.now();
     this.resourceType = "image";
-    this.isMain = false;
-    this.sortOrder = 0;
   }
-
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "variant_id")
-  ProductVariantEntity variant;
-
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "product_id")
-  ProductEntity product;
 }

@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html
+        layout:decorate="~{layout/layoutAdmin}"
+        lang="vi"
+        xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thêm Sản Phẩm Mới</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+
+<main layout:fragment="content" class="w-full mx-auto bg-gray-50 font-sans text-gray-800 p-6 min-h-screen">
+
+  <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-800">Thêm sản phẩm mới</h1>
+      <p class="text-sm text-gray-500 mt-1">Điền các thông tin chi tiết để tạo sản phẩm nước hoa mới trên hệ thống.</p>
+    </div>
+    <div class="flex items-center space-x-3">
+      <button type="button" class="px-4 py-2 border border-gray-300 text-gray-700 bg-white rounded-lg hover:bg-gray-50 font-medium transition-colors shadow-sm"
+              onclick="window.history.back()">
+        Hủy bỏ
+      </button>
+      <button type="submit" form="product-form" class="px-5 py-2 bg-[#07503D] text-white rounded-lg hover:bg-[#053d2e] font-medium transition-colors shadow-sm flex items-center">
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+        Lưu sản phẩm
+      </button>
+    </div>
+  </div>
+
+  <div id="notification" class="hidden fixed top-4 right-4 p-4 rounded-lg shadow-lg text-white z-50 max-w-sm" role="alert"></div>
+
+  <form id="product-form" class="grid grid-cols-1 lg:grid-cols-3 gap-6 pb-12" onsubmit="handleSubmit(event)">
+
+    <div class="lg:col-span-2 space-y-6">
+
+      <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+        <h2 class="text-lg font-semibold text-gray-800 mb-4 border-b pb-2">Thông tin chung</h2>
+        <div class="space-y-4">
+          <div>
+            <label for="productName" class="block text-sm font-medium text-gray-700 mb-1">Tên sản phẩm <span class="text-red-500">*</span></label>
+            <input type="text" id="productName" name="productName" required placeholder="VD: Tom Ford Ombre Leather"
+                   class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:border-[#07503D] outline-none transition-all">
+          </div>
+
+          <div>
+            <label for="normalizedKey" class="block text-sm font-medium text-gray-700 mb-1">Đường dẫn chuẩn hóa (Slug) <span class="text-red-500">*</span></label>
+            <input type="text" id="normalizedKey" name="normalizedKey" required placeholder="VD: tom-ford-ombre-leather"
+                   class="w-full px-4 py-2 bg-gray-100 border border-gray-300 text-gray-600 rounded-lg focus:bg-white focus:border-[#07503D] outline-none transition-all">
+          </div>
+
+          <div>
+            <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Mô tả sản phẩm <span class="text-red-500">*</span></label>
+            <textarea id="description" name="description" rows="6" required placeholder="Nhập mô tả chi tiết về mùi hương, độ lưu hương..."
+                      class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:border-[#07503D] outline-none transition-all resize-y"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+        <h2 class="text-lg font-semibold text-gray-800 mb-4 border-b pb-2">Hình ảnh sản phẩm</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Ảnh đại diện (Bắt buộc) <span class="text-red-500">*</span></label>
+            <div id="main-image-preview" class="mb-3"></div>
+            <div id="main-image-dropzone" class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:bg-gray-50 transition-all cursor-pointer">
+              <input type="file" id="mainImage" accept="image/*" class="hidden" onchange="handleMainImageSelect(event)">
+              <label for="mainImage" class="cursor-pointer flex flex-col items-center">
+                <div class="w-10 h-10 mb-2 rounded-full bg-[#07503D]/10 flex items-center justify-center text-[#07503D]">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                </div>
+                <span class="text-sm font-medium text-gray-700">Tải ảnh đại diện</span>
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Ảnh phụ (Tùy chọn)</label>
+            <div id="image-preview" class="grid grid-cols-2 gap-2 mb-3"></div>
+            <div class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:bg-gray-50 transition-all cursor-pointer">
+              <input type="file" id="images" multiple accept="image/*" class="hidden" onchange="handleGalleryImageSelect(event)">
+              <label for="images" class="cursor-pointer flex flex-col items-center">
+                <div class="w-10 h-10 mb-2 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                </div>
+                <span class="text-sm font-medium text-gray-700">Tải thêm ảnh phụ</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+        <div class="flex items-center justify-between mb-4 border-b pb-2">
+          <h2 class="text-lg font-semibold text-gray-800">Phân loại & Dung tích</h2>
+          <button type="button" id="add-variant-btn" class="text-sm font-medium text-[#07503D] hover:bg-[#07503D]/10 px-3 py-1.5 rounded-md transition-colors flex items-center">
+            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+            Thêm phân loại
+          </button>
+        </div>
+
+        <div id="variants-container" class="space-y-4">
+          <div class="variant-row relative flex flex-wrap md:flex-nowrap gap-3 p-4 bg-gray-50 border border-gray-200 rounded-lg group">
+            <button type="button" class="remove-variant-btn absolute -top-2 -right-2 bg-red-100 text-red-600 rounded-full p-1 shadow-sm opacity-0 group-hover:opacity-100 transition-opacity">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <div class="w-full md:w-1/4">
+              <label class="block text-xs font-medium text-gray-600 mb-1">Tên phân loại <span class="text-red-500">*</span></label>
+              <input type="text" required placeholder="VD: Chai 100ml" class="var-name w-full px-3 py-1.5 text-sm bg-white border border-gray-300 rounded focus:border-[#07503D] outline-none">
+            </div>
+            <div class="w-full md:w-1/5">
+              <label class="block text-xs font-medium text-gray-600 mb-1">Mã SKU <span class="text-red-500">*</span></label>
+              <input type="text" required placeholder="VD: TF-100" class="var-sku w-full px-3 py-1.5 text-sm bg-white border border-gray-300 rounded focus:border-[#07503D] outline-none">
+            </div>
+            <div class="w-full md:w-1/6">
+              <label class="block text-xs font-medium text-gray-600 mb-1">Dung tích (ml) <span class="text-red-500">*</span></label>
+              <input type="number" required placeholder="100" class="var-volume w-full px-3 py-1.5 text-sm bg-white border border-gray-300 rounded focus:border-[#07503D] outline-none">
+            </div>
+            <div class="w-full md:w-1/4">
+              <label class="block text-xs font-medium text-gray-600 mb-1">Giá bán (VNĐ) <span class="text-red-500">*</span></label>
+              <input type="number" required placeholder="3200000" class="var-price w-full px-3 py-1.5 text-sm bg-white border border-gray-300 rounded focus:border-[#07503D] outline-none">
+            </div>
+            <div class="w-full md:w-1/6">
+              <label class="block text-xs font-medium text-gray-600 mb-1">Tồn kho <span class="text-red-500">*</span></label>
+              <input type="number" required placeholder="10" class="var-stock w-full px-3 py-1.5 text-sm bg-white border border-gray-300 rounded focus:border-[#07503D] outline-none">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="space-y-6">
+      <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+        <h2 class="text-lg font-semibold text-gray-800 mb-4 border-b pb-2">Đặc tính</h2>
+        <div class="space-y-4">
+          <div>
+            <label for="brand" class="block text-sm font-medium text-gray-700 mb-1">Thương hiệu <span class="text-red-500">*</span></label>
+            <input type="text" id="brand" name="brand" required placeholder="VD: Dior, Chanel..." class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:border-[#07503D] outline-none transition-all">
+          </div>
+          <div>
+            <label for="gender" class="block text-sm font-medium text-gray-700 mb-1">Giới tính <span class="text-red-500">*</span></label>
+            <select id="gender" name="gender" required class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:border-[#07503D] outline-none transition-all cursor-pointer">
+              <option value="" disabled selected>-- Chọn giới tính --</option>
+              <option value="Nam">Nước hoa Nam</option>
+              <option value="Nữ">Nước hoa Nữ</option>
+              <option value="Unisex">Unisex</option>
+            </select>
+          </div>
+          <div>
+            <label for="concentration" class="block text-sm font-medium text-gray-700 mb-1">Nồng độ</label>
+            <select id="concentration" name="concentration" class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:border-[#07503D] outline-none transition-all cursor-pointer">
+              <option value="" disabled selected>-- Chọn nồng độ --</option>
+              <option value="Parfum">Parfum (Extrait)</option>
+              <option value="EDP">Eau de Parfum (EDP)</option>
+              <option value="EDT">Eau de Toilette (EDT)</option>
+              <option value="EDC">Eau de Cologne (EDC)</option>
+            </select>
+          </div>
+          <div>
+            <label for="releaseYear" class="block text-sm font-medium text-gray-700 mb-1">Năm phát hành</label>
+            <input type="number" id="releaseYear" name="releaseYear" placeholder="VD: 2018" min="1900" max="2030" class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:border-[#07503D] outline-none transition-all">
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+        <h2 class="text-lg font-semibold text-gray-800 mb-4 border-b pb-2">Định giá cơ bản</h2>
+        <div>
+          <label for="price" class="block text-sm font-medium text-gray-700 mb-1">Giá cơ bản (VNĐ) <span class="text-red-500">*</span></label>
+          <div class="relative">
+            <input type="number" id="price" name="price" required placeholder="0" min="0" step="1000" class="w-full pl-4 pr-12 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:border-[#07503D] outline-none transition-all font-medium text-gray-900">
+            <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-gray-500 font-medium">VNĐ</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <script>
+      // 1. CÁC BIẾN TOÀN CỤC
+      let mainImageUrl = null; // Chứa link ảnh chính
+      let uploadedImages = []; // Chứa mảng link ảnh phụ
+
+      const productNameInput = document.getElementById('productName');
+      const normalizedKeyInput = document.getElementById('normalizedKey');
+      const notificationDiv = document.getElementById('notification');
+      const submitBtn = document.querySelector('button[type="submit"]');
+
+      const mainImagePreviewDiv = document.getElementById('main-image-preview');
+      const mainImageDropzone = document.getElementById('main-image-dropzone');
+      const imagePreviewDiv = document.getElementById('image-preview');
+
+      // 2. CÁC HÀM TIỆN ÍCH
+      function generateSlug(text) {
+          return text.toString().toLowerCase()
+              .replace(/á|à|ả|ạ|ã|ă|ắ|ằ|ẳ|ẵ|ặ|â|ấ|ầ|ẩ|ẫ|ậ/gi, 'a')
+              .replace(/é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ/gi, 'e')
+              .replace(/i|í|ì|ỉ|ĩ|ị/gi, 'i')
+              .replace(/ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ/gi, 'o')
+              .replace(/ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự/gi, 'u')
+              .replace(/ý|ỳ|ỷ|ỹ|ỵ/gi, 'y')
+              .replace(/đ/gi, 'd')
+              .replace(/\s+/g, '-')
+              .replace(/[^\w\-]+/g, '')
+              .replace(/\-\-+/g, '-')
+              .replace(/^-+/, '')
+              .replace(/-+$/, '');
+      }
+
+      function showNotification(message, type = 'success') {
+          notificationDiv.textContent = message;
+          notificationDiv.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg text-white z-50 max-w-sm ${
+              type === 'success' ? 'bg-green-500' : 'bg-red-500'
+          }`;
+          notificationDiv.classList.remove('hidden');
+          setTimeout(() => notificationDiv.classList.add('hidden'), 4000);
+      }
+
+      productNameInput.addEventListener('keyup', function() {
+          normalizedKeyInput.value = generateSlug(this.value);
+      });
+
+      // 3. LOGIC UPLOAD ẢNH (Dùng chung cho cả ảnh chính và phụ)
+      async function uploadFileToCloudinary(file) {
+          const formData = new FormData();
+          formData.append('file', file);
+          formData.append('folder', 'products');
+
+          const response = await fetch('/pub/api/file/image/upload', {
+              method: 'POST',
+              body: formData
+          });
+          const text = await response.text();
+          if (!response.ok) throw new Error(`HTTP ${response.status}: ${text}`);
+
+          return JSON.parse(text).secure_url;
+      }
+
+      // Xử lý Ảnh Chính (Main Image)
+      async function handleMainImageSelect(event) {
+          const file = event.target.files[0];
+          if (!file) return;
+
+          if (!file.type.startsWith('image/')) {
+              showNotification('Vui lòng chỉ chọn file ảnh', 'error');
+              return;
+          }
+
+          try {
+              mainImagePreviewDiv.innerHTML = '<div class="text-center text-sm text-gray-500 py-4 animate-pulse">Đang tải ảnh lên...</div>';
+              mainImageDropzone.classList.add('hidden'); // Ẩn ô upload đi khi đang tải/đã có ảnh
+
+              const url = await uploadFileToCloudinary(file);
+              mainImageUrl = url;
+
+
+              mainImagePreviewDiv.innerHTML = `
+                  <div class="relative group">
+                      <img src="${url}" alt="Main Preview" class="w-full h-48 object-cover rounded-xl border border-gray-200">
+                      <div class="absolute top-2 left-2 bg-[#07503D] text-white text-[10px] uppercase font-bold px-2 py-1 rounded">Ảnh đại diện</div>
+                      <button type="button" onclick="removeMainImage()"
+                              class="absolute inset-0 flex items-center justify-center bg-red-500/80 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl">
+                          <span class="text-white text-sm font-semibold flex items-center">
+                              <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                              Xóa ảnh này
+                          </span>
+                      </button>
+                  </div>
+              `;
+              showNotification('Ảnh đại diện tải lên thành công', 'success');
+          } catch (error) {
+              removeMainImage(); // Reset lại nếu lỗi
+              showNotification('Lỗi tải ảnh đại diện: ' + error.message, 'error');
+          }
+      }
+
+      function removeMainImage() {
+          mainImageUrl = null;
+          document.getElementById('mainImage').value = '';
+          mainImagePreviewDiv.innerHTML = '';
+          mainImageDropzone.classList.remove('hidden'); // Hiện lại ô upload
+      }
+
+      // Xử lý Ảnh Phụ (Gallery Images)
+      async function handleGalleryImageSelect(event) {
+          const files = event.target.files;
+          if (!files || files.length === 0) return;
+
+          for (let file of files) {
+              if (!file.type.startsWith('image/') || file.size > 5 * 1024 * 1024) continue;
+
+              try {
+                  const url = await uploadFileToCloudinary(file);
+                  uploadedImages.push(url);
+                  renderGalleryImagePreview(url, uploadedImages.length - 1);
+              } catch (error) {
+                  showNotification('Lỗi tải ảnh phụ: ' + error.message, 'error');
+              }
+          }
+          event.target.value = '';
+      }
+
+      function renderGalleryImagePreview(imageUrl, index) {
+          const previewHTML = `
+              <div class="relative group" id="gallery-img-${index}">
+                  <img src="${imageUrl}" alt="Preview" class="w-full h-24 object-cover rounded-lg border border-gray-200">
+                  <button type="button" onclick="removeGalleryImage(${index})"
+                          class="absolute inset-0 flex items-center justify-center bg-red-500/80 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg">
+                      <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                  </button>
+              </div>
+          `;
+          imagePreviewDiv.insertAdjacentHTML('beforeend', previewHTML);
+      }
+
+      function removeGalleryImage(index) {
+          uploadedImages[index] = null; // Đánh dấu là null để không làm lệch index của các ảnh khác
+          document.getElementById(`gallery-img-${index}`).remove();
+      }
+
+      // 4. LOGIC THÊM XÓA VARIANT ĐỘNG
+      const addVariantBtn = document.getElementById('add-variant-btn');
+      const variantsContainer = document.getElementById('variants-container');
+      let variantIndex = 1;
+
+      addVariantBtn.addEventListener('click', function() {
+          const newRow = document.createElement('div');
+          newRow.className = 'variant-row relative flex flex-wrap md:flex-nowrap gap-3 p-4 bg-gray-50 border border-gray-200 rounded-lg group mt-4';
+
+          newRow.innerHTML = `
+              <button type="button" class="remove-variant-btn absolute -top-2 -right-2 bg-red-100 text-red-600 rounded-full p-1 shadow-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+              </button>
+              <div class="w-full md:w-1/4">
+                  <label class="block text-xs font-medium text-gray-600 mb-1">Tên phân loại <span class="text-red-500">*</span></label>
+                  <input type="text" required placeholder="VD: Chiết 10ml" class="var-name w-full px-3 py-1.5 text-sm bg-white border border-gray-300 rounded focus:border-[#07503D] outline-none">
+              </div>
+              <div class="w-full md:w-1/5">
+                  <label class="block text-xs font-medium text-gray-600 mb-1">Mã SKU <span class="text-red-500">*</span></label>
+                  <input type="text" required placeholder="VD: TF-10" class="var-sku w-full px-3 py-1.5 text-sm bg-white border border-gray-300 rounded focus:border-[#07503D] outline-none">
+              </div>
+              <div class="w-full md:w-1/6">
+                  <label class="block text-xs font-medium text-gray-600 mb-1">Dung tích (ml) <span class="text-red-500">*</span></label>
+                  <input type="number" required placeholder="10" class="var-volume w-full px-3 py-1.5 text-sm bg-white border border-gray-300 rounded focus:border-[#07503D] outline-none">
+              </div>
+              <div class="w-full md:w-1/4">
+                  <label class="block text-xs font-medium text-gray-600 mb-1">Giá bán (VNĐ) <span class="text-red-500">*</span></label>
+                  <input type="number" required placeholder="350000" class="var-price w-full px-3 py-1.5 text-sm bg-white border border-gray-300 rounded focus:border-[#07503D] outline-none">
+              </div>
+              <div class="w-full md:w-1/6">
+                  <label class="block text-xs font-medium text-gray-600 mb-1">Tồn kho <span class="text-red-500">*</span></label>
+                  <input type="number" required placeholder="50" class="var-stock w-full px-3 py-1.5 text-sm bg-white border border-gray-300 rounded focus:border-[#07503D] outline-none">
+              </div>
+          `;
+          variantsContainer.appendChild(newRow);
+          variantIndex++;
+      });
+
+      variantsContainer.addEventListener('click', function(e) {
+          const removeBtn = e.target.closest('.remove-variant-btn');
+          if (removeBtn) {
+              const rowCount = variantsContainer.querySelectorAll('.variant-row').length;
+              if (rowCount > 1) {
+                  removeBtn.closest('.variant-row').remove();
+              } else {
+                  showNotification("Sản phẩm phải có ít nhất 1 phân loại!", 'error');
+              }
+          }
+      });
+
+      // 5. LOGIC SUBMIT FORM
+      async function handleSubmit(event) {
+          event.preventDefault();
+
+          if (!mainImageUrl) {
+              showNotification("Vui lòng tải lên Ảnh đại diện cho sản phẩm!", 'error');
+              return;
+          }
+
+          submitBtn.disabled = true;
+          const originalText = submitBtn.innerHTML;
+          submitBtn.innerHTML = '<span class="animate-spin inline-block w-4 h-4 mr-2">⟳</span>Đang lưu...';
+
+          try {
+              const variantElements = document.querySelectorAll('.variant-row');
+              const variantsData = Array.from(variantElements).map(row => ({
+                  variantName: row.querySelector('.var-name').value,
+                  sku: row.querySelector('.var-sku').value,
+                  volumeMl: parseInt(row.querySelector('.var-volume').value) || 0,
+                  price: parseFloat(row.querySelector('.var-price').value) || 0,
+                  stockQuantity: parseInt(row.querySelector('.var-stock').value) || 0
+              }));
+
+              // Lọc bỏ các giá trị null trong mảng ảnh phụ (do thao tác xóa)
+              const cleanGalleryImages = uploadedImages.filter(url => url !== null);
+
+              const productData = {
+                  productName: document.getElementById('productName').value,
+                  normalizedKey: document.getElementById('normalizedKey').value,
+                  description: document.getElementById('description').value,
+                  brand: document.getElementById('brand').value,
+                  gender: document.getElementById('gender').value,
+                  concentration: document.getElementById('concentration').value,
+                  releaseYear: document.getElementById('releaseYear').value ? parseInt(document.getElementById('releaseYear').value) : null,
+                  price: document.getElementById('price').value ? parseFloat(document.getElementById('price').value) : null,
+
+                  // Chú ý: Backend cần cập nhật DTO để hứng thêm trường mainImageUrl này
+                  mainImageUrl: mainImageUrl,
+                  imageUrls: cleanGalleryImages,
+                  variants: variantsData
+              };
+
+              const response = await fetch('/public/product/create-with-images', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(productData)
+              });
+
+              if (!response.ok) {
+                  const error = await response.json();
+                  throw new Error(error.message || 'Lỗi khi tạo sản phẩm');
+              }
+
+              const result = await response.json();
+              showNotification('Sản phẩm được tạo thành công! ID: ' + result.id, 'success');
+
+              setTimeout(() => window.location.href = '/dashboard', 1500);
+          } catch (error) {
+              showNotification(error.message || 'Lỗi: Không thể tạo sản phẩm', 'error');
+          } finally {
+              submitBtn.disabled = false;
+              submitBtn.innerHTML = originalText;
+          }
+      }
+  </script>
+</main>
+</body>
+</html>

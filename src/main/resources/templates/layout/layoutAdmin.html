@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+>
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/output.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <title>Title</title>
+</head>
+<body class="w-full flex flex-col min-h-screen">
+<header th:replace="~{fragments/admin/header :: header}"></header>
+<div class="w-full flex min-h-screen">
+  <aside th:replace="~{fragments/admin/sidebar :: sidebar}"></aside>
+  <main layout:fragment="content">
+    <!--Content-->
+  </main>
+</div>
+</body>
+</html>
