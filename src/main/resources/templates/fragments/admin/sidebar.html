@@ -1,90 +1,149 @@
 <aside
         th:fragment="sidebar"
         class="w-64 bg-[#07503D] text-white flex flex-col min-h-screen h-full transition-all duration-300 z-20 shrink-0">
-  <div class="h-16 flex items-center px-6 border-b border-white/10 shrink-0">
-    <svg class="w-8 h-8 mr-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-    </svg>
-    <span class="text-xl font-bold tracking-wider">PARFUMERIE</span>
-  </div>
 
-  <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1">
-    <a href="/local-admin/dashboard" class="flex items-center px-3 py-2.5 text-white/80 hover:bg-white/10 hover:text-white rounded-lg font-medium group">
-      <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-      Tổng quan backend
-    </a>
-
-    <div class="relative">
-      <button onclick="toggleSubmenu('product-submenu', 'product-chevron')" class="w-full flex items-center justify-between px-3 py-2.5 text-white/70 hover:bg-white/5 hover:text-white rounded-lg font-medium transition-colors cursor-pointer group focus:outline-none">
-        <div class="flex items-center">
-          <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
-          <span>Quản lý sản phẩm</span>
-        </div>
-        <svg id="product-chevron" class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-      </button>
-
-      <div id="product-submenu" class="hidden flex-col pl-11 pr-3 mt-1 space-y-1">
-        <a href="/listProduct" class="block px-3 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 rounded-lg transition-colors">Danh sách sản phẩm</a>
-        <a href="/createProduct" class="block px-3 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 rounded-lg transition-colors">Thêm sản phẩm đơn</a>
-        <a href="/importProduct" class="block px-3 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 rounded-lg transition-colors">Thêm bằng File Excel</a>
-      </div>
+    <div class="h-16 flex items-center px-6 border-b border-white/10 shrink-0">
+        <svg class="w-8 h-8 mr-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+        </svg>
+        <span class="text-xl font-bold tracking-wider">PARFUMERIE</span>
     </div>
 
-    <a href="/local-admin/catalog" class="flex items-center px-3 py-2.5 text-white/70 hover:bg-white/5 hover:text-white rounded-lg font-medium transition-colors group">
-      <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h10M4 18h10"></path></svg>
-      Danh mục & thương hiệu
-    </a>
+    <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1">
 
-    <a href="/local-admin/orders" class="flex items-center px-3 py-2.5 text-white/70 hover:bg-white/5 hover:text-white rounded-lg font-medium transition-colors group">
-      <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
-      Đơn hàng
-    </a>
+        <a href="/local-admin/dashboard"
+           class="flex items-center px-3 py-2.5 text-white/80 hover:bg-white/10 hover:text-white rounded-lg font-medium group">
+            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+            </svg>
+            Tổng quan backend
+        </a>
 
-    <a href="/local-admin/payments" class="flex items-center px-3 py-2.5 text-white/70 hover:bg-white/5 hover:text-white rounded-lg font-medium transition-colors group">
-      <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
-      Thanh toán
-    </a>
+        <div class="relative">
+            <button type="button"
+                    onclick="toggleSubmenu('product-submenu', 'product-chevron')"
+                    class="w-full flex items-center justify-between px-3 py-2.5 text-white/70 hover:bg-white/5 hover:text-white rounded-lg font-medium transition-colors cursor-pointer group focus:outline-none">
+                <div class="flex items-center">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                    </svg>
+                    <span>Quản lý sản phẩm</span>
+                </div>
 
-    <a href="/local-admin/discounts" class="flex items-center px-3 py-2.5 text-white/70 hover:bg-white/5 hover:text-white rounded-lg font-medium transition-colors group">
-      <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l6-6m-5.5.5h.01m5.99 5.99h.01M19 21l-7-7-7 7V5a2 2 0 012-2h10a2 2 0 012 2v16z"></path></svg>
-      Mã giảm giá
-    </a>
+                <svg id="product-chevron" class="w-4 h-4 transition-transform duration-200" fill="none"
+                     stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M19 9l-7 7-7-7"></path>
+                </svg>
+            </button>
 
-    <a href="/local-admin/users" class="flex items-center px-3 py-2.5 text-white/70 hover:bg-white/5 hover:text-white rounded-lg font-medium transition-colors group">
-      <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-      Khách hàng
-    </a>
+            <div id="product-submenu" class="hidden flex-col pl-11 pr-3 mt-1 space-y-1">
+                <a href="/listProduct"
+                   class="block px-3 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
+                    Danh sách sản phẩm
+                </a>
+                <a href="/createProduct"
+                   class="block px-3 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
+                    Thêm sản phẩm đơn
+                </a>
+                <a href="/importProduct"
+                   class="block px-3 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
+                    Thêm bằng File Excel
+                </a>
+            </div>
+        </div>
 
-    <a href="/local-admin/blogs" class="flex items-center px-3 py-2.5 text-white/70 hover:bg-white/5 hover:text-white rounded-lg font-medium transition-colors group">
-      <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l6 6v8a2 2 0 01-2 2z"></path></svg>
-      Blog
-    </a>
+        <a href="/local-admin/catalog"
+           class="flex items-center px-3 py-2.5 text-white/70 hover:bg-white/5 hover:text-white rounded-lg font-medium transition-colors group">
+            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M4 6h16M4 10h16M4 14h10M4 18h10"></path>
+            </svg>
+            Danh mục & thương hiệu
+        </a>
 
-    <a href="/local-admin/backend-map" class="flex items-center px-3 py-2.5 text-white/70 hover:bg-white/5 hover:text-white rounded-lg font-medium transition-colors group">
-      <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 5h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2z"></path></svg>
-      Bản đồ backend
-    </a>
-  </nav>
+        <a href="/local-admin/orders"
+           class="flex items-center px-3 py-2.5 text-white/70 hover:bg-white/5 hover:text-white rounded-lg font-medium transition-colors group">
+            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+            </svg>
+            Đơn hàng
+        </a>
 
-  <div class="p-4 border-t border-white/10 shrink-0">
-    <a href="/" class="flex items-center px-3 py-2 text-white/70 hover:text-white transition-colors">
-      <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"></path></svg>
-      Về trang chủ
-    </a>
-  </div>
-  <script>
-      function toggleSubmenu(submenuId, chevronId) {
-          const submenu = document.getElementById(submenuId);
-          const chevron = document.getElementById(chevronId);
-          if (submenu.classList.contains('hidden')) {
-              submenu.classList.remove('hidden');
-              submenu.classList.add('flex');
-              chevron.classList.add('rotate-180');
-          } else {
-              submenu.classList.add('hidden');
-              submenu.classList.remove('flex');
-              chevron.classList.remove('rotate-180');
-          }
-      }
-  </script>
+        <a href="/local-admin/payments"
+           class="flex items-center px-3 py-2.5 text-white/70 hover:bg-white/5 hover:text-white rounded-lg font-medium transition-colors group">
+            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+            </svg>
+            Thanh toán
+        </a>
+
+        <a href="/local-admin/discounts"
+           class="flex items-center px-3 py-2.5 text-white/70 hover:bg-white/5 hover:text-white rounded-lg font-medium transition-colors group">
+            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M9 14l6-6m-5.5.5h.01m5.99 5.99h.01M19 21l-7-7-7 7V5a2 2 0 012-2h10a2 2 0 012 2v16z"></path>
+            </svg>
+            Mã giảm giá
+        </a>
+
+        <a href="/local-admin/users"
+           class="flex items-center px-3 py-2.5 text-white/70 hover:bg-white/5 hover:text-white rounded-lg font-medium transition-colors group">
+            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+            </svg>
+            Khách hàng
+        </a>
+
+        <a href="/local-admin/blogs"
+           class="flex items-center px-3 py-2.5 text-white/70 hover:bg-white/5 hover:text-white rounded-lg font-medium transition-colors group">
+            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l6 6v8a2 2 0 01-2 2z"></path>
+            </svg>
+            Blog
+        </a>
+
+        <a href="/local-admin/backend-map"
+           class="flex items-center px-3 py-2.5 text-white/70 hover:bg-white/5 hover:text-white rounded-lg font-medium transition-colors group">
+            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M8 9l3 3-3 3m5 0h3M5 5h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2z"></path>
+            </svg>
+            Bản đồ backend
+        </a>
+    </nav>
+
+    <div class="p-4 border-t border-white/10 shrink-0">
+        <a href="/" class="flex items-center px-3 py-2 text-white/70 hover:text-white transition-colors">
+            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M11 17l-5-5m0 0l5-5m-5 5h12"></path>
+            </svg>
+            Về trang chủ
+        </a>
+    </div>
+
+    <script>
+        function toggleSubmenu(submenuId, chevronId) {
+            const submenu = document.getElementById(submenuId);
+            const chevron = document.getElementById(chevronId);
+
+            if (submenu.classList.contains('hidden')) {
+                submenu.classList.remove('hidden');
+                submenu.classList.add('flex');
+                chevron.classList.add('rotate-180');
+            } else {
+                submenu.classList.add('hidden');
+                submenu.classList.remove('flex');
+                chevron.classList.remove('rotate-180');
+            }
+        }
+    </script>
 </aside>
