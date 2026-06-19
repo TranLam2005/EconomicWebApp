@@ -52,11 +52,4 @@ public class ProductVariantEntity {
         this.updatedAt = LocalDateTime.now();
         this.isActive = true;
     }
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", nullable = false)
-    private ProductEntity product;
-
-    @OneToMany(mappedBy = "variant", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProductImageEntity> images;
 }

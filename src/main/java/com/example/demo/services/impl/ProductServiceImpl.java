@@ -1,5 +1,4 @@
 package com.example.demo.services.impl;
-
 import com.example.demo.dtos.reponse.ProductImportFileResponse;
 import com.example.demo.dtos.request.ProductImportFileRequest;
 import com.example.demo.dtos.request.ProductVariantRequest;
@@ -13,9 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,12 +23,91 @@ public class ProductServiceImpl implements ProductService {
 
   @Override
   public Optional<ProductEntity> findProductById(Long id) {
-    return productRepository.findById(id);
+    return productRepository.findProductById(id);
+  }
+
+  @Override
+  public List<ProductEntity> getAllProducts() {
+    return productRepository.findAll();
   }
 
   @Override
   public Optional<ProductEntity> createProduct(ProductEntity product) {
     return Optional.of(productRepository.save(product));
+  }
+
+  @Override
+  public Optional<ProductEntity> createProductWithImages(ProductImportFileRequest request) {
+    List<ProductImageEntity> images = new ArrayList<>();
+
+    if (request.getImageUrls() != null && !request.getImageUrls().isEmpty()) {
+      for (int i = 0; i < request.getImageUrls().size(); i++) {
+        ProductImageEntity image = ProductImageEntity.builder()
+                .secureUrl(request.getImageUrls().get(i))
+                .altText(request.getProductName())
+                .isMain(i == 0)
+                .sortOrder(i)
+                .build();
+        images.add(image);
+      }
+    }
+
+    List<ProductVariantEntity> variants = new ArrayList<>();
+    if (request.getVariants() != null && !request.getVariants().isEmpty()) {
+      for (int i = 0; i < request.getVariants().size(); i++) {
+        ProductVariantEntity variant = ProductVariantEntity.builder()
+                .variantName(request.getVariants().get(i).getVariantName())
+                .price(request.getVariants().get(i).getPrice())
+                .sku(request.getVariants().get(i).getSku())
+                .stockQuantity(request.getVariants().get(i).getStockQuantity())
+                .volumeMl(request.getVariants().get(i).getVolumeMl())
+                .build();
+        variants.add(variant);
+      }
+    }
+
+    ProductEntity product = ProductEntity.builder()
+            .productName(request.getProductName())
+            .brand(request.getBrand())
+            .gender(request.getGender())
+            .concentration(request.getConcentration())
+            .releaseYear(request.getReleaseYear())
+            .description(request.getDescription())
+            .normalizedKey(request.getNormalizedKey())
+            .price(request.getPrice())
+            .images(images)
+            .variants(variants)
+            .build();
+    return Optional.of(productRepository.save(product));
+  }
+
+  @Override
+  public Optional<ProductEntity> updateProduct(Long id, ProductImportFileRequest request) {
+    return productRepository.findById(id).map(product -> {
+      product.setProductName(request.getProductName());
+      product.setBrand(request.getBrand());
+      product.setGender(request.getGender());
+      product.setConcentration(request.getConcentration());
+      product.setReleaseYear(request.getReleaseYear());
+      product.setDescription(request.getDescription());
+      product.setNormalizedKey(request.getNormalizedKey());
+      product.setPrice(request.getPrice());
+
+      if (request.getImageUrls() != null && !request.getImageUrls().isEmpty()) {
+        product.getImages().clear();
+        for (int i = 0; i < request.getImageUrls().size(); i++) {
+          ProductImageEntity image = ProductImageEntity.builder()
+                  .secureUrl(request.getImageUrls().get(i))
+                  .altText(request.getProductName())
+                  .isMain(i == 0)
+                  .sortOrder(i)
+                  .build();
+          product.getImages().add(image);
+        }
+      }
+
+      return productRepository.save(product);
+    });
   }
 
   @Override
@@ -64,17 +140,14 @@ public class ProductServiceImpl implements ProductService {
     int totalProducts = products.size();
     int failedCount = 0;
 
-    // Convert to ProductEntity
     List<ProductEntity> productEntities = new ArrayList<>();
 
     for (ProductImportFileRequest productRequest : products) {
       try {
-        // Create variants from nested structure
         List<ProductVariantEntity> variants = new ArrayList<>();
 
         if (productRequest.getVariants() != null) {
           for (ProductVariantRequest variantRequest : productRequest.getVariants()) {
-            // Create images
             List<ProductImageEntity> images = new ArrayList<>();
             if (variantRequest.getImages() != null) {
               images = variantRequest.getImages().stream()
@@ -84,7 +157,7 @@ public class ProductServiceImpl implements ProductService {
                               .isMain(imgReq.getIsMain() != null ? imgReq.getIsMain() : false)
                               .sortOrder(imgReq.getSortOrder() != null ? imgReq.getSortOrder() : 0)
                               .build())
-                      .collect(Collectors.toList());
+                      .toList();
             }
 
             ProductVariantEntity variant = ProductVariantEntity.builder()
@@ -94,10 +167,7 @@ public class ProductServiceImpl implements ProductService {
                     .price(variantRequest.getPrice())
                     .stockQuantity(variantRequest.getStockQuantity() != null ? variantRequest.getStockQuantity() : 0)
                     .isActive(variantRequest.getIsActive() != null ? variantRequest.getIsActive() : true)
-                    .images(images)
                     .build();
-
-            images.forEach(img -> img.setVariant(variant));
             variants.add(variant);
           }
         }
@@ -113,8 +183,6 @@ public class ProductServiceImpl implements ProductService {
                 .releaseYear(productRequest.getReleaseYear())
                 .variants(variants)
                 .build();
-
-        variants.forEach(variant -> variant.setProduct(productEntity));
         productEntities.add(productEntity);
       } catch (Exception e) {
         failedCount++;

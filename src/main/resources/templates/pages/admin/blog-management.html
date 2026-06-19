@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/layoutAdmin}" lang="vi" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Quản lý blog</title><script src="https://cdn.tailwindcss.com"></script></head>
+<main layout:fragment="content" class="w-full min-h-screen bg-gray-50 p-6 text-gray-800">
+  <div class="max-w-7xl mx-auto space-y-6">
+    <div><h1 class="text-2xl font-bold text-gray-900">Quản lý blog</h1><p class="text-sm text-gray-500 mt-1">Hiển thị dữ liệu blog từ backend hiện có.</p></div>
+    <div th:if="${successMessage}" class="rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-green-700" th:text="${successMessage}"></div>
+    <div th:if="${errorMessage}" class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-700" th:text="${errorMessage}"></div>
+    <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead class="bg-gray-50 text-gray-600"><tr><th class="px-5 py-3 text-left">Tiêu đề</th><th class="px-5 py-3 text-left">Slug</th><th class="px-5 py-3 text-left">Lượt xem</th><th class="px-5 py-3 text-left">Trạng thái</th><th class="px-5 py-3 text-left">Ngày tạo</th><th class="px-5 py-3 text-right">Thao tác</th></tr></thead>
+          <tbody class="divide-y divide-gray-100">
+            <tr th:each="blog : ${blogs}" class="hover:bg-gray-50">
+              <td class="px-5 py-3 font-medium" th:text="${blog.title}">Title</td>
+              <td class="px-5 py-3 text-gray-500" th:text="${blog.slug}">slug</td>
+              <td class="px-5 py-3" th:text="${blog.viewCount}">0</td>
+              <td class="px-5 py-3"><span class="px-2 py-1 rounded-full text-xs" th:classappend="${blog.isPublished == true} ? ' bg-green-50 text-green-700' : ' bg-gray-100 text-gray-600'" th:text="${blog.isPublished == true ? 'Đã đăng' : 'Ẩn'}">Đã đăng</span></td>
+              <td class="px-5 py-3 text-gray-500" th:text="${blog.createdAt}">date</td>
+              <td class="px-5 py-3 text-right"><form th:action="@{/local-admin/blogs/{id}/delete(id=${blog.id})}" method="post" class="inline" onsubmit="return confirm('Xóa bài viết này?')"><button class="text-red-600 hover:underline">Xóa</button></form></td>
+            </tr>
+            <tr th:if="${blogs == null or blogs.isEmpty()}"><td colspan="6" class="px-5 py-8 text-center text-gray-500">Chưa có blog</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</main>
+</html>

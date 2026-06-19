@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/layoutAdmin}" lang="vi" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Quản lý khách hàng</title><script src="https://cdn.tailwindcss.com"></script></head>
+<main layout:fragment="content" class="w-full min-h-screen bg-gray-50 p-6 text-gray-800">
+  <div class="max-w-7xl mx-auto space-y-6">
+    <div><h1 class="text-2xl font-bold text-gray-900">Quản lý khách hàng</h1><p class="text-sm text-gray-500 mt-1">Danh sách tài khoản người dùng trong hệ thống.</p></div>
+    <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead class="bg-gray-50 text-gray-600"><tr><th class="px-5 py-3 text-left">ID</th><th class="px-5 py-3 text-left">Họ tên</th><th class="px-5 py-3 text-left">Email</th><th class="px-5 py-3 text-left">Vai trò</th><th class="px-5 py-3 text-left">Ngày tạo</th></tr></thead>
+          <tbody class="divide-y divide-gray-100">
+            <tr th:each="user : ${users}" class="hover:bg-gray-50">
+              <td class="px-5 py-3" th:text="${user.id}">1</td>
+              <td class="px-5 py-3 font-medium"><span th:text="${user.firstName}">Tên</span> <span th:text="${user.lastName}">Họ</span></td>
+              <td class="px-5 py-3" th:text="${user.email}">email</td>
+              <td class="px-5 py-3"><span class="px-2 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs" th:text="${user.role}">USER</span></td>
+              <td class="px-5 py-3 text-gray-500" th:text="${user.createdAt}">date</td>
+            </tr>
+            <tr th:if="${users == null or users.isEmpty()}"><td colspan="5" class="px-5 py-8 text-center text-gray-500">Chưa có khách hàng</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</main>
+</html>

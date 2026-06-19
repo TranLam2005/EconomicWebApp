@@ -52,4 +52,9 @@ public class ProductImportFileRequest {
     // Nested structures
     private List<ProductVariantRequest> variants;
     private List<ProductImageRequest> images;
+
+    // Image URLs từ Cloudinary
+    private List<String> imageUrls;
+
+    private String mainImageUrl;
 }

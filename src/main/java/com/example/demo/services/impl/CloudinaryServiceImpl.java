@@ -16,7 +16,7 @@ public class CloudinaryServiceImpl implements CloudinaryService {
   @Autowired
   private final Cloudinary cloudinary;
 
-  public Map uploadImage(MultipartFile file, String folder) {
+  public Map<String, Object> uploadImage(MultipartFile file, String folder) {
     try {
       Map<String, Object> options = new HashMap<>();
       options.put("folder", folder);

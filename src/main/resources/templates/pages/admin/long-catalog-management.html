@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý danh mục & thương hiệu | Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#f7f3ed] text-stone-900">
+<div class="min-h-screen">
+    <header class="bg-[#004332] text-white">
+        <div class="mx-auto flex max-w-7xl flex-col gap-5 px-5 py-8 sm:px-8 lg:flex-row lg:items-center lg:justify-between lg:px-10">
+            <div>
+                <p class="text-sm font-black uppercase tracking-[0.35em] text-white/50">Local Admin</p>
+                <h1 class="mt-2 text-3xl font-black sm:text-4xl">Quản lý danh mục & thương hiệu</h1>
+                <p class="mt-2 max-w-2xl text-sm leading-7 text-white/75">Thêm, sửa, xóa danh mục và thương hiệu cho website nước hoa.</p>
+            </div>
+            <div class="flex flex-wrap gap-3">
+                <a href="/" class="rounded-full border border-white/20 px-5 py-3 text-sm font-bold text-white transition hover:bg-white hover:text-[#004332]">Về trang chủ</a>
+                <a href="/tim-kiem" class="rounded-full bg-white px-5 py-3 text-sm font-bold text-[#004332] transition hover:bg-stone-100">Xem trang tìm kiếm</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="mx-auto max-w-7xl px-5 py-8 sm:px-8 lg:px-10">
+        <div id="catalogToast" class="mb-6 hidden rounded-2xl border px-5 py-4 text-sm font-bold"></div>
+
+        <section class="grid gap-6 md:grid-cols-2">
+            <article class="rounded-[2rem] bg-white p-6 shadow-sm ring-1 ring-stone-200">
+                <p class="text-sm font-bold uppercase tracking-[0.25em] text-stone-400">Danh mục</p>
+                <div class="mt-4 flex items-end justify-between">
+                    <b id="categoryCount" class="text-4xl font-black text-stone-950">0</b>
+                    <span class="rounded-full bg-emerald-50 px-3 py-1 text-xs font-black text-emerald-700">CATEGORY</span>
+                </div>
+            </article>
+            <article class="rounded-[2rem] bg-white p-6 shadow-sm ring-1 ring-stone-200">
+                <p class="text-sm font-bold uppercase tracking-[0.25em] text-stone-400">Thương hiệu</p>
+                <div class="mt-4 flex items-end justify-between">
+                    <b id="brandCount" class="text-4xl font-black text-stone-950">0</b>
+                    <span class="rounded-full bg-amber-50 px-3 py-1 text-xs font-black text-amber-700">BRAND</span>
+                </div>
+            </article>
+        </section>
+
+        <section class="mt-8 rounded-[2rem] bg-white p-3 shadow-sm ring-1 ring-stone-200">
+            <div class="grid gap-2 sm:grid-cols-2">
+                <button id="categoryTab" onclick="LongAdminCatalog.switchTab('category')" class="rounded-[1.5rem] bg-[#004332] px-5 py-4 text-sm font-black uppercase tracking-[0.2em] text-white">Danh mục</button>
+                <button id="brandTab" onclick="LongAdminCatalog.switchTab('brand')" class="rounded-[1.5rem] px-5 py-4 text-sm font-black uppercase tracking-[0.2em] text-stone-500 transition hover:bg-stone-50">Thương hiệu</button>
+            </div>
+        </section>
+
+        <section class="mt-8 grid gap-8 xl:grid-cols-[420px_1fr]">
+            <aside class="xl:sticky xl:top-6 xl:self-start">
+                <form id="catalogForm" class="rounded-[2rem] bg-white p-6 shadow-sm ring-1 ring-stone-200">
+                    <div class="flex items-start justify-between gap-4">
+                        <div>
+                            <p id="formMode" class="text-sm font-bold uppercase tracking-[0.25em] text-stone-400">Thêm mới</p>
+                            <h2 id="formTitle" class="mt-2 text-2xl font-black text-stone-950">Thêm danh mục</h2>
+                        </div>
+                        <button type="button" onclick="LongAdminCatalog.resetForm()" class="rounded-full border border-stone-200 px-4 py-2 text-xs font-black text-stone-600 hover:border-[#004332] hover:text-[#004332]">Reset</button>
+                    </div>
+
+                    <input id="catalogId" type="hidden">
+                    <input id="catalogType" type="hidden" value="category">
+
+                    <label class="mt-6 block">
+                        <span class="mb-2 block text-sm font-bold text-stone-600">Tên <span id="nameTypeLabel">danh mục</span></span>
+                        <input id="catalogName" type="text" placeholder="Nhập tên bằng tay, ví dụ: Nước hoa Nam" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 outline-none transition focus:border-[#004332] focus:bg-white focus:ring-4 focus:ring-[#004332]/10" required>
+                    </label>
+
+                    <label class="mt-4 block">
+                        <span class="mb-2 block text-sm font-bold text-stone-600">Slug</span>
+                        <input id="catalogSlug" type="text" placeholder="Tự sinh nếu bỏ trống" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 outline-none transition focus:border-[#004332] focus:bg-white focus:ring-4 focus:ring-[#004332]/10">
+                    </label>
+
+                    <label class="mt-4 block">
+                        <span class="mb-2 block text-sm font-bold text-stone-600">Mô tả</span>
+                        <textarea id="catalogDescription" rows="5" placeholder="Nhập mô tả ngắn..." class="w-full resize-none rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 outline-none transition focus:border-[#004332] focus:bg-white focus:ring-4 focus:ring-[#004332]/10"></textarea>
+                    </label>
+
+                    <label id="brandActiveWrap" class="mt-4 hidden items-center gap-3 rounded-2xl border border-stone-200 bg-stone-50 p-4">
+                        <input id="brandActive" type="checkbox" checked class="h-5 w-5 rounded border-stone-300 text-[#004332]">
+                        <span class="text-sm font-bold text-stone-700">Hiển thị thương hiệu</span>
+                    </label>
+
+                    <button id="submitBtn" type="submit" class="mt-6 w-full rounded-full bg-[#004332] px-6 py-4 font-black text-white shadow-lg shadow-[#004332]/20 transition hover:-translate-y-0.5 hover:bg-stone-950">Lưu danh mục</button>
+                </form>
+            </aside>
+
+            <section class="rounded-[2rem] bg-white p-6 shadow-sm ring-1 ring-stone-200">
+                <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+                    <div>
+                        <p id="tableKicker" class="text-sm font-bold uppercase tracking-[0.25em] text-[#004332]">Danh sách danh mục</p>
+                        <h2 id="tableTitle" class="mt-2 text-3xl font-black text-stone-950">Danh mục sản phẩm</h2>
+                    </div>
+                    <label class="w-full lg:w-80">
+                        <span class="mb-2 block text-sm font-bold text-stone-500">Tìm nhanh</span>
+                        <input id="catalogSearch" type="search" placeholder="Nhập tên cần tìm..." class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 outline-none transition focus:border-[#004332] focus:bg-white focus:ring-4 focus:ring-[#004332]/10">
+                    </label>
+                </div>
+
+                <div class="mt-6 overflow-hidden rounded-[1.5rem] border border-stone-200">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-stone-200 text-left text-sm">
+                            <thead class="bg-stone-50 text-xs uppercase tracking-[0.18em] text-stone-500">
+                            <tr>
+                                <th class="px-5 py-4">Tên</th>
+                                <th class="px-5 py-4">Slug</th>
+                                <th id="dynamicHead" class="px-5 py-4">Mô tả</th>
+                                <th class="px-5 py-4 text-right">Thao tác</th>
+                            </tr>
+                            </thead>
+                            <tbody id="catalogTable" class="divide-y divide-stone-100 bg-white"></tbody>
+                        </table>
+                    </div>
+                    <div id="catalogEmpty" class="hidden p-10 text-center text-stone-500">Chưa có dữ liệu.</div>
+                </div>
+            </section>
+        </section>
+    </main>
+</div>
+
+<script src="/js/long-admin-catalog.js"></script>
+</body>
+</html>

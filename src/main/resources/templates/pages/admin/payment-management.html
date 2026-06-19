@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/layoutAdmin}" lang="vi" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Quản lý thanh toán</title><script src="https://cdn.tailwindcss.com"></script></head>
+<main layout:fragment="content" class="w-full min-h-screen bg-gray-50 p-6 text-gray-800">
+  <div class="max-w-7xl mx-auto space-y-6">
+    <div><h1 class="text-2xl font-bold text-gray-900">Quản lý thanh toán</h1><p class="text-sm text-gray-500 mt-1">Theo dõi giao dịch COD/VNPAY được tạo từ đơn hàng.</p></div>
+    <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead class="bg-gray-50 text-gray-600"><tr><th class="px-5 py-3 text-left">Mã thanh toán</th><th class="px-5 py-3 text-left">Số tiền</th><th class="px-5 py-3 text-left">Phương thức</th><th class="px-5 py-3 text-left">Nhà cung cấp</th><th class="px-5 py-3 text-left">Trạng thái</th><th class="px-5 py-3 text-left">Ngày tạo</th></tr></thead>
+          <tbody class="divide-y divide-gray-100">
+            <tr th:each="payment : ${payments}" class="hover:bg-gray-50">
+              <td class="px-5 py-3 font-medium" th:text="${payment.paymentCode}">PAY</td>
+              <td class="px-5 py-3" th:text="${payment.amount != null ? #numbers.formatDecimal(payment.amount,0,'COMMA',0,'POINT') + ' VNĐ' : '-'}">0</td>
+              <td class="px-5 py-3" th:text="${payment.paymentMethod}">COD</td>
+              <td class="px-5 py-3" th:text="${payment.provider}">VNPAY</td>
+              <td class="px-5 py-3"><span class="px-2 py-1 rounded-full bg-blue-50 text-blue-700 text-xs" th:text="${payment.status}">PENDING</span></td>
+              <td class="px-5 py-3 text-gray-500" th:text="${payment.createdAt}">date</td>
+            </tr>
+            <tr th:if="${payments == null or payments.isEmpty()}"><td colspan="6" class="px-5 py-8 text-center text-gray-500">Chưa có thanh toán</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</main>
+</html>

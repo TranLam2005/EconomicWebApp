@@ -95,6 +95,7 @@ public class OrderServiceImpl implements OrderService {
             .amount(totalAmount)
             .idempotencyKey("ORDER_" + order.getId() + "_" + orderRequest.getPaymentMethod())
             .order(order)
+            .paymentMethod(orderRequest.getPaymentMethod())
             .status(PaymentStatus.PENDING)
             .build();
     if (orderRequest.getPaymentMethod() == PaymentMethod.COD) {

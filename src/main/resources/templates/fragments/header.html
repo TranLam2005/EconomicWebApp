@@ -4,27 +4,27 @@
         class="w-full bg-emerald-900 flex flex-col justify-center"
 >
     <div class="bg-[#005b4b] text-white w-full flex flex-col">
-        <div class="mx-auto flex max-w-400  items-center justify-between gap-8 px-12 py-8">
-            <div class="w-92.5 shrink-0">
-                <form action="/tim-kiem" method="get" class="flex h-14 items-center rounded bg-white/92 px-4 shadow-sm">
+        <div class="mx-auto flex max-w-[1600px] items-center justify-between gap-8 px-12 py-8">
+            <form th:action="@{/tim-kiem}" method="get" class="w-92.5 shrink-0">
+                <div class="flex h-14 items-center rounded bg-white/92 px-4 shadow-sm">
                     <input
-                            type="text"
                             name="q"
+                            type="text"
                             placeholder="Tìm kiếm sản phẩm..."
                             class="h-full w-full border-none bg-transparent text-[18px] text-neutral-700 placeholder:text-neutral-400 focus:outline-none"
                     />
-                    <button type="submit" class="ml-3 text-neutral-500 transition hover:text-[#005b4b]" aria-label="Search">
+                    <button type="submit" class="ml-3 text-neutral-500" aria-label="Search">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.35-4.35m1.85-5.15a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                         </svg>
                     </button>
-                </form>
-            </div>
+                </div>
+            </form>
 
-            <div class="flex-1 text-center leading-none">
+            <a th:href="@{/}" class="flex-1 text-center leading-none text-white no-underline">
                 <h1 class="brand-font text-[68px] font-semibold tracking-[0.08em]">PARFUMERIE</h1>
                 <p class="brand-font mt-1 text-[20px] tracking-[0.05em] text-white/90">Magic Of Your Emotions</p>
-            </div>
+            </a>
 
             <div class="flex items-center gap-8">
                 <div class="border-r border-white/40 pr-8 text-right leading-tight">
@@ -54,152 +54,47 @@
         </div>
     </div>
 
-    <nav class="border-t border-[#b94f4f] bg-white shadow-sm">
-        <div class="relative mx-auto max-w-[1600px] px-8">
-            <div class="flex items-center justify-center gap-14 py-5 text-[20px] uppercase tracking-[0.02em] text-black">
-                <a th:href="@{/}" class="font-extrabold hover:text-[#005b4b]">Trang chủ</a>
-                <a href="#" class="font-bold hover:text-[#005b4b]">Giới thiệu</a>
+    <nav class="relative z-50 border-t border-[#b94f4f] bg-white shadow-sm">
+        <div class="mx-auto flex max-w-[1600px] items-center justify-center gap-16 px-8 py-5 text-[20px] uppercase tracking-[0.02em] text-black">
+            <a th:href="@{/}" class="font-extrabold hover:text-[#005b4b]">Trang chủ</a>
+            <a href="#" class="hover:text-[#005b4b]">Giới thiệu</a>
 
-                <div class="group flex h-full items-center">
-                    <a href="/tim-kiem" data-long-menu-trigger class="font-bold hover:text-[#005b4b]">Thương hiệu <span class="ml-1">›</span></a>
-                    <div class="invisible absolute left-0 right-0 top-full z-[9999] border-t border-stone-100 bg-white px-8 py-5 text-left opacity-0 shadow-xl transition duration-150 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
-                        <div class="grid grid-cols-5 gap-x-16 gap-y-2 normal-case tracking-normal">
-                        <div>
-                            <a href="/tim-kiem?brand=AFNAN" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">AFNAN</a>
-                            <a href="/tim-kiem?brand=CAROLINA%20HERRERA" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">CAROLINA HERRERA</a>
-                            <a href="/tim-kiem?brand=DIOR" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">DIOR</a>
-                            <a href="/tim-kiem?brand=JO%20MALONE" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">JO MALONE</a>
-                            <a href="/tim-kiem?brand=MAISON%20MARGIELA" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">MAISON MARGIELA</a>
-                            <a href="/tim-kiem?brand=ROJA%20DOVE" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">ROJA DOVE</a>
-                            <a href="/tim-kiem?brand=TOM%20FORD" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">TOM FORD</a>
-                            <a href="/tim-kiem?brand=ALREHAB" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">ALREHAB</a>
-                            <a href="/tim-kiem?brand=LATTAFA" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">LATTAFA</a>
-                            <a href="/tim-kiem?brand=DIESEL" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">DIESEL</a>
-                            <a href="/tim-kiem?brand=ATELIER%20DES%20ORS" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">ATELIER DES ORS</a>
-                            <a href="/tim-kiem?brand=LALIQUE" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">LALIQUE</a>
-                            <a href="/tim-kiem?brand=TOMMY%20HILFIGER" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">TOMMY HILFIGER</a>
-                            <a href="/tim-kiem?brand=THE%20MERCHANT%20OF%20VENICE" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">THE MERCHANT OF VENICE</a>
-                            <a href="/tim-kiem?brand=ORTO%20PARISI" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">ORTO PARISI</a>
-                            <a href="/tim-kiem?brand=CHASING%20SCENTS" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">CHASING SCENTS</a>
-                            <a href="/tim-kiem?brand=MAISON%20MATINE" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">MAISON MATINE</a>
-                            <a href="/tim-kiem?brand=GUERLAIN" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">GUERLAIN</a>
-                            <a href="/tim-kiem?brand=LATTAFA" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">LATTAFA</a>
-                            <a href="/tim-kiem?brand=BDK%20PARFUMS" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">BDK PARFUMS</a>
-                        </div>
-                        <div>
-                            <a href="/tim-kiem?brand=AMOUAGE" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">AMOUAGE</a>
-                            <a href="/tim-kiem?brand=CHANEL" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">CHANEL</a>
-                            <a href="/tim-kiem?brand=DIPTYQUE" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">DIPTYQUE</a>
-                            <a href="/tim-kiem?brand=JEAN%20PAUL%20GAUTIER" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">JEAN PAUL GAUTIER</a>
-                            <a href="/tim-kiem?brand=MARC%20JACOBS" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">MARC JACOBS</a>
-                            <a href="/tim-kiem?brand=SALVATORE%20FERRAGAMO" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">SALVATORE FERRAGAMO</a>
-                            <a href="/tim-kiem?brand=MONT%20BLANC" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">MONT BLANC</a>
-                            <a href="/tim-kiem?brand=ALFRED%20DUNHILL" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">ALFRED DUNHILL</a>
-                            <a href="/tim-kiem?brand=FLORIS" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">FLORIS</a>
-                            <a href="/tim-kiem?brand=ETAT%20LIBRE%20D%27ORANGE" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">ETAT LIBRE D'ORANGE</a>
-                            <a href="/tim-kiem?brand=CHLO%C3%89" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">CHLOÉ</a>
-                            <a href="/tim-kiem?brand=NAUTICA" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">NAUTICA</a>
-                            <a href="/tim-kiem?brand=RALPH%20LAUREN" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">RALPH LAUREN</a>
-                            <a href="/tim-kiem?brand=BOND%20NO.9" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">BOND NO.9</a>
-                            <a href="/tim-kiem?brand=MAD%20ET%20LEN" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">MAD ET LEN</a>
-                            <a href="/tim-kiem?brand=MAURER%20%26%20WIRTZ" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">MAURER & WIRTZ</a>
-                            <a href="/tim-kiem?brand=MARIE%20JEANNE" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">MARIE JEANNE</a>
-                            <a href="/tim-kiem?brand=Giardini%20Di%20Toscana" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">Giardini Di Toscana</a>
-                            <a href="/tim-kiem?brand=PRADA" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">PRADA</a>
-                            <a href="/tim-kiem?brand=EX%20NIHILO" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">EX NIHILO</a>
-                        </div>
-                        <div>
-                            <a href="/tim-kiem?brand=ARMAF" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">ARMAF</a>
-                            <a href="/tim-kiem?brand=CALVIN%20KLEIN" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">CALVIN KLEIN</a>
-                            <a href="/tim-kiem?brand=FREDERIC%20MALLE" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">FREDERIC MALLE</a>
-                            <a href="/tim-kiem?brand=KILIAN" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">KILIAN</a>
-                            <a href="/tim-kiem?brand=MAISON%20FRANCIS%20KURKDJIAN" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">MAISON FRANCIS KURKDJIAN</a>
-                            <a href="/tim-kiem?brand=VERSACE" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">VERSACE</a>
-                            <a href="/tim-kiem?brand=MOSCHINO" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">MOSCHINO</a>
-                            <a href="/tim-kiem?brand=XERJOFF" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">XERJOFF</a>
-                            <a href="/tim-kiem?brand=PARFUMS%20de%20MARLY" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">PARFUMS de MARLY</a>
-                            <a href="/tim-kiem?brand=NISHANE" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">NISHANE</a>
-                            <a href="/tim-kiem?brand=LOUIS%20VUITTON" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">LOUIS VUITTON</a>
-                            <a href="/tim-kiem?brand=THOMAS%20KOSMALA" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">THOMAS KOSMALA</a>
-                            <a href="/tim-kiem?brand=JIMMY%20CHOO" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">JIMMY CHOO</a>
-                            <a href="/tim-kiem?brand=NACHO%20VIDAL" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">NACHO VIDAL</a>
-                            <a href="/tim-kiem?brand=ATTAR%20COLLECTION" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">ATTAR COLLECTION</a>
-                            <a href="/tim-kiem?brand=FLAVIA" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">FLAVIA</a>
-                            <a href="/tim-kiem?brand=GHALA%20ZAYED" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">GHALA ZAYED</a>
-                            <a href="/tim-kiem?brand=INITIO%20PARFUMS%20PRIVES" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">INITIO PARFUMS PRIVES</a>
-                            <a href="/tim-kiem?brand=LOEWE" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">LOEWE</a>
-                        </div>
-                        <div>
-                            <a href="/tim-kiem?brand=BURBERRY" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">BURBERRY</a>
-                            <a href="/tim-kiem?brand=CREED" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">CREED</a>
-                            <a href="/tim-kiem?brand=GIORGIO%20ARMANI" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">GIORGIO ARMANI</a>
-                            <a href="/tim-kiem?brand=GUCCI" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">GUCCI</a>
-                            <a href="/tim-kiem?brand=LANCOME" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">LANCOME</a>
-                            <a href="/tim-kiem?brand=MONTALE" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">MONTALE</a>
-                            <a href="/tim-kiem?brand=YSL" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">YSL</a>
-                            <a href="/tim-kiem?brand=CLIVE%20CHRISTIAN" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">CLIVE CHRISTIAN</a>
-                            <a href="/tim-kiem?brand=DAVIDOFF" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">DAVIDOFF</a>
-                            <a href="/tim-kiem?brand=MANCERA" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">MANCERA</a>
-                            <a href="/tim-kiem?brand=FRANCK%20BOCLET" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">FRANCK BOCLET</a>
-                            <a href="/tim-kiem?brand=VICTORIA%27S%20SECRET" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">VICTORIA'S SECRET</a>
-                            <a href="/tim-kiem?brand=PENHALIGON%27S" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">PENHALIGON'S</a>
-                            <a href="/tim-kiem?brand=JULIETTE%20HAS%20A%20GUN" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">JULIETTE HAS A GUN</a>
-                            <a href="/tim-kiem?brand=MISSONI" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">MISSONI</a>
-                            <a href="/tim-kiem?brand=THEODOROS%20KALOTINIS" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">THEODOROS KALOTINIS</a>
-                            <a href="/tim-kiem?brand=ALEXANDRIA%20FRAGRANCES" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">ALEXANDRIA FRAGRANCES</a>
-                            <a href="/tim-kiem?brand=DSQUARED2" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">DSQUARED2</a>
-                            <a href="/tim-kiem?brand=BYREDO" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">BYREDO</a>
-                            <a href="/tim-kiem?brand=LES%20LIQUIDES%20IMAGINAIRES" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">LES LIQUIDES IMAGINAIRES</a>
-                        </div>
-                        <div>
-                            <a href="/tim-kiem?brand=BVLGARI" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">BVLGARI</a>
-                            <a href="/tim-kiem?brand=DOLCE%20%26%20GABBANA" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">DOLCE & GABBANA</a>
-                            <a href="/tim-kiem?brand=GUCCI" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">GUCCI</a>
-                            <a href="/tim-kiem?brand=LE%20LABO" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">LE LABO</a>
-                            <a href="/tim-kiem?brand=NARCISO%20RODRIGUEZ" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">NARCISO RODRIGUEZ</a>
-                            <a href="/tim-kiem?brand=HERMES" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">HERMES</a>
-                            <a href="/tim-kiem?brand=PACO%20RABANNE" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">PACO RABANNE</a>
-                            <a href="/tim-kiem?brand=SERGE%20LUTENS" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">SERGE LUTENS</a>
-                            <a href="/tim-kiem?brand=AL%20HARAMAIN" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">AL HARAMAIN</a>
-                            <a href="/tim-kiem?brand=KENZO" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">KENZO</a>
-                            <a href="/tim-kiem?brand=NASOMATTO" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">NASOMATTO</a>
-                            <a href="/tim-kiem?brand=VIKTOR%20%26%20ROLF" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">VIKTOR & ROLF</a>
-                            <a href="/tim-kiem?brand=MCM" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">MCM</a>
-                            <a href="/tim-kiem?brand=BUTTERFLY%20THAI%20PERFUME" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">BUTTERFLY THAI PERFUME</a>
-                            <a href="/tim-kiem?brand=VALENTINO" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">VALENTINO</a>
-                            <a href="/tim-kiem?brand=MASQUE%20MILANO" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">MASQUE MILANO</a>
-                            <a href="/tim-kiem?brand=THIERRY%20MUGLER" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">THIERRY MUGLER</a>
-                            <a href="/tim-kiem?brand=ELIZABETH%20ARDEN" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">ELIZABETH ARDEN</a>
-                            <a href="/tim-kiem?brand=MAISON%20ALHAMBRA" data-long-menu-link class="block py-1.5 text-[16px] leading-6 text-black hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">MAISON ALHAMBRA</a>
-                        </div>
-                        </div>
+            <div class="group relative py-1">
+                <a th:href="@{/tim-kiem}" class="font-bold hover:text-[#005b4b]">Thương hiệu <span class="ml-1">›</span></a>
+                <div class="invisible absolute left-1/2 top-full z-50 w-[90vw] max-w-[1450px] -translate-x-1/2 rounded-b-2xl border border-gray-100 bg-white px-8 py-7 text-left normal-case opacity-0 shadow-2xl transition duration-150 group-hover:visible group-hover:opacity-100">
+                    <div th:if="${navBrands != null and !navBrands.isEmpty()}" style="column-count: 5; column-gap: 4rem;">
+                        <a th:each="brand : ${navBrands}"
+                           th:href="${brand.url}"
+                           th:text="${brand.name}"
+                           class="mb-3 block break-inside-avoid text-[16px] font-normal uppercase tracking-normal text-black hover:text-[#005b4b] hover:underline">DIOR</a>
                     </div>
+                    <p th:if="${navBrands == null or navBrands.isEmpty()}" class="text-[16px] normal-case text-gray-500">Chưa có thương hiệu. Hãy thêm trong trang admin.</p>
                 </div>
-
-                <div class="group relative flex h-full items-center">
-                    <a href="/tim-kiem" data-long-menu-trigger class="font-bold hover:text-[#005b4b]">Nước hoa <span class="ml-1">›</span></a>
-                    <div class="invisible absolute left-0 top-full z-[9999] w-72 border border-stone-100 bg-white py-2 text-left normal-case tracking-normal opacity-0 shadow-xl transition duration-150 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
-                        <a href="/tim-kiem?gender=Nam" data-long-menu-link class="block px-5 py-3 text-[16px] text-neutral-700 hover:bg-stone-50 hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">Nước hoa Nam</a>
-                        <a href="/tim-kiem?gender=Nữ" data-long-menu-link class="block px-5 py-3 text-[16px] text-neutral-700 hover:bg-stone-50 hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">Nước hoa Nữ</a>
-                        <a href="/tim-kiem?gender=Unisex" data-long-menu-link class="block px-5 py-3 text-[16px] text-neutral-700 hover:bg-stone-50 hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">Nước hoa Unisex</a>
-                    </div>
-                </div>
-
-                <div class="group relative flex h-full items-center">
-                    <a href="/tim-kiem" data-long-menu-trigger class="font-bold hover:text-[#005b4b]">Nước hoa chiết <span class="ml-1">›</span></a>
-                    <div class="invisible absolute left-0 top-full z-[9999] w-80 border border-stone-100 bg-white py-2 text-left normal-case tracking-normal opacity-0 shadow-xl transition duration-150 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
-                        <a href="/tim-kiem?concentration=Chiết&gender=Nam" data-long-menu-link class="block px-5 py-3 text-[16px] text-neutral-700 hover:bg-stone-50 hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">Nước hoa chiết Nam</a>
-                        <a href="/tim-kiem?concentration=Chiết&gender=Nữ" data-long-menu-link class="block px-5 py-3 text-[16px] text-neutral-700 hover:bg-stone-50 hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">Nước hoa chiết Nữ</a>
-                    </div>
-                </div>
-
-                <a href="#" class="font-bold hover:text-[#005b4b]">Kiến thức</a>
-                <a href="#" class="font-bold hover:text-[#005b4b]">Blog</a>
-                <a href="#" class="font-bold hover:text-[#005b4b]">Liên hệ</a>
             </div>
+
+            <div class="group relative py-1">
+                <a th:href="@{/tim-kiem}" class="hover:text-[#005b4b]">Nước hoa <span class="ml-1">›</span></a>
+                <div class="invisible absolute left-0 top-full z-50 min-w-[280px] rounded-b-xl border border-gray-100 bg-white py-2 text-left normal-case opacity-0 shadow-xl transition duration-150 group-hover:visible group-hover:opacity-100">
+                    <a th:each="category : ${navCategories}"
+                       th:href="${category.url}"
+                       th:text="${category.name}"
+                       class="block whitespace-nowrap px-6 py-3 text-[16px] tracking-normal text-gray-700 hover:bg-gray-50 hover:text-[#005b4b]">Nước hoa Nam</a>
+                    <p th:if="${navCategories == null or navCategories.isEmpty()}" class="whitespace-nowrap px-6 py-3 text-[16px] text-gray-500">Chưa có danh mục</p>
+                </div>
+            </div>
+
+            <div class="group relative py-1">
+                <a th:href="@{/tim-kiem}" class="hover:text-[#005b4b]">Nước hoa chiết <span class="ml-1">›</span></a>
+                <div class="invisible absolute left-0 top-full z-50 min-w-[280px] rounded-b-xl border border-gray-100 bg-white py-2 text-left normal-case opacity-0 shadow-xl transition duration-150 group-hover:visible group-hover:opacity-100">
+                    <a th:href="@{/tim-kiem(q='Nước hoa chiết Nam')}" class="block whitespace-nowrap px-6 py-3 text-[16px] tracking-normal text-gray-700 hover:bg-gray-50 hover:text-[#005b4b]">Nước hoa chiết Nam</a>
+                    <a th:href="@{/tim-kiem(q='Nước hoa chiết Nữ')}" class="block whitespace-nowrap px-6 py-3 text-[16px] tracking-normal text-gray-700 hover:bg-gray-50 hover:text-[#005b4b]">Nước hoa chiết Nữ</a>
+                </div>
+            </div>
+
+            <a href="#" class="hover:text-[#005b4b]">Kiến thức</a>
+            <a href="#" class="hover:text-[#005b4b]">Blog</a>
+            <a href="#" class="hover:text-[#005b4b]">Liên hệ</a>
         </div>
     </nav>
     <script src="/js/long-header-cart.js" defer></script>
-    <script src="/js/long-menu-links.js" defer></script>
-
 </header>
