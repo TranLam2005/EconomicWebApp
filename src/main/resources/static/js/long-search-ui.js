@@ -173,7 +173,12 @@ const LongSearchPage = (() => {
     document.addEventListener("DOMContentLoaded", () => {
         hydrateFromUrl();
         bindEvents();
-        searchProducts(false);
+
+        // Khi vừa mở /tim-kiem không có bộ lọc, sản phẩm đã được render sẵn từ server.
+        // Chỉ gọi API khi URL có tham số lọc để tránh trang bị kẹt ở trạng thái "Đang tìm sản phẩm".
+        if (window.location.search && window.location.search.length > 1) {
+            searchProducts(false);
+        }
     });
 
     return {searchProducts, resetFilters, addToCart, addFavorite};

@@ -113,6 +113,8 @@
       <p class="text-[18px] font-semibold">Xin chào, ${escapeHtml(name)}</p>
       <p class="mt-2 text-[16px]">
         ${adminLink}
+        <a href="/don-hang" class="font-bold hover:underline">Đơn hàng của tôi</a>
+        <span class="mx-1 text-white/70">|</span>
         <span class="text-white/85">${escapeHtml(email)}</span>
         <span class="mx-1 text-white/70">|</span>
         <button type="button" data-auth-logout class="font-bold hover:underline">Đăng xuất</button>
