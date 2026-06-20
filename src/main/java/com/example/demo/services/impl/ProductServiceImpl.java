@@ -9,11 +9,11 @@ import com.example.demo.repositories.ProductRepository;
 import com.example.demo.services.ProductFileReaderService;
 import com.example.demo.services.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.swing.text.html.Option;
 import java.util.*;
 
 @Service
@@ -35,6 +35,7 @@ public class ProductServiceImpl implements ProductService {
 
   @Override
   public Optional<ProductEntity> createProduct(ProductEntity product) {
+    attachVariants(product);
     return Optional.of(productRepository.save(product));
   }
 
@@ -80,6 +81,7 @@ public class ProductServiceImpl implements ProductService {
             .images(images)
             .variants(variants)
             .build();
+    attachVariants(product);
     return Optional.of(productRepository.save(product));
   }
 
@@ -185,6 +187,7 @@ public class ProductServiceImpl implements ProductService {
                 .releaseYear(productRequest.getReleaseYear())
                 .variants(variants)
                 .build();
+        attachVariants(productEntity);
         productEntities.add(productEntity);
       } catch (Exception e) {
         failedCount++;
@@ -203,5 +206,17 @@ public class ProductServiceImpl implements ProductService {
   @Override
   public Optional<ProductEntity> findByNormalizedKey(String normalizedKey) {
     return productRepository.findByNormalizedKey(normalizedKey);
+  }
+
+  @Override
+  public Page<ProductEntity> findByGenderIgnoreCase(String gender, Pageable pageable) {
+    return productRepository.findByGenderIgnoreCase(gender, pageable);
+  }
+
+  private void attachVariants(ProductEntity product) {
+    if (product == null || product.getVariants() == null) {
+      return;
+    }
+    product.getVariants().forEach(variant -> variant.setProduct(product));
   }
 }

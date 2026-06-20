@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -58,19 +59,36 @@ public class ProductEntity {
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
+        syncVariantParents();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.updatedAt = LocalDateTime.now();
+        syncVariantParents();
     }
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "product")
-    private List<ProductVariantEntity> variants;
+    @Builder.Default
+    private List<ProductVariantEntity> variants = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "product_id")
-    private List<ProductImageEntity> images;
+    @Builder.Default
+    private List<ProductImageEntity> images = new ArrayList<>();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItemEntity> orderProductEntities;
 
+    public void setVariants(List<ProductVariantEntity> variants) {
+        this.variants = variants != null ? variants : new ArrayList<>();
+        syncVariantParents();
+    }
+
     public void addVariant(ProductVariantEntity variant) {
+        if (variants == null) {
+            variants = new ArrayList<>();
+        }
         variants.add(variant);
         variant.setProduct(this);
     }
@@ -79,6 +97,14 @@ public class ProductEntity {
         variants.remove(variant);
         variant.setProduct(null);
     }
+
+    private void syncVariantParents() {
+        if (variants == null) {
+            return;
+        }
+        variants.forEach(variant -> variant.setProduct(this));
+    }
+
     @Transient
     public BigDecimal getMinPrice() {
         if (variants == null || variants.isEmpty()) {
