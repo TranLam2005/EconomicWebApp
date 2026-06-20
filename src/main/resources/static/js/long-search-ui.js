@@ -4,6 +4,21 @@ const LongSearchPage = (() => {
         return element && element.value ? element.value.trim() : "";
     }
 
+    function activeSearchLabel() {
+        const q = getValue("searchKeyword");
+        const brand = getValue("searchBrand");
+        const gender = getValue("searchGender");
+        const concentration = getValue("searchConcentration");
+        const parts = [];
+
+        if (q) parts.push(q);
+        if (brand) parts.push(`Thương hiệu ${brand}`);
+        if (gender) parts.push(`Nước hoa ${gender}`);
+        if (concentration) parts.push(concentration);
+
+        return parts.length ? parts.join(" • ") : "tất cả sản phẩm";
+    }
+
     function paramsFromForm() {
         const params = new URLSearchParams();
         const q = getValue("searchKeyword");
@@ -52,7 +67,7 @@ const LongSearchPage = (() => {
 
         const data = await response.json();
         if (count) count.textContent = data.length;
-        if (keywordText) keywordText.textContent = getValue("searchKeyword") || "tất cả sản phẩm";
+        if (keywordText) keywordText.textContent = activeSearchLabel();
 
         if (!data.length) {
             if (grid) grid.innerHTML = "";
@@ -113,6 +128,12 @@ const LongSearchPage = (() => {
             const element = document.getElementById(id);
             if (element && params.has(key)) element.value = params.get(key);
         });
+
+        const type = params.get("type");
+        const concentration = document.getElementById("searchConcentration");
+        if (type && type.toLowerCase() === "chiet" && concentration && !concentration.value) {
+            concentration.value = "Chiết";
+        }
     }
 
     function resetFilters() {

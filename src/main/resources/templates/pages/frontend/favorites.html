@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sản phẩm yêu thích</title>
+    <link rel="stylesheet" href="/frontend/css/parfumerie-pages.css">
+</head>
+<body data-page="favorites">
+<div th:replace="~{fragments/shop-header :: shopHeader}"></div>
+
+<main>
+    <section class="page-title">
+        <p class="eyebrow">Long</p>
+        <h1>Trang sản phẩm yêu thích</h1>
+        <p>Lưu sản phẩm yêu thích, xóa khỏi danh sách hoặc chuyển nhanh sang giỏ hàng.</p>
+    </section>
+
+    <section class="card-panel">
+        <div class="section-heading row-heading compact">
+            <h2>Danh sách yêu thích</h2>
+            <a href="/shop/search">Tìm thêm sản phẩm</a>
+        </div>
+        <div class="product-grid" data-favorite-list></div>
+    </section>
+</main>
+
+<script src="/frontend/js/parfumerie-pages.js"></script>
+</body>
+</html>

@@ -41,9 +41,6 @@ public class UserEntity {
     @Column(columnDefinition = "datetime", nullable = false)
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderEntity> orders;
-
     @PrePersist
     public void onCreate() {
         this.createdAt = LocalDateTime.now();

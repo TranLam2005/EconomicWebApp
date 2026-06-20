@@ -46,6 +46,10 @@ public class ProductVariantEntity {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    private ProductEntity product;
+
     @PrePersist
     public void onCreate() {
         this.createdAt = LocalDateTime.now();
