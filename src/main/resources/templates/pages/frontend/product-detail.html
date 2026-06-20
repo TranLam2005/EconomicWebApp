@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chi tiết sản phẩm</title>
+    <link rel="stylesheet" href="/frontend/css/parfumerie-pages.css">
+</head>
+<body data-page="detail" th:attr="data-product-id=${productId}">
+<div th:replace="~{fragments/shop-header :: shopHeader}"></div>
+
+<main>
+    <section class="page-title">
+        <p class="eyebrow">Đăng</p>
+        <h1>Trang sản phẩm chi tiết</h1>
+        <p>Hiển thị ảnh, giá, biến thể dung tích, mô tả, nút thêm giỏ hàng và yêu thích.</p>
+    </section>
+
+    <section class="detail-layout" data-detail-root>
+        <div class="detail-gallery">
+            <div class="product-art large" data-detail-art></div>
+            <div class="thumb-row"><span></span><span></span><span></span></div>
+        </div>
+        <div class="detail-info">
+            <p class="eyebrow" data-detail-brand>Thương hiệu</p>
+            <h2 data-detail-name>Đang tải sản phẩm...</h2>
+            <div class="price-line" data-detail-price>0đ</div>
+            <div class="meta-grid">
+                <div><small>Giới tính</small><strong data-detail-gender>-</strong></div>
+                <div><small>Nồng độ</small><strong data-detail-concentration>-</strong></div>
+                <div><small>Năm phát hành</small><strong data-detail-year>-</strong></div>
+            </div>
+            <p class="detail-desc" data-detail-desc></p>
+            <div class="variant-box">
+                <label>Dung tích</label>
+                <div class="variant-options" data-detail-variants></div>
+            </div>
+            <div class="detail-actions">
+                <button class="primary-btn" data-detail-add-cart>Thêm vào giỏ</button>
+                <button class="ghost-btn" data-detail-add-fav>Thêm yêu thích</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-block">
+        <div class="section-heading">
+            <p class="eyebrow">Có thể bạn thích</p>
+            <h2>Sản phẩm liên quan</h2>
+        </div>
+        <div class="product-grid" data-related-products></div>
+    </section>
+</main>
+
+<script src="/frontend/js/parfumerie-pages.js"></script>
+</body>
+</html>

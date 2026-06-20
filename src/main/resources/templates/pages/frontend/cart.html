@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Giỏ hàng</title>
+    <link rel="stylesheet" href="/frontend/css/parfumerie-pages.css">
+</head>
+<body data-page="cart">
+<div th:replace="~{fragments/shop-header :: shopHeader}"></div>
+
+<main>
+    <section class="page-title">
+        <p class="eyebrow">Long</p>
+        <h1>Trang giỏ hàng</h1>
+        <p>Hiển thị sản phẩm đã thêm, tăng giảm số lượng, xóa khỏi giỏ và tính tổng tiền.</p>
+    </section>
+
+    <section class="two-column-layout">
+        <div class="card-panel">
+            <div class="section-heading row-heading compact">
+                <h2>Sản phẩm trong giỏ</h2>
+                <button class="text-btn" data-add-demo-cart>Thêm sản phẩm mẫu</button>
+            </div>
+            <div data-cart-list></div>
+        </div>
+
+        <aside class="summary-panel">
+            <h2>Tóm tắt đơn hàng</h2>
+            <div class="summary-row"><span>Tạm tính</span><strong data-cart-subtotal>0đ</strong></div>
+            <div class="summary-row"><span>Phí giao hàng</span><strong>Miễn phí</strong></div>
+            <div class="summary-row total"><span>Tổng tiền</span><strong data-cart-total>0đ</strong></div>
+            <button class="primary-btn full-width">Tiến hành thanh toán</button>
+            <a class="ghost-btn full-width" href="/shop/search">Tiếp tục mua hàng</a>
+        </aside>
+    </section>
+</main>
+
+<script src="/frontend/js/parfumerie-pages.js"></script>
+</body>
+</html>
