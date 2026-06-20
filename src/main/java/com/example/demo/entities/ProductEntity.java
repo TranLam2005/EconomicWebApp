@@ -79,4 +79,39 @@ public class ProductEntity {
         variants.remove(variant);
         variant.setProduct(null);
     }
+    @Transient
+    public BigDecimal getMinPrice() {
+        if (variants == null || variants.isEmpty()) {
+            return null;
+        }
+        return variants.stream()
+                .map(ProductVariantEntity::getPrice)
+                .filter(java.util.Objects::nonNull)
+                .min(BigDecimal::compareTo)
+                .orElse(null);
+    }
+
+    @Transient
+    public BigDecimal getMaxPrice() {
+        if (variants == null || variants.isEmpty()) {
+            return null;
+        }
+        return variants.stream()
+                .map(ProductVariantEntity::getPrice)
+                .filter(java.util.Objects::nonNull)
+                .max(BigDecimal::compareTo)
+                .orElse(null);
+    }
+
+    @Transient
+    public int getTotalStock() {
+        if (variants == null || variants.isEmpty()) {
+            return 0;
+        }
+        return variants.stream()
+                .map(ProductVariantEntity::getStockQuantity)
+                .filter(java.util.Objects::nonNull)
+                .mapToInt(Integer::intValue)
+                .sum();
+    }
 }
