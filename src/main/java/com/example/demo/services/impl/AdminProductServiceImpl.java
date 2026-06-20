@@ -11,8 +11,8 @@ import com.example.demo.dtos.request.AdminProductUpdateRequest;
 import com.example.demo.dtos.request.AdminProductVariantRequest;
 import com.example.demo.dtos.request.ProductImportFileRequest;
 import com.example.demo.entities.ProductEntity;
-import com.example.demo.entities.ProductImage;
-import com.example.demo.entities.ProductVariant;
+import com.example.demo.entities.ProductImageEntity;
+import com.example.demo.entities.ProductVariantEntity;
 import com.example.demo.repositories.ProductRepository;
 import com.example.demo.services.AdminProductService;
 import org.apache.commons.csv.CSVFormat;
@@ -216,11 +216,11 @@ public class AdminProductServiceImpl implements AdminProductService {
             product.getVariants().clear();
         }
 
-        ProductVariant variant = new ProductVariant();
+        ProductVariantEntity variant = new ProductVariantEntity();
         variant.setProduct(product);
-        variant.setSku(makeSku(normalizedKey, row.getVolume()));
-        variant.setVolumeMl(row.getVolume());
-        variant.setVariantName(row.getVolume() == null ? "Mặc định" : row.getVolume() + "ml");
+        variant.setSku(makeSku(normalizedKey, row.getVolumeMl()));
+        variant.setVolumeMl(row.getVolumeMl());
+        variant.setVariantName(row.getVolumeMl() == null ? "Mặc định" : row.getVolumeMl() + "ml");
         variant.setPrice(row.getPrice());
         variant.setStockQuantity(row.getStockQuantity() == null ? 0 : row.getStockQuantity());
         variant.setIsActive(true);
@@ -233,8 +233,7 @@ public class AdminProductServiceImpl implements AdminProductService {
             } else {
                 product.getImages().clear();
             }
-            ProductImage image = new ProductImage();
-            image.setProduct(product);
+            ProductImageEntity image = new ProductImageEntity();
             image.setSecureUrl(row.getSecureUrl());
             image.setAltText(row.getProductName());
             image.setIsMain(true);
@@ -262,13 +261,13 @@ public class AdminProductServiceImpl implements AdminProductService {
                 .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy sản phẩm id = " + id));
     }
 
-    private List<ProductVariant> buildVariants(List<AdminProductVariantRequest> requests,
-                                               ProductEntity product,
-                                               String normalizedKey,
-                                               BigDecimal defaultPrice) {
-        List<ProductVariant> variants = new ArrayList<>();
+    private List<ProductVariantEntity> buildVariants(List<AdminProductVariantRequest> requests,
+                                                     ProductEntity product,
+                                                     String normalizedKey,
+                                                     BigDecimal defaultPrice) {
+        List<ProductVariantEntity> variants = new ArrayList<>();
         if (requests == null || requests.isEmpty()) {
-            ProductVariant variant = new ProductVariant();
+            ProductVariantEntity variant = new ProductVariantEntity();
             variant.setProduct(product);
             variant.setSku(makeSku(normalizedKey, null));
             variant.setVariantName("Mặc định");
@@ -281,7 +280,7 @@ public class AdminProductServiceImpl implements AdminProductService {
         }
 
         for (AdminProductVariantRequest request : requests) {
-            ProductVariant variant = new ProductVariant();
+            ProductVariantEntity variant = new ProductVariantEntity();
             variant.setProduct(product);
             variant.setSku(isBlank(request.getSku()) ? makeSku(normalizedKey, request.getVolumeMl()) : request.getSku());
             variant.setVolumeMl(request.getVolumeMl());
@@ -295,8 +294,8 @@ public class AdminProductServiceImpl implements AdminProductService {
         return variants;
     }
 
-    private List<ProductImage> buildImages(List<AdminProductImageRequest> requests, ProductEntity product) {
-        List<ProductImage> images = new ArrayList<>();
+    private List<ProductImageEntity> buildImages(List<AdminProductImageRequest> requests, ProductEntity product) {
+        List<ProductImageEntity> images = new ArrayList<>();
         if (requests == null) {
             return images;
         }
@@ -305,8 +304,7 @@ public class AdminProductServiceImpl implements AdminProductService {
             if (isBlank(request.getSecureUrl())) {
                 continue;
             }
-            ProductImage image = new ProductImage();
-            image.setProduct(product);
+            ProductImageEntity image = new ProductImageEntity();
             image.setCloudinaryAssetId(request.getCloudinaryAssetId());
             image.setPublicId(request.getPublicId());
             image.setVersionNo(request.getVersionNo());
@@ -315,7 +313,6 @@ public class AdminProductServiceImpl implements AdminProductService {
             image.setSecureUrl(request.getSecureUrl());
             image.setWidth(request.getWidth());
             image.setHeight(request.getHeight());
-            image.setBytesSize(request.getBytesSize());
             image.setAltText(request.getAltText());
             image.setIsMain(request.getIsMain() != null ? request.getIsMain() : i == 0);
             image.setSortOrder(request.getSortOrder() != null ? request.getSortOrder() : i + 1);
@@ -354,7 +351,7 @@ public class AdminProductServiceImpl implements AdminProductService {
         return response;
     }
 
-    private AdminProductVariantResponse toVariantResponse(ProductVariant variant) {
+    private AdminProductVariantResponse toVariantResponse(ProductVariantEntity variant) {
         AdminProductVariantResponse response = new AdminProductVariantResponse();
         response.setId(variant.getId());
         response.setSku(variant.getSku());
@@ -366,7 +363,7 @@ public class AdminProductServiceImpl implements AdminProductService {
         return response;
     }
 
-    private AdminProductImageResponse toImageResponse(ProductImage image) {
+    private AdminProductImageResponse toImageResponse(ProductImageEntity image) {
         AdminProductImageResponse response = new AdminProductImageResponse();
         response.setId(image.getId());
         response.setCloudinaryAssetId(image.getCloudinaryAssetId());
@@ -377,7 +374,6 @@ public class AdminProductServiceImpl implements AdminProductService {
         response.setSecureUrl(image.getSecureUrl());
         response.setWidth(image.getWidth());
         response.setHeight(image.getHeight());
-        response.setBytesSize(image.getBytesSize());
         response.setAltText(image.getAltText());
         response.setIsMain(image.getIsMain());
         response.setSortOrder(image.getSortOrder());
@@ -391,7 +387,7 @@ public class AdminProductServiceImpl implements AdminProductService {
         }
         int size = Math.min(product.getVariants().size(), requests.size());
         for (int i = 0; i < size; i++) {
-            ProductVariant variant = product.getVariants().get(i);
+            ProductVariantEntity variant = product.getVariants().get(i);
             AdminProductVariantRequest request = requests.get(i);
             if (request.getStockQuantity() != null) variant.setStockQuantity(request.getStockQuantity());
             if (request.getIsActive() != null) variant.setIsActive(request.getIsActive());
@@ -405,7 +401,7 @@ public class AdminProductServiceImpl implements AdminProductService {
         }
         int size = Math.min(product.getImages().size(), requests.size());
         for (int i = 0; i < size; i++) {
-            ProductImage image = product.getImages().get(i);
+            ProductImageEntity image = product.getImages().get(i);
             AdminProductImageRequest request = requests.get(i);
             if (request.getIsMain() != null) image.setIsMain(request.getIsMain());
             if (request.getSortOrder() != null) image.setSortOrder(request.getSortOrder());
@@ -416,13 +412,13 @@ public class AdminProductServiceImpl implements AdminProductService {
 
     private void restoreImportedValuesAfterPrePersist(ProductEntity product, ProductImportFileRequest row) {
         if (product.getVariants() != null && !product.getVariants().isEmpty()) {
-            ProductVariant variant = product.getVariants().get(0);
+            ProductVariantEntity variant = product.getVariants().get(0);
             variant.setStockQuantity(row.getStockQuantity() == null ? 0 : row.getStockQuantity());
             variant.setIsActive(true);
             variant.setUpdatedAt(LocalDateTime.now());
         }
         if (product.getImages() != null && !product.getImages().isEmpty()) {
-            ProductImage image = product.getImages().get(0);
+            ProductImageEntity image = product.getImages().get(0);
             image.setIsMain(true);
             image.setSortOrder(1);
             image.setResourceType("image");
@@ -508,7 +504,7 @@ public class AdminProductServiceImpl implements AdminProductService {
                 .description(first(map, "description", "mota"))
                 .normalizedKey(first(map, "normalizedkey", "normalized_key", "key"))
                 .secureUrl(first(map, "secureurl", "secure_url", "image", "imageurl", "image_url"))
-                .volume(parseInteger(first(map, "volume", "volumeml", "volume_ml", "dungtich")))
+                .volumeMl(parseInteger(first(map, "volume", "volumeml", "volume_ml", "dungtich")))
                 .price(parseBigDecimal(first(map, "price", "gia")))
                 .stockQuantity(parseInteger(first(map, "stockquantity", "stock_quantity", "soluong", "tonkho")))
                 .build();

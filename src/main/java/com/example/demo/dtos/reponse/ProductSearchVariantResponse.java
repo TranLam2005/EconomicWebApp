@@ -1,9 +1,15 @@
 package com.example.demo.dtos.reponse;
+import com.example.demo.entities.ProductVariantEntity;
+import lombok.*;
 
 import java.math.BigDecimal;
 
-import com.example.demo.entities.ProductVariant;
 
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class ProductSearchVariantResponse {
     private Long id;
     private String sku;
@@ -12,8 +18,7 @@ public class ProductSearchVariantResponse {
     private BigDecimal price;
     private Integer stockQuantity;
     private Boolean isActive;
-
-    public static ProductSearchVariantResponse fromEntity(ProductVariant variant) {
+    public static ProductSearchVariantResponse fromEntity(ProductVariantEntity variant) {
         ProductSearchVariantResponse response = new ProductSearchVariantResponse();
         response.setId(variant.getId());
         response.setSku(variant.getSku());
@@ -23,61 +28,5 @@ public class ProductSearchVariantResponse {
         response.setStockQuantity(variant.getStockQuantity());
         response.setIsActive(variant.getIsActive());
         return response;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getSku() {
-        return sku;
-    }
-
-    public void setSku(String sku) {
-        this.sku = sku;
-    }
-
-    public Integer getVolumeMl() {
-        return volumeMl;
-    }
-
-    public void setVolumeMl(Integer volumeMl) {
-        this.volumeMl = volumeMl;
-    }
-
-    public String getVariantName() {
-        return variantName;
-    }
-
-    public void setVariantName(String variantName) {
-        this.variantName = variantName;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public Integer getStockQuantity() {
-        return stockQuantity;
-    }
-
-    public void setStockQuantity(Integer stockQuantity) {
-        this.stockQuantity = stockQuantity;
-    }
-
-    public Boolean getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(Boolean active) {
-        isActive = active;
     }
 }

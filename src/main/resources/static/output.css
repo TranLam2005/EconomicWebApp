@@ -2,6 +2,16 @@
 @layer properties;
 @layer theme, base, components, utilities;
 @layer theme {
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Ẩn mũi tên trên Firefox */
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
   :root, :host {
     --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
       "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
