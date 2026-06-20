@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="vi"
+      layout:decorate="~{layout/layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký tài khoản | Parfumerie</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .auth-shell { background: #fafafa; min-height: 760px; }
+        .auth-breadcrumb { max-width: 1460px; margin: 0 auto; padding: 22px 16px; color: #31524a; font-size: 14px; }
+        .auth-frame { max-width: 1460px; margin: 0 auto 48px; border: 1px solid #e7e7e7; background: #fff; padding: 46px 16px; }
+        .auth-card { width: min(650px, 94vw); margin: 0 auto; background: #fff; padding: 34px 26px 32px; box-shadow: 0 0 70px rgba(0, 180, 130, .28); }
+        .auth-card h1 { text-align: center; letter-spacing: .1em; text-transform: uppercase; font-size: 22px; color: #1f2f2c; margin-bottom: 24px; }
+        .auth-card .intro { text-align: center; color: #344843; margin-bottom: 20px; }
+        .auth-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .auth-label { display: block; font-weight: 700; color: #23443d; margin: 15px 0 8px; }
+        .auth-label span { color: #d00; }
+        .auth-input { width: 100%; height: 48px; border: 1px solid #ddd; padding: 0 14px; outline: none; color: #222; background: #fff; }
+        .auth-input:focus { border-color: #005b4b; box-shadow: 0 0 0 3px rgba(0, 91, 75, .12); }
+        .auth-submit { margin-top: 24px; min-width: 142px; height: 50px; background: #005b4b; color: #fff; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; border: none; cursor: pointer; }
+        .auth-submit:hover { background: #003f34; }
+        .auth-submit:disabled { opacity: .65; cursor: wait; }
+        .auth-links { margin-top: 16px; line-height: 1.9; color: #35524c; }
+        .auth-links a { color: #005b4b; font-weight: 700; }
+        .auth-message { display: none; margin-top: 16px; padding: 12px 14px; border-radius: 6px; font-weight: 600; }
+        .auth-message.success { display: block; background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; }
+        .auth-message.error { display: block; background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+        .auth-message.warning { display: block; background: #fffbeb; color: #92400e; border: 1px solid #fde68a; }
+        @media (max-width: 640px) { .auth-grid { grid-template-columns: 1fr; gap: 0; } }
+    </style>
+</head>
+<body layout:fragment="content">
+<main class="auth-shell">
+    <div class="auth-breadcrumb">
+        <a th:href="@{/}" class="hover:underline">Trang chủ</a>
+        <span> &gt; Đăng ký tài khoản</span>
+    </div>
+
+    <section class="auth-frame">
+        <div class="auth-card">
+            <h1>Đăng ký tài khoản</h1>
+            <p class="intro">Tạo tài khoản bằng email. Thông tin sẽ được lưu vào cơ sở dữ liệu.</p>
+
+            <form id="registerForm" autocomplete="on">
+                <div class="auth-grid">
+                    <div>
+                        <label class="auth-label" for="firstName">Họ<span>*</span></label>
+                        <input class="auth-input" id="firstName" name="firstName" type="text" placeholder="Họ" required autocomplete="family-name">
+                    </div>
+                    <div>
+                        <label class="auth-label" for="lastName">Tên<span>*</span></label>
+                        <input class="auth-input" id="lastName" name="lastName" type="text" placeholder="Tên" required autocomplete="given-name">
+                    </div>
+                </div>
+
+                <label class="auth-label" for="registerEmail">Email<span>*</span></label>
+                <input class="auth-input" id="registerEmail" name="email" type="email" placeholder="Email" required autocomplete="email">
+
+                <label class="auth-label" for="registerPassword">Mật khẩu<span>*</span></label>
+                <input class="auth-input" id="registerPassword" name="password" type="password" placeholder="Mật khẩu" required autocomplete="new-password">
+
+                <label class="auth-label" for="confirmPassword">Nhập lại mật khẩu<span>*</span></label>
+                <input class="auth-input" id="confirmPassword" name="confirmPassword" type="password" placeholder="Nhập lại mật khẩu" required autocomplete="new-password">
+
+                <button class="auth-submit" type="submit">Đăng ký</button>
+                <div id="registerMessage" class="auth-message"></div>
+            </form>
+
+            <div class="auth-links">
+                <p>Bạn đã có tài khoản. <a th:href="@{/dang-nhap}">Đăng nhập tại đây.</a></p>
+            </div>
+        </div>
+    </section>
+</main>
+<script src="/js/auth-ui.js" defer></script>
+</body>
+</html>

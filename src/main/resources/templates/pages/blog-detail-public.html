@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="vi"
+      layout:decorate="~{layout/layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${blog.title}">Chi tiết blog</title>
+    <style>
+        .blog-page-wrap {
+            background: #fff;
+            color: #222;
+            font-family: Arial, Helvetica, sans-serif;
+            padding: 18px 0 34px;
+        }
+        .blog-container {
+            width: 92%;
+            max-width: 1120px;
+            margin: 0 auto;
+        }
+        .blog-breadcrumb {
+            font-size: 12px;
+            color: #444;
+            margin-bottom: 18px;
+        }
+        .blog-breadcrumb a {
+            color: #333;
+            text-decoration: none;
+        }
+        .blog-layout {
+            display: grid;
+            grid-template-columns: 255px minmax(0, 1fr);
+            gap: 18px;
+            align-items: start;
+        }
+        .blog-sidebar,
+        .blog-main-box {
+            border: 1px solid #e5e5e5;
+            background: #fff;
+        }
+        .sidebar-title {
+            padding: 12px 14px;
+            border-bottom: 1px solid #e9e9e9;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #111;
+        }
+        .sidebar-menu a,
+        .sidebar-menu summary {
+            display: flex;
+            width: 100%;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            border-bottom: 1px solid #f0f0f0;
+            background: #fff;
+            color: #222;
+            font-size: 13px;
+            line-height: 1.25;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .sidebar-menu a:hover,
+        .sidebar-menu summary:hover {
+            color: #005b4b;
+            background: #fafafa;
+        }
+        .sidebar-menu details summary::-webkit-details-marker {
+            display: none;
+        }
+        .sidebar-submenu a {
+            padding-left: 28px;
+            color: #444;
+            background: #fbfbfb;
+        }
+        .blog-main-box {
+            padding: 12px 14px 28px;
+            min-height: 620px;
+        }
+        .blog-title-detail {
+            margin: 0 0 6px;
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.35;
+            color: #222;
+        }
+        .blog-meta {
+            margin-bottom: 14px;
+            color: #777;
+            font-size: 12px;
+        }
+        .blog-cover {
+            width: 100%;
+            max-height: 420px;
+            object-fit: cover;
+            display: block;
+            margin-bottom: 18px;
+            background: #e8e8e8;
+        }
+        .blog-content {
+            color: #333;
+            font-size: 15px;
+            line-height: 2;
+            text-align: justify;
+            white-space: pre-line;
+        }
+        .blog-back {
+            display: inline-block;
+            margin-top: 24px;
+            color: #005b4b;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+        .related-box {
+            margin-top: 30px;
+            border-top: 1px solid #eee;
+            padding-top: 18px;
+        }
+        .related-title {
+            margin: 0 0 12px;
+            font-size: 18px;
+            font-weight: 700;
+        }
+        .related-list {
+            display: grid;
+            gap: 10px;
+        }
+        .related-list a {
+            color: #222;
+            text-decoration: none;
+            font-size: 14px;
+            line-height: 1.45;
+        }
+        .related-list a:hover {
+            color: #005b4b;
+        }
+        @media (max-width: 900px) {
+            .blog-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body layout:fragment="content">
+<div class="blog-page-wrap">
+    <div class="blog-container">
+        <div class="blog-breadcrumb">
+            <a th:href="@{/}">Trang chủ</a> &gt; <a th:href="@{/blog}">Blog</a> &gt; <span th:text="${blog.title}">Chi tiết</span>
+        </div>
+
+        <div class="blog-layout">
+            <aside class="blog-sidebar">
+                <div class="sidebar-title">Danh mục</div>
+                <nav class="sidebar-menu">
+                    <a th:href="@{/}">Trang chủ</a>
+                    <a href="#">Giới thiệu</a>
+                    <a th:href="@{/tim-kiem}">Thương hiệu</a>
+                    <a th:href="@{/tim-kiem}">Nước hoa</a>
+                    <a th:href="@{/tim-kiem(q='Nước hoa chiết')}">Nước hoa Chiết</a>
+                    <a href="#">Kiến thức</a>
+                    <a th:href="@{/blog}">Blog</a>
+                    <a href="#">Liên hệ</a>
+                </nav>
+            </aside>
+
+            <article class="blog-main-box">
+                <h1 class="blog-title-detail" th:text="${blog.title}">Tiêu đề bài viết</h1>
+                <div class="blog-meta">
+                    <span th:text="${blog.createdAt}">20/06/2026</span>
+                    <span> - Nhân viên Parfumerie</span>
+                    <span> - </span>
+                    <span th:text="${blog.categoryName}">Blog</span>
+                </div>
+
+                <img th:if="${blog.featuredImage != null and !#strings.isEmpty(blog.featuredImage)}"
+                     th:src="${blog.featuredImage}"
+                     th:alt="${blog.title}"
+                     class="blog-cover">
+
+                <div class="blog-content" th:text="${blog.content}">
+                    Nội dung bài viết.
+                </div>
+
+                <a th:href="@{/blog}" class="blog-back">← Quay lại danh sách Blog</a>
+
+                <section th:if="${relatedBlogs != null and !relatedBlogs.isEmpty()}" class="related-box">
+                    <h2 class="related-title">Bài viết liên quan</h2>
+                    <div class="related-list">
+                        <a th:each="related : ${relatedBlogs}"
+                           th:href="${related.url}"
+                           th:text="${related.title}">Bài viết liên quan</a>
+                    </div>
+                </section>
+            </article>
+        </div>
+    </div>
+</div>
+</body>
+</html>
