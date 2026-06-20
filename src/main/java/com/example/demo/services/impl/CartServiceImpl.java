@@ -15,7 +15,6 @@ import com.example.demo.services.CartService;
 import com.example.demo.services.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
@@ -160,8 +159,9 @@ public class CartServiceImpl implements CartService {
     }
 
     private CartItemResponse toItemResponse(CartItemEntity item) {
+        ProductEntity product = item.getVariant().getProduct();
+
         ProductVariantEntity variant = item.getVariant();
-        ProductEntity product = variant.getProduct();
 
         BigDecimal unitPrice = variant.getPrice();
         BigDecimal lineTotal = unitPrice.multiply(BigDecimal.valueOf(item.getQuantity()));
@@ -183,12 +183,6 @@ public class CartServiceImpl implements CartService {
     }
 
     private String getImageUrl(ProductVariantEntity variant, ProductEntity product) {
-        String variantImage = getMainImageFromList(variant.getImages());
-
-        if (variantImage != null) {
-            return variantImage;
-        }
-
         return getMainImageFromList(product.getImages());
     }
 
