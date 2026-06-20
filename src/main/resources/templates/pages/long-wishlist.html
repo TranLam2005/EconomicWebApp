@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="vi" layout:decorate="~{layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Sản phẩm yêu thích | Parfumerie</title>
 </head>
-<body layout:fragment="content" class="bg-[#f7f3ed] text-stone-900">
+<body class="bg-[#f7f3ed] text-stone-900">
+<div th:replace="~{fragments/header :: header}"></div>
 <script src="https://cdn.tailwindcss.com"></script>
 
 <main class="min-h-screen bg-[#f7f3ed]">
@@ -20,7 +21,7 @@
             </div>
             <div class="flex flex-wrap gap-3">
                 <button onclick="LongWishlistPage.loadWishlist()" class="rounded-full bg-[#005b4b] px-5 py-3 text-sm font-bold text-white transition hover:bg-stone-950">Tải lại</button>
-                <a href="/search" class="rounded-full border border-stone-200 bg-white px-5 py-3 text-sm font-bold text-stone-800 transition hover:border-[#005b4b] hover:text-[#005b4b]">Tìm thêm sản phẩm</a>
+                <a href="/tim-kiem" class="rounded-full border border-stone-200 bg-white px-5 py-3 text-sm font-bold text-stone-800 transition hover:border-[#005b4b] hover:text-[#005b4b]">Tìm thêm sản phẩm</a>
                 <a href="/cart" class="rounded-full border border-stone-200 bg-white px-5 py-3 text-sm font-bold text-stone-800 transition hover:border-[#005b4b] hover:text-[#005b4b]">Xem giỏ hàng</a>
             </div>
         </div>
@@ -41,7 +42,7 @@
             <div class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-red-50 text-4xl">♥</div>
             <h3 class="mt-5 text-2xl font-black text-stone-950">Chưa có sản phẩm yêu thích</h3>
             <p class="mt-2 text-stone-500">Hãy tìm nước hoa phù hợp và bấm trái tim để lưu lại.</p>
-            <a href="/search" class="mt-6 inline-flex rounded-full bg-[#005b4b] px-6 py-3 font-bold text-white transition hover:bg-stone-950">Tìm sản phẩm</a>
+            <a href="/tim-kiem" class="mt-6 inline-flex rounded-full bg-[#005b4b] px-6 py-3 font-bold text-white transition hover:bg-stone-950">Tìm sản phẩm</a>
         </div>
 
         <div id="wishlistGrid" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"></div>

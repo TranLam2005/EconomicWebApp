@@ -4,29 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Parfumerie - Magic Of Your Emotions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body data-page="home" class="bg-[#f9f9f9] text-stone-900">
 
-<!-- ===== Header ===== -->
-<header class="bg-white border-b border-stone-200">
-    <div class="max-w-6xl mx-auto px-5 py-4 flex items-center justify-between">
-        <a href="/" class="text-2xl tracking-[0.2em] font-serif text-stone-800">PARFUMERIE</a>
-        <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-stone-700">
-            <a href="/public/product/nuoc-hoa-nam" class="hover:text-[#084c3c] transition-colors">Nước hoa Nam</a>
-            <a href="/public/product/nuoc-hoa-nu" class="hover:text-[#084c3c] transition-colors">Nước hoa Nữ</a>
-            <a href="/public/product/nuoc-hoa-unisex" class="hover:text-[#084c3c] transition-colors">Nước hoa Unisex</a>
-            <a href="/blog" class="hover:text-[#084c3c] transition-colors">Thông tin</a>
-        </nav>
-        <div class="flex items-center gap-4 text-stone-700">
-            <button type="button" aria-label="Tìm kiếm">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-            </button>
-            <a href="/cart" aria-label="Giỏ hàng">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M6 6L4 2H2"/></svg>
-            </a>
-        </div>
-    </div>
-</header>
+<div th:replace="~{fragments/header :: header}"></div>
 
 <!-- ===== Hero Banner Carousel ===== -->
 <section class="relative bg-stone-900 overflow-hidden" data-home-hero>
@@ -56,11 +38,33 @@
 
 <main class="max-w-6xl mx-auto px-5">
 
+    <!-- ===== SẢN PHẨM MỚI TỪ DATABASE ===== -->
+    <section class="mt-8" th:if="${!#lists.isEmpty(allProducts)}">
+        <div class="bg-[#084c3c] text-white flex items-center justify-between px-5 py-3">
+            <h2 class="text-base font-bold tracking-wide uppercase">Sản phẩm mới</h2>
+            <a href="/tim-kiem" class="text-sm text-white/80 hover:text-white">Xem tất cả</a>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 bg-white border border-t-0 border-stone-200 p-5">
+            <a th:each="product : ${allProducts}" th:href="@{/tim-kiem(q=${product.productName})}" class="block group">
+                <div class="aspect-square bg-white flex items-center justify-center mb-3">
+                    <img th:if="${product.primaryImageUrl != null and !#strings.isEmpty(product.primaryImageUrl)}"
+                         th:src="${product.primaryImageUrl}"
+                         th:alt="${product.productName}"
+                         class="w-[80%] h-[80%] object-contain group-hover:scale-105 transition-transform duration-300">
+                    <div th:if="${product.primaryImageUrl == null or #strings.isEmpty(product.primaryImageUrl)}"
+                         class="w-[80%] h-[80%] rounded bg-stone-100 flex items-center justify-center text-xs text-stone-400">No Image</div>
+                </div>
+                <p th:text="${product.productName}" class="text-sm text-stone-800 mb-1 leading-snug h-10 overflow-hidden line-clamp-2">Tên sản phẩm</p>
+                <p th:text="${product.priceRangeText}" class="text-sm font-bold text-[#084c3c]">500.000đ</p>
+            </a>
+        </div>
+    </section>
+
     <!-- ===== NƯỚC HOA NAM ===== -->
     <section class="mt-8" th:if="${!#lists.isEmpty(menProducts)}">
         <div class="bg-[#084c3c] text-white flex items-center justify-between px-5 py-3">
             <h2 class="text-base font-bold tracking-wide uppercase">Nước hoa Nam</h2>
-            <a href="/public/product/nuoc-hoa-nam" class="text-sm text-white/80 hover:text-white">Nước hoa Nam</a>
+            <a href="/tim-kiem?gender=Nam" class="text-sm text-white/80 hover:text-white">Nước hoa Nam</a>
         </div>
 
         <div class="aspect-[1386/300] bg-stone-900 overflow-hidden mb-0">
@@ -70,11 +74,11 @@
 
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 bg-white border border-t-0 border-stone-200 p-5">
             <a th:each="product : ${menProducts}"
-               th:href="@{'/public/product/detail-product/' + ${product.normalizedKey}}"
+               th:href="@{/tim-kiem(q=${product.productName})}"
                class="block group">
                 <div class="aspect-square bg-white flex items-center justify-center mb-3">
-                    <img th:if="${!#lists.isEmpty(product.images)}"
-                         th:src="${product.images[0].secureUrl}"
+                    <img th:if="${product.primaryImageUrl != null and !#strings.isEmpty(product.primaryImageUrl)}"
+                         th:src="${product.primaryImageUrl}"
                          th:alt="${product.productName}"
                          class="w-[80%] h-[80%] object-contain group-hover:scale-105 transition-transform duration-300">
                 </div>
@@ -82,16 +86,13 @@
                     Jean Paul Gaultier Le Male Le Parfum
                 </p>
                 <p class="text-sm font-bold text-[#084c3c]">
-                    <span th:if="${!#lists.isEmpty(product.variants)}"
-                          th:text="${#numbers.formatInteger(#aggregates.min(product.variants.![price].toArray()), 3, 'POINT')} + 'đ - ' + ${#numbers.formatInteger(#aggregates.max(product.variants.![price].toArray()), 3, 'POINT')} + 'đ'">
-                        325.000đ - 3.550.000đ
-                    </span>
+                    <span th:text="${product.priceRangeText}">500.000đ</span>
                 </p>
             </a>
         </div>
 
         <div class="bg-white border border-t-0 border-stone-200 p-4 text-center">
-            <a href="/public/product/nuoc-hoa-nam"
+            <a href="/tim-kiem?gender=Nam"
                class="inline-flex items-center gap-2 bg-[#084c3c] text-white text-sm font-medium px-5 py-2 rounded-sm hover:bg-[#063b2f] transition-colors">
                 👍 Xem tất cả
             </a>
@@ -102,7 +103,7 @@
     <section class="mt-8" th:if="${!#lists.isEmpty(womenProducts)}">
         <div class="bg-[#084c3c] text-white flex items-center justify-between px-5 py-3">
             <h2 class="text-base font-bold tracking-wide uppercase">Nước hoa Nữ</h2>
-            <a href="/public/product/nuoc-hoa-nu" class="text-sm text-white/80 hover:text-white">Nước hoa Nữ</a>
+            <a href="/tim-kiem?gender=Nữ" class="text-sm text-white/80 hover:text-white">Nước hoa Nữ</a>
         </div>
 
         <div class="aspect-[1386/300] bg-stone-200 overflow-hidden mb-0">
@@ -112,11 +113,11 @@
 
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 bg-white border border-t-0 border-stone-200 p-5">
             <a th:each="product : ${womenProducts}"
-               th:href="@{'/public/product/detail-product/' + ${product.normalizedKey}}"
+               th:href="@{/tim-kiem(q=${product.productName})}"
                class="block group">
                 <div class="aspect-square bg-white flex items-center justify-center mb-3">
-                    <img th:if="${!#lists.isEmpty(product.images)}"
-                         th:src="${product.images[0].secureUrl}"
+                    <img th:if="${product.primaryImageUrl != null and !#strings.isEmpty(product.primaryImageUrl)}"
+                         th:src="${product.primaryImageUrl}"
                          th:alt="${product.productName}"
                          class="w-[80%] h-[80%] object-contain group-hover:scale-105 transition-transform duration-300">
                 </div>
@@ -124,16 +125,13 @@
                     Parfums De Marly Valaya EDP
                 </p>
                 <p class="text-sm font-bold text-[#084c3c]">
-                    <span th:if="${!#lists.isEmpty(product.variants)}"
-                          th:text="${#numbers.formatInteger(#aggregates.min(product.variants.![price].toArray()), 3, 'POINT')} + 'đ - ' + ${#numbers.formatInteger(#aggregates.max(product.variants.![price].toArray()), 3, 'POINT')} + 'đ'">
-                        955.000đ - 6.800.000đ
-                    </span>
+                    <span th:text="${product.priceRangeText}">500.000đ</span>
                 </p>
             </a>
         </div>
 
         <div class="bg-white border border-t-0 border-stone-200 p-4 text-center">
-            <a href="/public/product/nuoc-hoa-nu"
+            <a href="/tim-kiem?gender=Nữ"
                class="inline-flex items-center gap-2 bg-[#084c3c] text-white text-sm font-medium px-5 py-2 rounded-sm hover:bg-[#063b2f] transition-colors">
                 👍 Xem tất cả
             </a>
@@ -144,7 +142,7 @@
     <section class="mt-8 mb-12" th:if="${!#lists.isEmpty(unisexProducts)}">
         <div class="bg-[#084c3c] text-white flex items-center justify-between px-5 py-3">
             <h2 class="text-base font-bold tracking-wide uppercase">Nước hoa Unisex</h2>
-            <a href="/public/product/nuoc-hoa-unisex" class="text-sm text-white/80 hover:text-white">Nước hoa Unisex</a>
+            <a href="/tim-kiem?gender=Unisex" class="text-sm text-white/80 hover:text-white">Nước hoa Unisex</a>
         </div>
 
         <div class="aspect-[1386/300] bg-stone-900 overflow-hidden mb-0">
@@ -154,11 +152,11 @@
 
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 bg-white border border-t-0 border-stone-200 p-5">
             <a th:each="product : ${unisexProducts}"
-               th:href="@{'/public/product/detail-product/' + ${product.normalizedKey}}"
+               th:href="@{/tim-kiem(q=${product.productName})}"
                class="block group">
                 <div class="aspect-square bg-white flex items-center justify-center mb-3">
-                    <img th:if="${!#lists.isEmpty(product.images)}"
-                         th:src="${product.images[0].secureUrl}"
+                    <img th:if="${product.primaryImageUrl != null and !#strings.isEmpty(product.primaryImageUrl)}"
+                         th:src="${product.primaryImageUrl}"
                          th:alt="${product.productName}"
                          class="w-[80%] h-[80%] object-contain group-hover:scale-105 transition-transform duration-300">
                 </div>
@@ -166,16 +164,13 @@
                     Louis Vuitton Imagination EDP
                 </p>
                 <p class="text-sm font-bold text-[#084c3c]">
-                    <span th:if="${!#lists.isEmpty(product.variants)}"
-                          th:text="${#numbers.formatInteger(#aggregates.min(product.variants.![price].toArray()), 3, 'POINT')} + 'đ - ' + ${#numbers.formatInteger(#aggregates.max(product.variants.![price].toArray()), 3, 'POINT')} + 'đ'">
-                        1.150.000đ - 10.800.000đ
-                    </span>
+                    <span th:text="${product.priceRangeText}">500.000đ</span>
                 </p>
             </a>
         </div>
 
         <div class="bg-white border border-t-0 border-stone-200 p-4 text-center">
-            <a href="/public/product/nuoc-hoa-unisex"
+            <a href="/tim-kiem?gender=Unisex"
                class="inline-flex items-center gap-2 bg-[#084c3c] text-white text-sm font-medium px-5 py-2 rounded-sm hover:bg-[#063b2f] transition-colors">
                 👍 Xem tất cả
             </a>
@@ -234,9 +229,9 @@
         <div>
             <h4 class="text-white font-bold mb-3 uppercase text-xs tracking-wide">Danh mục</h4>
             <ul class="space-y-2">
-                <li><a href="/public/product/nuoc-hoa-nam" class="hover:text-white">Nước hoa Nam</a></li>
-                <li><a href="/public/product/nuoc-hoa-nu" class="hover:text-white">Nước hoa Nữ</a></li>
-                <li><a href="/public/product/nuoc-hoa-unisex" class="hover:text-white">Nước hoa Unisex</a></li>
+                <li><a href="/tim-kiem?gender=Nam" class="hover:text-white">Nước hoa Nam</a></li>
+                <li><a href="/tim-kiem?gender=Nữ" class="hover:text-white">Nước hoa Nữ</a></li>
+                <li><a href="/tim-kiem?gender=Unisex" class="hover:text-white">Nước hoa Unisex</a></li>
             </ul>
         </div>
         <div>

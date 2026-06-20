@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.Locale;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -211,8 +212,41 @@ public class AdminBackendController {
             UserEntity user = userRepository.findById(id)
                     .orElseThrow(() -> new RuntimeException("Không tìm thấy khách hàng"));
 
+            // Xóa các dữ liệu phụ thuộc trực tiếp vào khách hàng trước để tránh lỗi khóa ngoại.
             cartItemRepository.deleteAll(cartItemRepository.findByUserOrderByCreatedAtAsc(user));
             favoriteRepository.deleteAll(favoriteRepository.findByUserOrderByCreatedAtDesc(user));
+
+            // Đơn hàng cần được giữ lại để admin còn tra cứu lịch sử, nên chỉ bỏ liên kết user.
+            List<OrderEntity> userOrders = orderRepository.findAll().stream()
+                    .filter(order -> order.getUser() != null
+                            && order.getUser().getId() != null
+                            && order.getUser().getId().equals(id))
+                    .toList();
+            userOrders.forEach(order -> order.setUser(null));
+            orderRepository.saveAll(userOrders);
+
+            // Bài viết có author_id NOT NULL, nên không thể xóa user khi user còn là tác giả blog.
+            // Nếu còn tài khoản khác, chuyển tác giả blog sang tài khoản đó để giữ bài viết.
+            // Nếu đây là tài khoản cuối cùng, xóa các blog do user này tạo trước khi xóa user.
+            List<BlogEntity> authoredBlogs = blogRepository.findByAuthor(user);
+            if (!authoredBlogs.isEmpty()) {
+                UserEntity fallbackAuthor = userRepository.findAll().stream()
+                        .filter(candidate -> candidate.getId() != null && !candidate.getId().equals(id))
+                        .filter(candidate -> "ADMIN".equalsIgnoreCase(candidate.getRole()))
+                        .findFirst()
+                        .orElseGet(() -> userRepository.findAll().stream()
+                                .filter(candidate -> candidate.getId() != null && !candidate.getId().equals(id))
+                                .findFirst()
+                                .orElse(null));
+
+                if (fallbackAuthor != null) {
+                    authoredBlogs.forEach(blog -> blog.setAuthor(fallbackAuthor));
+                    blogRepository.saveAll(authoredBlogs);
+                } else {
+                    blogRepository.deleteAll(authoredBlogs);
+                }
+            }
+
             userRepository.delete(user);
 
             redirectAttributes.addFlashAttribute("successMessage", "Xóa khách hàng thành công");

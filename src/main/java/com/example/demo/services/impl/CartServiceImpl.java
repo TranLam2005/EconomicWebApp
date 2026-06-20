@@ -12,7 +12,7 @@ import com.example.demo.entities.UserEntity;
 import com.example.demo.repositories.CartItemRepository;
 import com.example.demo.repositories.ProductVariantRepository;
 import com.example.demo.services.CartService;
-import com.example.demo.services.UserService;
+import com.example.demo.services.ShopUserResolverService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
@@ -23,16 +23,16 @@ import java.util.Objects;
 public class CartServiceImpl implements CartService {
     private final CartItemRepository cartItemRepository;
     private final ProductVariantRepository productVariantRepository;
-    private final UserService userService;
+    private final ShopUserResolverService shopUserResolverService;
 
     public CartServiceImpl(
             CartItemRepository cartItemRepository,
             ProductVariantRepository productVariantRepository,
-            UserService userService
+            ShopUserResolverService shopUserResolverService
     ) {
         this.cartItemRepository = cartItemRepository;
         this.productVariantRepository = productVariantRepository;
-        this.userService = userService;
+        this.shopUserResolverService = shopUserResolverService;
     }
 
     @Override
@@ -119,8 +119,7 @@ public class CartServiceImpl implements CartService {
     }
 
     private UserEntity getUserByEmail(String email) {
-        return userService.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        return shopUserResolverService.getOrCreateByEmail(email);
     }
 
     private ProductVariantEntity getVariantById(Long variantId) {

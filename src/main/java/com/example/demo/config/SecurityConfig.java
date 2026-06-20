@@ -48,6 +48,12 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers(
+                                "/api/cart/**",
+                                "/api/favorites/**",
+                                "/api/long/**",
+                                "/public/api/order/**"
+                        ).permitAll()
                         .requestMatchers("/admin/**", "/local-admin/**").permitAll()
                         .requestMatchers("/private/**").authenticated()
                         .anyRequest().permitAll()

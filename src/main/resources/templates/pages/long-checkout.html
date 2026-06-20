@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Thanh toán | Parfumerie</title>
+</head>
+<body>
+<input id="longUserEmail" type="hidden" value="">
+
+<main class="checkout-page">
+    <div class="checkout-shell">
+        <section class="checkout-left">
+            <div class="checkout-logo-wrap">
+                <a href="/" class="checkout-logo">PARFUMERIE</a>
+                <p>Magic Of Your Emotions</p>
+            </div>
+
+            <form id="checkoutForm" class="checkout-form">
+                <div class="checkout-two-columns">
+                    <section class="checkout-customer-col">
+                        <h1>Thông tin mua hàng</h1>
+
+                        <div id="checkoutLoginNotice" class="checkout-login-notice hidden">
+                            Bạn nên đăng nhập trước khi đặt hàng để đơn hàng được lưu theo tài khoản.
+                            <a href="/dang-nhap?redirect=/thanh-toan">Đăng nhập tại đây</a>
+                        </div>
+
+                        <div class="checkout-field-group">
+                            <div class="checkout-select-fake">
+                                <input type="text" value="Địa chỉ khác..." readonly class="checkout-input">
+                                <span>⌄</span>
+                            </div>
+                            <input name="customerEmail" type="email" placeholder="Email" required class="checkout-input checkout-muted">
+                            <input name="customerName" type="text" placeholder="Họ và tên" required class="checkout-input">
+                            <div class="checkout-phone-row">
+                                <input name="customerPhone" type="tel" placeholder="Số điện thoại" required class="checkout-input">
+                                <div class="checkout-flag">🇻🇳</div>
+                            </div>
+                            <input name="shippingAddress" type="text" placeholder="Địa chỉ" required class="checkout-input">
+                            <div class="checkout-select-fake">
+                                <input name="city" type="text" placeholder="Tỉnh thành" class="checkout-input">
+                                <span>⌄</span>
+                            </div>
+                            <div class="checkout-select-fake">
+                                <input name="district" type="text" placeholder="Quận huyện" class="checkout-input checkout-muted">
+                                <span>⌄</span>
+                            </div>
+                            <div class="checkout-select-fake">
+                                <input name="ward" type="text" placeholder="Phường xã" class="checkout-input checkout-muted">
+                                <span>⌄</span>
+                            </div>
+                            <label class="checkout-checkbox-line">
+                                <input type="checkbox">
+                                <span>Giao hàng đến địa chỉ khác</span>
+                            </label>
+                            <textarea name="note" placeholder="Ghi chú (tùy chọn)" rows="3" class="checkout-input checkout-note"></textarea>
+                        </div>
+                    </section>
+
+                    <section class="checkout-method-col">
+                        <div class="checkout-section-title checkout-shipping-title">
+                            <span>↪</span>
+                            <h2>Vận chuyển</h2>
+                        </div>
+                        <div id="shippingNotice" class="checkout-shipping-notice">
+                            Vui lòng nhập thông tin giao hàng
+                        </div>
+
+                        <h2 class="checkout-payment-title">Thanh toán</h2>
+                        <div class="checkout-payment-box">
+                            <label>
+                                <span>
+                                    <input type="radio" name="paymentMethod" value="BANK_TRANSFER" checked>
+                                    <em>Chuyển khoản qua ngân hàng</em>
+                                </span>
+                                <strong>▣</strong>
+                            </label>
+                            <label>
+                                <span>
+                                    <input type="radio" name="paymentMethod" value="COD">
+                                    <em>Thanh toán khi giao hàng (COD)</em>
+                                </span>
+                                <strong>▣</strong>
+                            </label>
+                        </div>
+
+                        <div id="checkoutMessage" class="checkout-message hidden"></div>
+                    </section>
+                </div>
+
+                <div class="checkout-policy-wrap">
+                    <label class="checkout-policy">
+                        <input id="checkoutPolicy" type="checkbox" checked>
+                        <span>Tôi đã đọc và đồng ý với chính sách bảo mật thông tin, bảo mật thông tin thanh toán và các chính sách bán hàng trên website này.</span>
+                    </label>
+                </div>
+            </form>
+        </section>
+
+        <aside class="checkout-summary">
+            <h2>Đơn hàng (<span id="checkoutTotalItems">0</span> sản phẩm)</h2>
+
+            <div id="checkoutItemsList" class="checkout-items-list">
+                <div class="checkout-empty">Đang tải giỏ hàng...</div>
+            </div>
+
+            <div class="checkout-discount-row">
+                <input id="checkoutDiscount" type="text" placeholder="Nhập mã giảm giá" class="checkout-input">
+                <button type="button" id="checkoutApplyDiscount">Áp dụng</button>
+            </div>
+
+            <div class="checkout-money-lines">
+                <div><span>Tạm tính</span><b id="checkoutSubtotal">0đ</b></div>
+                <div><span>Phí vận chuyển</span><b id="checkoutShipping">-</b></div>
+            </div>
+
+            <div class="checkout-total-row">
+                <span>Tổng cộng</span>
+                <b id="checkoutGrandTotal">0đ</b>
+            </div>
+
+            <div class="checkout-action-row">
+                <a href="/gio-hang">‹ Quay về giỏ hàng</a>
+                <button type="submit" form="checkoutForm" id="placeOrderButton">ĐẶT HÀNG</button>
+            </div>
+        </aside>
+    </div>
+</main>
+
+<style>
+    * { box-sizing: border-box; }
+    body {
+        margin: 0;
+        background: #ffffff;
+        color: #1f2933;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 14px;
+    }
+    .hidden { display: none !important; }
+    .checkout-page {
+        width: 100%;
+        min-height: 100vh;
+        background: #ffffff;
+    }
+    .checkout-shell {
+        width: 1120px;
+        max-width: calc(100vw - 40px);
+        min-height: 100vh;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 720px 400px;
+        align-items: stretch;
+    }
+    .checkout-left {
+        padding: 28px 26px 34px 0;
+        background: #ffffff;
+    }
+    .checkout-logo-wrap {
+        margin-bottom: 28px;
+        text-align: center;
+    }
+    .checkout-logo-wrap .checkout-logo {
+        display: inline-block;
+        color: #00523f;
+        text-decoration: none;
+        font-family: Georgia, 'Times New Roman', serif;
+        font-size: 34px;
+        line-height: 1;
+        letter-spacing: 0.08em;
+        font-weight: 500;
+    }
+    .checkout-logo-wrap p {
+        margin: 4px 0 0;
+        color: #00523f;
+        font-size: 12px;
+        letter-spacing: 0.08em;
+    }
+    .checkout-two-columns {
+        display: grid;
+        grid-template-columns: 350px 350px;
+        gap: 26px;
+    }
+    .checkout-customer-col h1,
+    .checkout-payment-title,
+    .checkout-section-title h2 {
+        margin: 0;
+        color: #111827;
+        font-size: 20px;
+        line-height: 1.25;
+        font-weight: 800;
+        letter-spacing: .02em;
+    }
+    .checkout-customer-col h1 { margin-bottom: 14px; }
+    .checkout-login-notice {
+        margin-bottom: 12px;
+        border: 1px solid #fde68a;
+        background: #fffbeb;
+        color: #92400e;
+        padding: 10px 12px;
+        line-height: 1.45;
+    }
+    .checkout-login-notice a {
+        color: #78350f;
+        font-weight: 700;
+    }
+    .checkout-field-group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .checkout-input {
+        width: 100%;
+        height: 40px;
+        border: 1px solid #d8d8d8;
+        border-radius: 0;
+        background: #ffffff;
+        padding: 0 12px;
+        color: #334155;
+        font-size: 14px;
+        outline: none;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+    .checkout-input::placeholder { color: #8b8b8b; }
+    .checkout-input:focus {
+        border-color: #00523f;
+        box-shadow: 0 0 0 2px rgba(0, 82, 63, .08);
+    }
+    .checkout-muted { background: #eeeeee; }
+    .checkout-select-fake { position: relative; }
+    .checkout-select-fake .checkout-input { padding-right: 36px; }
+    .checkout-select-fake span {
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 32px;
+        height: 40px;
+        border-left: 1px solid #d8d8d8;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #6b7280;
+        pointer-events: none;
+    }
+    .checkout-phone-row {
+        display: grid;
+        grid-template-columns: 1fr 40px;
+    }
+    .checkout-phone-row .checkout-input { border-right: 0; }
+    .checkout-flag {
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #d8d8d8;
+        background: #ffffff;
+        font-size: 13px;
+    }
+    .checkout-checkbox-line,
+    .checkout-policy {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        color: #555;
+        line-height: 1.55;
+    }
+    .checkout-checkbox-line input,
+    .checkout-policy input {
+        width: 15px;
+        height: 15px;
+        margin: 2px 0 0;
+    }
+    .checkout-note {
+        height: auto;
+        min-height: 55px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        resize: vertical;
+    }
+    .checkout-section-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 14px;
+    }
+    .checkout-section-title span { color: #00523f; font-size: 18px; }
+    .checkout-shipping-notice {
+        border: 1px solid #bde3e5;
+        background: #dff6f8;
+        color: #00523f;
+        padding: 13px 20px;
+        line-height: 1.45;
+        min-height: 40px;
+    }
+    .checkout-payment-title {
+        margin-top: 38px;
+        margin-bottom: 14px;
+    }
+    .checkout-payment-box {
+        overflow: hidden;
+        border: 1px solid #d8d8d8;
+        background: #ffffff;
+    }
+    .checkout-payment-box label {
+        min-height: 52px;
+        padding: 0 15px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid #e5e7eb;
+        cursor: pointer;
+        color: #444;
+    }
+    .checkout-payment-box label:last-child { border-bottom: 0; }
+    .checkout-payment-box label > span {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .checkout-payment-box input { width: 16px; height: 16px; }
+    .checkout-payment-box em { font-style: normal; }
+    .checkout-payment-box strong { color: #00523f; font-size: 15px; }
+    .checkout-message {
+        margin-top: 18px;
+        border: 1px solid #d8d8d8;
+        padding: 12px 14px;
+        font-weight: 700;
+        line-height: 1.45;
+    }
+    .checkout-policy-wrap {
+        margin-top: 74px;
+        padding-top: 26px;
+        border-top: 1px solid #e5e7eb;
+    }
+    .checkout-summary {
+        min-height: 100vh;
+        padding: 20px 0 34px 28px;
+        border-left: 1px solid #e2e2e2;
+        background: #fafafa;
+    }
+    .checkout-summary h2 {
+        margin: 0 0 18px;
+        color: #111827;
+        font-size: 20px;
+        line-height: 1.25;
+        font-weight: 800;
+    }
+    .checkout-items-list {
+        padding-bottom: 14px;
+        border-bottom: 1px solid #e5e7eb;
+        display: flex;
+        flex-direction: column;
+        gap: 13px;
+    }
+    .checkout-empty {
+        border: 1px dashed #d1d5db;
+        background: #ffffff;
+        padding: 16px;
+        color: #6b7280;
+        text-align: center;
+    }
+    .checkout-discount-row {
+        display: grid;
+        grid-template-columns: 1fr 94px;
+        gap: 12px;
+        margin-top: 14px;
+        padding-bottom: 18px;
+        border-bottom: 1px solid #e5e7eb;
+    }
+    .checkout-discount-row button {
+        border: 0;
+        background: #6f8b80;
+        color: #ffffff;
+        font-weight: 700;
+        cursor: pointer;
+    }
+    .checkout-discount-row button:hover { background: #00523f; }
+    .checkout-money-lines {
+        margin-top: 16px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid #e5e7eb;
+        color: #5b5b5b;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+    .checkout-money-lines div,
+    .checkout-total-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .checkout-money-lines b {
+        color: #4b5563;
+        font-weight: 500;
+    }
+    .checkout-total-row {
+        margin-top: 16px;
+        color: #5b5b5b;
+        font-size: 16px;
+    }
+    .checkout-total-row b {
+        color: #00523f;
+        font-size: 22px;
+        font-weight: 500;
+    }
+    .checkout-action-row {
+        margin-top: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+    }
+    .checkout-action-row a {
+        color: #00523f;
+        text-decoration: none;
+        font-weight: 600;
+    }
+    .checkout-action-row a:hover { text-decoration: underline; }
+    .checkout-action-row button {
+        border: 0;
+        background: #00523f;
+        color: #ffffff;
+        font-weight: 800;
+        padding: 13px 24px;
+        min-width: 110px;
+        cursor: pointer;
+    }
+    .checkout-action-row button:hover { background: #0f172a; }
+    button:disabled { opacity: .65; cursor: not-allowed; }
+
+    #checkoutMessage.border-red-200,
+    #checkoutMessage.text-red-700,
+    #checkoutMessage.bg-red-50 {
+        border-color: #fecaca;
+        background: #fef2f2;
+        color: #b91c1c;
+    }
+    #checkoutMessage.border-emerald-200,
+    #checkoutMessage.text-emerald-700,
+    #checkoutMessage.bg-emerald-50 {
+        border-color: #a7f3d0;
+        background: #ecfdf5;
+        color: #047857;
+    }
+
+    #checkoutItemsList article {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+    }
+    #checkoutItemsList article > div:first-child {
+        position: relative;
+        width: 58px;
+        height: 58px;
+        flex: 0 0 58px;
+        overflow: visible;
+        border: 1px solid #e5e7eb;
+        background: #ffffff;
+    }
+    #checkoutItemsList article img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+    #checkoutItemsList article span.absolute,
+    #checkoutItemsList article span[class*="absolute"] {
+        position: absolute !important;
+        right: -7px !important;
+        top: -7px !important;
+        width: 20px !important;
+        height: 20px !important;
+        border-radius: 999px !important;
+        background: #00523f !important;
+        color: white !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        font-size: 11px !important;
+        font-weight: 800 !important;
+    }
+    #checkoutItemsList h3 {
+        margin: 0;
+        max-width: 190px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        color: #1f2937;
+        font-size: 14px;
+        font-weight: 600;
+    }
+    #checkoutItemsList p {
+        margin: 4px 0 0;
+        color: #6b7280;
+        font-size: 12px;
+    }
+    #checkoutItemsList b {
+        margin-left: auto;
+        color: #6b7280;
+        font-size: 14px;
+        font-weight: 500;
+        white-space: nowrap;
+    }
+
+    @media (max-width: 980px) {
+        .checkout-shell {
+            display: block;
+            width: min(760px, calc(100vw - 28px));
+        }
+        .checkout-left { padding-right: 0; }
+        .checkout-two-columns { grid-template-columns: 1fr; }
+        .checkout-summary {
+            min-height: auto;
+            border-left: 0;
+            border-top: 1px solid #e2e2e2;
+            padding-left: 0;
+        }
+    }
+</style>
+
+<script src="/js/auth-ui.js"></script>
+<script src="/js/long-shop-ui.js"></script>
+<script src="/js/long-checkout-ui.js"></script>
+</body>
+</html>

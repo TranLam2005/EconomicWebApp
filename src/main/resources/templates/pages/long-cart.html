@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="vi" layout:decorate="~{layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Giỏ hàng | Parfumerie</title>
 </head>
-<body layout:fragment="content" class="bg-[#f7f3ed] text-stone-900">
+<body class="bg-[#f7f3ed] text-stone-900">
+<div th:replace="~{fragments/header :: header}"></div>
 <script src="https://cdn.tailwindcss.com"></script>
 
 <main class="min-h-screen bg-[#f7f3ed]">
@@ -43,7 +44,7 @@
                     <div class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-[#005b4b]/10 text-4xl">🛒</div>
                     <h3 class="mt-5 text-2xl font-black text-stone-950">Giỏ hàng đang trống</h3>
                     <p class="mt-2 text-stone-500">Bạn có thể qua trang tìm kiếm để thêm nước hoa vào giỏ.</p>
-                    <a href="/search" class="mt-6 inline-flex rounded-full bg-[#005b4b] px-6 py-3 font-bold text-white transition hover:bg-stone-950">Tìm sản phẩm</a>
+                    <a href="/tim-kiem" class="mt-6 inline-flex rounded-full bg-[#005b4b] px-6 py-3 font-bold text-white transition hover:bg-stone-950">Tìm sản phẩm</a>
                 </div>
 
                 <div id="cartItems" class="space-y-4"></div>
@@ -78,8 +79,8 @@
                             </div>
                             <p id="checkoutItems" class="mt-1 text-sm text-stone-400">0 sản phẩm</p>
                         </div>
-                        <button class="w-full rounded-full bg-[#005b4b] px-6 py-4 font-black text-white shadow-lg shadow-[#005b4b]/20 transition hover:-translate-y-0.5 hover:bg-stone-950">Tiến hành thanh toán</button>
-                        <a href="/wishlist" class="block rounded-full border border-stone-200 px-6 py-4 text-center font-bold text-stone-800 transition hover:border-[#005b4b] hover:text-[#005b4b]">Xem yêu thích</a>
+                        <a href="/thanh-toan" id="cartCheckoutButton" class="block w-full rounded-full bg-[#005b4b] px-6 py-4 text-center font-black text-white shadow-lg shadow-[#005b4b]/20 transition hover:-translate-y-0.5 hover:bg-stone-950">Tiến hành thanh toán</a>
+                        <a href="/yeu-thich" class="block rounded-full border border-stone-200 px-6 py-4 text-center font-bold text-stone-800 transition hover:border-[#005b4b] hover:text-[#005b4b]">Xem yêu thích</a>
                     </div>
                 </div>
             </aside>
