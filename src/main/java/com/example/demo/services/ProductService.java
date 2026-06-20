@@ -19,4 +19,6 @@ public interface ProductService {
   Optional<ProductEntity> updateProduct(Long id, ProductImportFileRequest request);
 
   ProductImportFileResponse importProduct(MultipartFile file);
+
+  Optional<ProductEntity> findByNormalizedKey(String normalizedKey);
 }

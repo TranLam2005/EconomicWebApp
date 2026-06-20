@@ -1,0 +1,57 @@
+<!doctype html>
+<html
+        layout:decorate="~{layout/layout}"
+        lang="vi"
+        xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Parfumerie - Trang chủ</title>
+    <link rel="stylesheet" href="/frontend/css/parfumerie-pages.css">
+</head>
+<body layout:fragment="content" data-page="home">
+<main>
+    <section class="hero-section">
+        <div class="hero-copy">
+            <p class="eyebrow">Bộ sưu tập mùa này</p>
+            <h1>Chọn mùi hương nói hộ cảm xúc của bạn.</h1>
+            <p>Nước hoa chính hãng, giao diện bán hàng hoàn chỉnh, có header điều hướng được sang đủ trang: tìm kiếm, giỏ hàng, yêu thích, tài khoản và chi tiết sản phẩm.</p>
+            <div class="hero-actions">
+                <a class="primary-btn" href="/shop/search">Khám phá ngay</a>
+                <a class="ghost-btn" href="/shop/products/1">Xem chi tiết mẫu</a>
+            </div>
+        </div>
+        <div class="hero-card">
+            <div class="bottle-visual"></div>
+            <p>Dior • Chanel • Unisex • EDP</p>
+        </div>
+    </section>
+
+    <section class="section-block">
+        <div class="section-heading">
+            <p class="eyebrow">Danh mục nổi bật</p>
+            <h2>Mua theo nhu cầu</h2>
+        </div>
+        <div class="category-grid">
+            <a href="/shop/search?gender=Men" class="category-card"><span>Nam</span><small>Trầm, sạch, mạnh mẽ</small></a>
+            <a href="/shop/search?gender=Women" class="category-card"><span>Nữ</span><small>Thanh lịch, mềm mại</small></a>
+            <a href="/shop/search?gender=Unisex" class="category-card"><span>Unisex</span><small>Dễ dùng, hiện đại</small></a>
+            <a href="/shop/search?concentration=EDP" class="category-card"><span>EDP</span><small>Lưu hương tốt</small></a>
+        </div>
+    </section>
+
+    <section class="section-block">
+        <div class="section-heading row-heading">
+            <div>
+                <p class="eyebrow">Sản phẩm gợi ý</p>
+                <h2>Best seller</h2>
+            </div>
+            <a href="/shop/search">Xem tất cả</a>
+        </div>
+        <div class="product-grid" data-home-products></div>
+    </section>
+</main>
+
+<script src="/frontend/js/parfumerie-pages.js"></script>
+</body>
+</html>

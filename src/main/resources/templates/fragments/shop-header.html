@@ -1,0 +1,36 @@
+<header class="shop-header" th:fragment="shopHeader" xmlns:th="http://www.thymeleaf.org">
+    <div class="top-strip">
+        <span>Freeship đơn từ 1.500.000đ</span>
+        <span>Hỗ trợ tư vấn mùi hương 24/7</span>
+        <span>Cam kết hàng chính hãng</span>
+    </div>
+
+    <div class="main-header">
+        <a class="brand" href="/shop/home" aria-label="Trang chủ Parfumerie">
+            <span class="brand-title">PARFUMERIE</span>
+            <span class="brand-subtitle">Magic Of Your Emotions</span>
+        </a>
+
+        <form class="header-search" data-header-search>
+            <input type="text" name="keyword" placeholder="Tìm nước hoa, thương hiệu, nồng độ..." autocomplete="off">
+            <button type="submit">Tìm</button>
+        </form>
+
+        <nav class="header-actions" aria-label="Tài khoản và giỏ hàng">
+            <a href="/shop/account">Tài khoản</a>
+            <a href="/shop/favorites">Yêu thích <span data-fav-count>0</span></a>
+            <a href="/shop/cart">Giỏ hàng <span data-cart-count>0</span></a>
+        </nav>
+    </div>
+
+    <nav class="category-nav" aria-label="Danh mục chính">
+        <a href="/shop/home">Trang chủ</a>
+        <a href="/shop/search?gender=Men">Nước hoa nam</a>
+        <a href="/shop/search?gender=Women">Nước hoa nữ</a>
+        <a href="/shop/search?gender=Unisex">Unisex</a>
+        <a href="/shop/search?brand=Dior">Dior</a>
+        <a href="/shop/search?brand=Chanel">Chanel</a>
+        <a href="/shop/search?concentration=EDP">EDP</a>
+        <a href="/shop/customers">Quản lý khách hàng</a>
+    </nav>
+</header>

@@ -103,7 +103,7 @@
         if (!menuItem) return null;
         return Array.from(menuItem.children).find(child => {
             const className = child.getAttribute && child.getAttribute("class");
-            return className && className.includes("absolute");
+            return className && className.includes("absolute") && child.querySelector("a[data-long-menu-link]");
         });
     }
 
@@ -155,19 +155,17 @@
     }
 
     function bindMenu(trigger) {
-        if (trigger.__longMenuBound) return;
-        trigger.__longMenuBound = true;
-
         const menuItem = trigger.parentElement;
         const panel = getPanel(menuItem);
         if (!menuItem || !panel) return;
 
+        menuItem.style.position = menuItem.classList.contains("relative") ? "" : menuItem.style.position;
         panel.style.pointerEvents = "auto";
 
         const open = () => {
             clearTimeout(menuItem.__longMenuTimer);
             closeOtherMenus(menuItem);
-            showPanel(menuItem, panel);
+            setTimeout(() => showPanel(menuItem, panel), OPEN_DELAY_MS);
         };
         const scheduleClose = () => hidePanel(menuItem, panel);
 
@@ -182,26 +180,18 @@
         trigger.addEventListener("focus", open);
         panel.addEventListener("focusin", open);
         panel.addEventListener("focusout", scheduleClose);
+
+        // Bấm vào tiêu đề menu sẽ đi tới trang tìm kiếm tổng, còn hover vẫn mở menu con.
         trigger.addEventListener("click", event => goToLink(event, trigger));
     }
 
-    function bindMenuLinks() {
+    document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll("[data-long-menu-trigger]").forEach(bindMenu);
+
         document.querySelectorAll("a[data-long-menu-link]").forEach(link => {
-            if (link.__longMenuLinkBound) return;
-            link.__longMenuLinkBound = true;
             link.addEventListener("click", event => goToLink(event, link), true);
             link.addEventListener("mousedown", event => event.stopPropagation(), true);
         });
-    }
-
-    function bindAllMenus() {
-        document.querySelectorAll("[data-long-menu-trigger]").forEach(bindMenu);
-        bindMenuLinks();
-    }
-
-    document.addEventListener("DOMContentLoaded", async () => {
-        await loadCatalogMenu();
-        bindAllMenus();
 
         document.addEventListener("keydown", event => {
             if (event.key !== "Escape") return;

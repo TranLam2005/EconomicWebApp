@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Quản lý khách hàng</title>
+    <link rel="stylesheet" href="/frontend/css/parfumerie-pages.css">
+</head>
+<body data-page="customers">
+<div th:replace="~{fragments/shop-header :: shopHeader}"></div>
+
+<main>
+    <section class="page-title">
+        <p class="eyebrow">Đăng</p>
+        <h1>Quản lý khách hàng</h1>
+        <p>Danh sách khách hàng, tìm kiếm nhanh, xem vai trò và trạng thái. Nếu có token admin, trang sẽ gọi API /admin/users.</p>
+    </section>
+
+    <section class="card-panel">
+        <div class="toolbar">
+            <input data-customer-keyword type="text" placeholder="Tìm theo tên hoặc email">
+            <select data-customer-role>
+                <option value="">Tất cả vai trò</option>
+                <option value="USER">USER</option>
+                <option value="ADMIN">ADMIN</option>
+            </select>
+            <button class="primary-btn" data-load-customers>Tải danh sách</button>
+        </div>
+        <p class="form-message" data-customer-message>Đăng nhập admin ở trang tài khoản để lấy token nếu muốn gọi API thật.</p>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr><th>ID</th><th>Họ tên</th><th>Email</th><th>Vai trò</th><th>Ngày tạo</th><th>Thao tác</th></tr>
+                </thead>
+                <tbody data-customer-table></tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+<script src="/frontend/js/parfumerie-pages.js"></script>
+</body>
+</html>

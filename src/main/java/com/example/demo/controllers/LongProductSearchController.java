@@ -73,7 +73,7 @@ public class LongProductSearchController {
                 product.getGender(),
                 product.getConcentration(),
                 price,
-                pickImage(product, variant),
+                pickImage(product),
                 variant != null ? variant.getId() : null,
                 variant != null ? variant.getVariantName() : null,
                 variant != null ? variant.getVolumeMl() : null,
@@ -92,12 +92,7 @@ public class LongProductSearchController {
                 .orElse(product.getVariants().get(0));
     }
 
-    private String pickImage(ProductEntity product, ProductVariantEntity variant) {
-        String imageFromVariant = pickMainImage(variant != null ? variant.getImages() : null);
-        if (imageFromVariant != null) {
-            return imageFromVariant;
-        }
-
+    private String pickImage(ProductEntity product) {
         return pickMainImage(product.getImages());
     }
 

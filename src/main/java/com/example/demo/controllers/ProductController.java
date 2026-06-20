@@ -55,6 +55,14 @@ public class ProductController {
     return "pages/CreateListProduct";
   }
 
+  @GetMapping("/detail-product/{slug}")
+  public String detailProduct(Model model, @PathVariable String slug) {
+    ProductEntity product = productService.findByNormalizedKey(slug)
+            .orElseThrow(() -> new RuntimeException("Product not found"));
+    model.addAttribute("product", product);
+    return "pages/frontend/product-detail";
+  }
+
   @GetMapping("/listProduct")
   public ResponseEntity<List<ProductEntity>> getAllProducts() {
     List<ProductEntity> products = productService.getAllProducts();
