@@ -1,26 +1,149 @@
 <!DOCTYPE html>
-<html layout:decorate="~{layout/layoutAdmin}" lang="vi" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head><meta charset="UTF-8"><title>Quản lý khách hàng</title><script src="https://cdn.tailwindcss.com"></script></head>
+<html layout:decorate="~{layout/layoutAdmin}" lang="vi"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý khách hàng</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
 <main layout:fragment="content" class="w-full min-h-screen bg-gray-50 p-6 text-gray-800">
-  <div class="max-w-7xl mx-auto space-y-6">
-    <div><h1 class="text-2xl font-bold text-gray-900">Quản lý khách hàng</h1><p class="text-sm text-gray-500 mt-1">Danh sách tài khoản người dùng trong hệ thống.</p></div>
-    <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-      <div class="overflow-x-auto">
-        <table class="w-full text-sm">
-          <thead class="bg-gray-50 text-gray-600"><tr><th class="px-5 py-3 text-left">ID</th><th class="px-5 py-3 text-left">Họ tên</th><th class="px-5 py-3 text-left">Email</th><th class="px-5 py-3 text-left">Vai trò</th><th class="px-5 py-3 text-left">Ngày tạo</th></tr></thead>
-          <tbody class="divide-y divide-gray-100">
-            <tr th:each="user : ${users}" class="hover:bg-gray-50">
-              <td class="px-5 py-3" th:text="${user.id}">1</td>
-              <td class="px-5 py-3 font-medium"><span th:text="${user.firstName}">Tên</span> <span th:text="${user.lastName}">Họ</span></td>
-              <td class="px-5 py-3" th:text="${user.email}">email</td>
-              <td class="px-5 py-3"><span class="px-2 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs" th:text="${user.role}">USER</span></td>
-              <td class="px-5 py-3 text-gray-500" th:text="${user.createdAt}">date</td>
-            </tr>
-            <tr th:if="${users == null or users.isEmpty()}"><td colspan="5" class="px-5 py-8 text-center text-gray-500">Chưa có khách hàng</td></tr>
-          </tbody>
-        </table>
-      </div>
+    <div class="max-w-7xl mx-auto space-y-6">
+        <div class="flex items-start justify-between gap-4">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900">Quản lý khách hàng</h1>
+                <p class="text-sm text-gray-500 mt-1">Cập nhật thông tin, đổi vai trò hoặc xóa tài khoản khách hàng.</p>
+            </div>
+            <a th:href="@{/local-admin/users}"
+               class="inline-flex items-center rounded-lg bg-emerald-700 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-800">
+                Thêm mới
+            </a>
+        </div>
+
+        <div th:if="${successMessage}"
+             class="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700"
+             th:text="${successMessage}">
+            Thành công
+        </div>
+        <div th:if="${errorMessage}"
+             class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700"
+             th:text="${errorMessage}">
+            Có lỗi
+        </div>
+
+        <section class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+            <div class="border-b border-gray-100 px-5 py-4">
+                <h2 class="text-lg font-bold text-gray-900" th:text="${editMode} ? 'Cập nhật khách hàng' : 'Thêm tài khoản khách hàng'">Cập nhật khách hàng</h2>
+                <p class="mt-1 text-sm text-gray-500">Mật khẩu chỉ cần nhập khi thêm mới hoặc muốn đổi mật khẩu.</p>
+            </div>
+
+            <form th:action="@{/local-admin/users/save}" method="post" class="grid grid-cols-1 gap-4 p-5 md:grid-cols-2 lg:grid-cols-6">
+                <input type="hidden" name="id" th:value="${userForm.id}">
+
+                <div class="lg:col-span-1">
+                    <label class="mb-1 block text-xs font-bold uppercase tracking-wide text-gray-600">Họ</label>
+                    <input name="firstName" required th:value="${userForm.firstName}"
+                           class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none focus:border-emerald-700"
+                           placeholder="Nguyen">
+                </div>
+
+                <div class="lg:col-span-1">
+                    <label class="mb-1 block text-xs font-bold uppercase tracking-wide text-gray-600">Tên</label>
+                    <input name="lastName" required th:value="${userForm.lastName}"
+                           class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none focus:border-emerald-700"
+                           placeholder="Van A">
+                </div>
+
+                <div class="lg:col-span-2">
+                    <label class="mb-1 block text-xs font-bold uppercase tracking-wide text-gray-600">Email</label>
+                    <input name="email" type="email" required th:value="${userForm.email}"
+                           class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none focus:border-emerald-700"
+                           placeholder="email@gmail.com">
+                </div>
+
+                <div class="lg:col-span-1">
+                    <label class="mb-1 block text-xs font-bold uppercase tracking-wide text-gray-600">Vai trò</label>
+                    <select name="role" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none focus:border-emerald-700">
+                        <option value="USER" th:selected="${userForm.role == null or userForm.role == 'USER'}">USER</option>
+                        <option value="ADMIN" th:selected="${userForm.role == 'ADMIN'}">ADMIN</option>
+                    </select>
+                </div>
+
+                <div class="lg:col-span-1">
+                    <label class="mb-1 block text-xs font-bold uppercase tracking-wide text-gray-600">Mật khẩu</label>
+                    <input name="password" type="password"
+                           class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none focus:border-emerald-700"
+                           th:placeholder="${editMode} ? 'Để trống nếu giữ nguyên' : 'Nhập mật khẩu'">
+                </div>
+
+                <div class="flex items-end gap-2 md:col-span-2 lg:col-span-6">
+                    <button type="submit"
+                            class="rounded-lg bg-emerald-700 px-5 py-2.5 text-sm font-bold text-white hover:bg-emerald-800"
+                            th:text="${editMode} ? 'Cập nhật thông tin' : 'Thêm tài khoản'">
+                        Cập nhật thông tin
+                    </button>
+                    <a th:if="${editMode}" th:href="@{/local-admin/users}"
+                       class="rounded-lg border border-gray-200 px-5 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50">
+                        Hủy sửa
+                    </a>
+                </div>
+            </form>
+        </section>
+
+        <section class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+            <div class="border-b border-gray-100 px-5 py-4">
+                <h2 class="text-lg font-bold text-gray-900">Danh sách khách hàng</h2>
+                <p class="mt-1 text-sm text-gray-500">Bấm Sửa để đưa thông tin lên form phía trên.</p>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead class="bg-gray-50 text-gray-600">
+                    <tr>
+                        <th class="px-5 py-3 text-left">ID</th>
+                        <th class="px-5 py-3 text-left">Họ tên</th>
+                        <th class="px-5 py-3 text-left">Email</th>
+                        <th class="px-5 py-3 text-left">Vai trò</th>
+                        <th class="px-5 py-3 text-left">Ngày tạo</th>
+                        <th class="px-5 py-3 text-right">Thao tác</th>
+                    </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                    <tr th:each="user : ${users}" class="hover:bg-gray-50">
+                        <td class="px-5 py-3" th:text="${user.id}">1</td>
+                        <td class="px-5 py-3 font-medium text-gray-900">
+                            <span th:text="${user.firstName}">Nguyen</span>
+                            <span th:text="${user.lastName}">Van A</span>
+                        </td>
+                        <td class="px-5 py-3" th:text="${user.email}">email</td>
+                        <td class="px-5 py-3">
+                            <span class="px-2 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold"
+                                  th:text="${user.role}">USER</span>
+                        </td>
+                        <td class="px-5 py-3 text-gray-500" th:text="${user.createdAt}">date</td>
+                        <td class="px-5 py-3">
+                            <div class="flex items-center justify-end gap-2">
+                                <a th:href="@{/local-admin/users(id=${user.id})}"
+                                   class="rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-semibold text-gray-700 hover:bg-gray-50">
+                                    Sửa
+                                </a>
+                                <form th:action="@{/local-admin/users/{id}/delete(id=${user.id})}" method="post"
+                                      onsubmit="return confirm('Bạn chắc chắn muốn xóa khách hàng này?');">
+                                    <button type="submit"
+                                            class="rounded-lg bg-red-50 px-3 py-1.5 text-xs font-bold text-red-600 hover:bg-red-100">
+                                        Xóa
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr th:if="${users == null or users.isEmpty()}">
+                        <td colspan="6" class="px-5 py-8 text-center text-gray-500">Chưa có khách hàng</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
     </div>
-  </div>
 </main>
 </html>

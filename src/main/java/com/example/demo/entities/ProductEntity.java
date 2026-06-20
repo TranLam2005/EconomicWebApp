@@ -4,9 +4,12 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
 @Entity
 @Table(name = "product")
@@ -20,26 +23,21 @@ public class ProductEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Tom Ford Ombre Leather
     @Column(name = "product_name",  nullable = false, columnDefinition = "varchar(255)")
     private String productName;
 
     @Column()
     private BigDecimal price;
 
-    // Tom Ford
     @Column(name = "brand", nullable = false, columnDefinition = "varchar(100)")
     private String brand;
 
-    // Unisex
     @Column(name = "gender", nullable = false, columnDefinition = "varchar(20)")
     private String gender;
 
-    // EDP
     @Column(name = "concentration", columnDefinition = "varchar(50)")
     private String concentration;
 
-    // 2018
     @Column(name = "release_year", columnDefinition = "int")
     private Integer releaseYear;
 
@@ -59,36 +57,24 @@ public class ProductEntity {
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
-        syncVariantParents();
     }
 
     @PreUpdate
     public void preUpdate() {
         this.updatedAt = LocalDateTime.now();
-        syncVariantParents();
     }
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "product")
-    @Builder.Default
-    private List<ProductVariantEntity> variants = new ArrayList<>();
+    private List<ProductVariantEntity> variants;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "product_id")
-    @Builder.Default
-    private List<ProductImageEntity> images = new ArrayList<>();
+    private List<ProductImageEntity> images;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItemEntity> orderProductEntities;
 
-    public void setVariants(List<ProductVariantEntity> variants) {
-        this.variants = variants != null ? variants : new ArrayList<>();
-        syncVariantParents();
-    }
-
     public void addVariant(ProductVariantEntity variant) {
-        if (variants == null) {
-            variants = new ArrayList<>();
-        }
         variants.add(variant);
         variant.setProduct(this);
     }
@@ -98,46 +84,78 @@ public class ProductEntity {
         variant.setProduct(null);
     }
 
-    private void syncVariantParents() {
-        if (variants == null) {
-            return;
+    @Transient
+    public String getPrimaryImageUrl() {
+        if (images == null || images.isEmpty()) {
+            return "";
         }
-        variants.forEach(variant -> variant.setProduct(this));
+
+        return images.stream()
+                .filter(image -> Boolean.TRUE.equals(image.getIsMain()))
+                .map(ProductImageEntity::getSecureUrl)
+                .filter(url -> url != null && !url.isBlank())
+                .findFirst()
+                .orElseGet(() -> images.stream()
+                        .map(ProductImageEntity::getSecureUrl)
+                        .filter(url -> url != null && !url.isBlank())
+                        .findFirst()
+                        .orElse(""));
     }
 
     @Transient
-    public BigDecimal getMinPrice() {
+    public ProductVariantEntity getDisplayVariant() {
         if (variants == null || variants.isEmpty()) {
             return null;
         }
+
         return variants.stream()
-                .map(ProductVariantEntity::getPrice)
-                .filter(java.util.Objects::nonNull)
-                .min(BigDecimal::compareTo)
-                .orElse(null);
+                .filter(variant -> variant.getPrice() != null)
+                .filter(variant -> variant.getIsActive() == null || Boolean.TRUE.equals(variant.getIsActive()))
+                .min(Comparator.comparing(ProductVariantEntity::getPrice, Comparator.nullsLast(BigDecimal::compareTo)))
+                .orElse(variants.get(0));
     }
 
     @Transient
-    public BigDecimal getMaxPrice() {
-        if (variants == null || variants.isEmpty()) {
-            return null;
-        }
-        return variants.stream()
-                .map(ProductVariantEntity::getPrice)
-                .filter(java.util.Objects::nonNull)
-                .max(BigDecimal::compareTo)
-                .orElse(null);
+    public Long getDisplayVariantId() {
+        ProductVariantEntity variant = getDisplayVariant();
+        return variant != null ? variant.getId() : null;
     }
 
     @Transient
-    public int getTotalStock() {
-        if (variants == null || variants.isEmpty()) {
-            return 0;
+    public BigDecimal getDisplayPrice() {
+        ProductVariantEntity variant = getDisplayVariant();
+        if (variant != null && variant.getPrice() != null) {
+            return variant.getPrice();
         }
-        return variants.stream()
-                .map(ProductVariantEntity::getStockQuantity)
-                .filter(java.util.Objects::nonNull)
-                .mapToInt(Integer::intValue)
-                .sum();
+        return price;
+    }
+
+    @Transient
+    public String getPriceRangeText() {
+        NumberFormat format = NumberFormat.getInstance(new Locale("vi", "VN"));
+
+        if (variants != null && !variants.isEmpty()) {
+            List<BigDecimal> prices = variants.stream()
+                    .filter(variant -> variant.getIsActive() == null || Boolean.TRUE.equals(variant.getIsActive()))
+                    .map(ProductVariantEntity::getPrice)
+                    .filter(Objects::nonNull)
+                    .sorted()
+                    .toList();
+
+            if (!prices.isEmpty()) {
+                BigDecimal min = prices.get(0);
+                BigDecimal max = prices.get(prices.size() - 1);
+                if (min.compareTo(max) == 0) {
+                    return format.format(min) + "đ";
+                }
+                return format.format(min) + "đ - " + format.format(max) + "đ";
+            }
+        }
+
+        if (price != null) {
+            return format.format(price) + "đ";
+        }
+
+        return "Liên hệ";
     }
 }

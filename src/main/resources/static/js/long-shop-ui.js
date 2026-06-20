@@ -1,6 +1,10 @@
 const LongShop = (() => {
     const DEFAULT_EMAIL = "dang@test.com";
     const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=800&q=80";
+    const AUTH_KEYS = {
+        accessToken: "parfumerie_access_token",
+        email: "parfumerie_user_email"
+    };
 
     function formatCurrency(value) {
         const numberValue = Number(value || 0);
@@ -11,11 +15,29 @@ const LongShop = (() => {
         });
     }
 
+    function getAuthEmail() {
+        if (window.ParfumerieAuth && typeof window.ParfumerieAuth.getUserEmail === "function") {
+            return window.ParfumerieAuth.getUserEmail() || "";
+        }
+        return localStorage.getItem(AUTH_KEYS.email) || "";
+    }
+
+    function getAuthToken() {
+        if (window.ParfumerieAuth && typeof window.ParfumerieAuth.getAccessToken === "function") {
+            return window.ParfumerieAuth.getAccessToken() || "";
+        }
+        return localStorage.getItem(AUTH_KEYS.accessToken) || "";
+    }
+
     function getEmail() {
         const emailInput = document.getElementById("longUserEmail");
-        const email = emailInput && emailInput.value ? emailInput.value.trim() : "";
+        const authEmail = getAuthEmail().trim();
+        const inputEmail = emailInput && emailInput.value ? emailInput.value.trim() : "";
         const savedEmail = localStorage.getItem("long-demo-email") || "";
-        const finalEmail = email || savedEmail || DEFAULT_EMAIL;
+
+        // Ưu tiên tài khoản đã đăng nhập. Trước đây input ẩn dang@test.com được ưu tiên,
+        // nên bấm thêm giỏ hàng có thể lấy sai user và gây lỗi 500.
+        const finalEmail = authEmail || inputEmail || savedEmail || DEFAULT_EMAIL;
 
         if (emailInput && emailInput.value !== finalEmail) {
             emailInput.value = finalEmail;
@@ -36,6 +58,9 @@ const LongShop = (() => {
 
     function headers(json = false) {
         const baseHeaders = {"X-User-Email": getEmail()};
+        // Không gửi Authorization cho API giỏ hàng/yêu thích.
+        // Nếu token cũ/hết hạn còn trong localStorage, Spring Security sẽ trả 401
+        // trước khi controller xử lý. Giỏ hàng demo dùng X-User-Email để lưu theo email.
         if (json) {
             baseHeaders["Content-Type"] = "application/json";
         }
@@ -74,7 +99,27 @@ const LongShop = (() => {
         window.__longToastTimer = window.setTimeout(() => {
             toastBox.style.opacity = "0";
             toastBox.style.transform = "translateY(12px)";
-        }, 2600);
+        }, 3200);
+    }
+
+    async function responseMessage(response) {
+        const contentType = response.headers.get("content-type") || "";
+        if (contentType.includes("application/json")) {
+            const data = await response.json().catch(() => null);
+            return data && (data.message || data.error || data.detail)
+                ? (data.message || data.error || data.detail)
+                : "Yêu cầu không thành công.";
+        }
+
+        const text = await response.text().catch(() => "");
+        if (!text) return "Yêu cầu không thành công.";
+
+        // Không hiển thị nguyên stacktrace/Whitelabel HTML dài lên màn hình.
+        const plain = text.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+        if (plain.toLowerCase().includes("user not found")) {
+            return "Không tìm thấy tài khoản để lưu giỏ hàng. Vui lòng đăng nhập lại hoặc đăng ký tài khoản.";
+        }
+        return plain.slice(0, 180);
     }
 
     async function addToCart(variantId, quantity = 1) {
@@ -90,8 +135,10 @@ const LongShop = (() => {
         });
 
         if (!response.ok) {
-            const text = await response.text();
-            toast(`Thêm giỏ hàng thất bại: ${response.status} - ${text}`, "error");
+            const message = response.status === 401
+                ? "Phiên đăng nhập cũ bị lỗi. Mình đã chuyển giỏ hàng sang lưu theo email, hãy tải lại trang và thử lại."
+                : await responseMessage(response);
+            toast(`Thêm giỏ hàng thất bại: ${message}`, "error");
             return false;
         }
 
@@ -114,8 +161,7 @@ const LongShop = (() => {
         });
 
         if (!response.ok) {
-            const text = await response.text();
-            toast(`Thêm yêu thích thất bại: ${response.status} - ${text}`, "error");
+            toast(`Thêm yêu thích thất bại: ${await responseMessage(response)}`, "error");
             return false;
         }
 
@@ -135,8 +181,7 @@ const LongShop = (() => {
         });
 
         if (!response.ok) {
-            const text = await response.text();
-            toast(`Xóa yêu thích thất bại: ${response.status} - ${text}`, "error");
+            toast(`Xóa yêu thích thất bại: ${await responseMessage(response)}`, "error");
             return false;
         }
 

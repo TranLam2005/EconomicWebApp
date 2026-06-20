@@ -76,7 +76,7 @@ public class OrderServiceImpl implements OrderService {
             .map(item -> {
               ProductEntity product = productService.findProductById(item.getProductId())
                       .orElseThrow(() -> new RuntimeException("Product not found"));
-              BigDecimal price = product.getPrice();
+              BigDecimal price = resolveProductPrice(product);
 
               return OrderItemEntity.builder()
                       .order(order)
@@ -127,7 +127,7 @@ public class OrderServiceImpl implements OrderService {
     for (OrderItemRequest item : items) {
       ProductEntity product = productService.findProductById(item.getProductId())
               .orElseThrow(() -> new RuntimeException("Product not found"));
-      BigDecimal lineTotal = product.getPrice()
+      BigDecimal lineTotal = resolveProductPrice(product)
               .multiply(BigDecimal.valueOf(item.getQuantity()));
       subtotalAmount = subtotalAmount.add(lineTotal);
     }
@@ -141,6 +141,21 @@ public class OrderServiceImpl implements OrderService {
             .add(shippingAmount)
             .subtract(discountAmount);
     return totalAmount;
+  }
+
+
+  private BigDecimal resolveProductPrice(ProductEntity product) {
+    if (product.getPrice() != null && product.getPrice().compareTo(BigDecimal.ZERO) > 0) {
+      return product.getPrice();
+    }
+    if (product.getVariants() != null) {
+      return product.getVariants().stream()
+              .map(ProductVariantEntity::getPrice)
+              .filter(price -> price != null && price.compareTo(BigDecimal.ZERO) > 0)
+              .min(BigDecimal::compareTo)
+              .orElse(BigDecimal.ZERO);
+    }
+    return BigDecimal.ZERO;
   }
 
   private BigDecimal shippingFee(BigDecimal subtotalAmount) {
