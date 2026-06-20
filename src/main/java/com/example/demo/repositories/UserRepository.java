@@ -13,4 +13,12 @@ public interface UserRepository extends CrudRepository<UserEntity, Long> {
 
     @NullMarked
     Optional<UserEntity> findByEmail(String email);
+
+    @NullMarked
+    List<UserEntity> findAllByEmailIgnoreCase(String email);
+
+    @NullMarked
+    Optional<UserEntity> findFirstByEmailIgnoreCaseOrderByIdDesc(String email);
+
+    boolean existsByEmailIgnoreCase(String email);
 }

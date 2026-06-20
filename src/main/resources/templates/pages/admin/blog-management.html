@@ -1,29 +1,203 @@
 <!DOCTYPE html>
-<html layout:decorate="~{layout/layoutAdmin}" lang="vi" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head><meta charset="UTF-8"><title>Quản lý blog</title><script src="https://cdn.tailwindcss.com"></script></head>
+<html layout:decorate="~{layout/layoutAdmin}" lang="vi"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý blog</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
 <main layout:fragment="content" class="w-full min-h-screen bg-gray-50 p-6 text-gray-800">
-  <div class="max-w-7xl mx-auto space-y-6">
-    <div><h1 class="text-2xl font-bold text-gray-900">Quản lý blog</h1><p class="text-sm text-gray-500 mt-1">Hiển thị dữ liệu blog từ backend hiện có.</p></div>
-    <div th:if="${successMessage}" class="rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-green-700" th:text="${successMessage}"></div>
-    <div th:if="${errorMessage}" class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-700" th:text="${errorMessage}"></div>
-    <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-      <div class="overflow-x-auto">
-        <table class="w-full text-sm">
-          <thead class="bg-gray-50 text-gray-600"><tr><th class="px-5 py-3 text-left">Tiêu đề</th><th class="px-5 py-3 text-left">Slug</th><th class="px-5 py-3 text-left">Lượt xem</th><th class="px-5 py-3 text-left">Trạng thái</th><th class="px-5 py-3 text-left">Ngày tạo</th><th class="px-5 py-3 text-right">Thao tác</th></tr></thead>
-          <tbody class="divide-y divide-gray-100">
-            <tr th:each="blog : ${blogs}" class="hover:bg-gray-50">
-              <td class="px-5 py-3 font-medium" th:text="${blog.title}">Title</td>
-              <td class="px-5 py-3 text-gray-500" th:text="${blog.slug}">slug</td>
-              <td class="px-5 py-3" th:text="${blog.viewCount}">0</td>
-              <td class="px-5 py-3"><span class="px-2 py-1 rounded-full text-xs" th:classappend="${blog.isPublished == true} ? ' bg-green-50 text-green-700' : ' bg-gray-100 text-gray-600'" th:text="${blog.isPublished == true ? 'Đã đăng' : 'Ẩn'}">Đã đăng</span></td>
-              <td class="px-5 py-3 text-gray-500" th:text="${blog.createdAt}">date</td>
-              <td class="px-5 py-3 text-right"><form th:action="@{/local-admin/blogs/{id}/delete(id=${blog.id})}" method="post" class="inline" onsubmit="return confirm('Xóa bài viết này?')"><button class="text-red-600 hover:underline">Xóa</button></form></td>
-            </tr>
-            <tr th:if="${blogs == null or blogs.isEmpty()}"><td colspan="6" class="px-5 py-8 text-center text-gray-500">Chưa có blog</td></tr>
-          </tbody>
-        </table>
-      </div>
+    <div class="max-w-7xl mx-auto space-y-6">
+        <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+                <p class="text-xs font-semibold uppercase tracking-[0.25em] text-[#07503D]/70">Admin blog</p>
+                <h1 class="text-2xl font-bold text-gray-900">Quản lý blog</h1>
+                <p class="text-sm text-gray-500 mt-1">
+                    Thêm, sửa, cập nhật, ẩn/hiện và xóa bài viết blog của hệ thống Parfumerie.
+                </p>
+            </div>
+            <a href="/local-admin/dashboard"
+               class="inline-flex items-center justify-center rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100">
+                Quay lại tổng quan
+            </a>
+        </div>
+
+        <div th:if="${successMessage}"
+             class="rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-green-700"
+             th:text="${successMessage}"></div>
+        <div th:if="${errorMessage}"
+             class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-700"
+             th:text="${errorMessage}"></div>
+
+        <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+            <section class="xl:col-span-1 bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                <div class="border-b border-gray-100 p-5">
+                    <h2 class="text-lg font-bold text-gray-900"
+                        th:text="${blogForm != null and blogForm.id != null ? 'Cập nhật bài viết' : 'Thêm bài viết'}">
+                        Thêm bài viết
+                    </h2>
+                    <p class="mt-1 text-sm text-gray-500">Nhập nội dung từ bàn phím rồi lưu vào database.</p>
+                </div>
+
+                <form th:action="@{/local-admin/blogs/save}" method="post" class="p-5 space-y-4">
+                    <input type="hidden" name="id" th:value="${blogForm.id}">
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Tiêu đề <span class="text-red-500">*</span></label>
+                        <input type="text" name="title" required th:value="${blogForm.title}"
+                               placeholder="Ví dụ: 5 mùi hương phù hợp mùa hè"
+                               class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-[#07503D] focus:outline-none focus:ring-2 focus:ring-[#07503D]/10">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Slug</label>
+                        <input type="text" name="slug" th:value="${blogForm.slug}"
+                               placeholder="Có thể bỏ trống để tự tạo"
+                               class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-[#07503D] focus:outline-none focus:ring-2 focus:ring-[#07503D]/10">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Danh mục <span class="text-red-500">*</span></label>
+                        <select name="categoryId" required
+                                class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-[#07503D] focus:outline-none focus:ring-2 focus:ring-[#07503D]/10">
+                            <option value="">-- Chọn danh mục --</option>
+                            <option th:each="category : ${categories}"
+                                    th:value="${category.id}"
+                                    th:selected="${selectedCategoryId != null and category.id == selectedCategoryId}"
+                                    th:text="${category.name}">Danh mục</option>
+                        </select>
+                        <p th:if="${categories == null or categories.isEmpty()}" class="mt-1 text-xs text-red-600">
+                            Chưa có danh mục. Hãy tạo danh mục trước ở trang Danh mục & thương hiệu.
+                        </p>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Tác giả <span class="text-red-500">*</span></label>
+                        <select name="authorId" required
+                                class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-[#07503D] focus:outline-none focus:ring-2 focus:ring-[#07503D]/10">
+                            <option value="">-- Chọn tác giả --</option>
+                            <option th:each="user : ${users}"
+                                    th:value="${user.id}"
+                                    th:selected="${selectedAuthorId != null and user.id == selectedAuthorId}"
+                                    th:text="${user.email}">
+                                Tác giả
+                            </option>
+                        </select>
+                        <p th:if="${users == null or users.isEmpty()}" class="mt-1 text-xs text-red-600">
+                            Chưa có tài khoản người dùng để làm tác giả.
+                        </p>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Ảnh đại diện</label>
+                        <input type="text" name="featuredImage" th:value="${blogForm.featuredImage}"
+                               placeholder="Dán URL ảnh bài viết"
+                               class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-[#07503D] focus:outline-none focus:ring-2 focus:ring-[#07503D]/10">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Mô tả ngắn</label>
+                        <textarea name="excerpt" rows="3"
+                                  placeholder="Có thể bỏ trống để hệ thống lấy từ nội dung"
+                                  class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-[#07503D] focus:outline-none focus:ring-2 focus:ring-[#07503D]/10"
+                                  th:text="${blogForm.excerpt}"></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Nội dung</label>
+                        <textarea name="content" rows="9"
+                                  placeholder="Nhập nội dung bài viết..."
+                                  class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-[#07503D] focus:outline-none focus:ring-2 focus:ring-[#07503D]/10"
+                                  th:text="${blogForm.content}"></textarea>
+                    </div>
+
+                    <label class="flex items-center gap-2 text-sm text-gray-700">
+                        <input type="checkbox" name="isPublished" value="true"
+                               th:checked="${blogForm.id == null or blogForm.isPublished == true}"
+                               class="rounded border-gray-300 text-[#07503D] focus:ring-[#07503D]">
+                        Hiển thị bài viết
+                    </label>
+
+                    <div class="flex flex-wrap gap-2 pt-2">
+                        <button type="submit"
+                                class="rounded-lg bg-[#07503D] px-4 py-2 text-sm font-semibold text-white hover:bg-[#053b2d]">
+                            Lưu bài viết
+                        </button>
+                        <a href="/local-admin/blogs"
+                           class="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100">
+                            Làm mới
+                        </a>
+                    </div>
+                </form>
+            </section>
+
+            <section class="xl:col-span-2 bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                <div class="border-b border-gray-100 p-5 flex items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-lg font-bold text-gray-900">Danh sách bài viết</h2>
+                        <p class="mt-1 text-sm text-gray-500">Quản lý các bài viết đã lưu trong bảng blogs.</p>
+                    </div>
+                    <span class="rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-gray-600"
+                          th:text="${blogs == null ? 0 : blogs.size()} + ' bài viết'">0 bài viết</span>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead class="bg-gray-50 text-gray-600">
+                        <tr>
+                            <th class="px-5 py-3 text-left">Tiêu đề</th>
+                            <th class="px-5 py-3 text-left">Danh mục</th>
+                            <th class="px-5 py-3 text-left">Tác giả</th>
+                            <th class="px-5 py-3 text-left">Lượt xem</th>
+                            <th class="px-5 py-3 text-left">Trạng thái</th>
+                            <th class="px-5 py-3 text-right">Thao tác</th>
+                        </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                        <tr th:each="blog : ${blogs}" class="hover:bg-gray-50 align-top">
+                            <td class="px-5 py-3 min-w-[260px]">
+                                <div class="font-semibold text-gray-900" th:text="${blog.title}">Title</div>
+                                <div class="mt-1 text-xs text-gray-500" th:text="${blog.slug}">slug</div>
+                                <div class="mt-1 line-clamp-2 text-xs text-gray-500" th:text="${blog.excerpt}">excerpt</div>
+                            </td>
+                            <td class="px-5 py-3 text-gray-600"
+                                th:text="${blog.category != null ? blog.category.name : 'Chưa có'}">Danh mục</td>
+                            <td class="px-5 py-3 text-gray-600"
+                                th:text="${blog.author != null ? blog.author.email : 'Chưa có'}">
+                                Tác giả
+                            </td>
+                            <td class="px-5 py-3" th:text="${blog.viewCount == null ? 0 : blog.viewCount}">0</td>
+                            <td class="px-5 py-3">
+                                <span class="px-2 py-1 rounded-full text-xs font-semibold"
+                                      th:classappend="${blog.isPublished == true} ? ' bg-green-50 text-green-700' : ' bg-gray-100 text-gray-600'"
+                                      th:text="${blog.isPublished == true ? 'Đã đăng' : 'Đang ẩn'}">Đã đăng</span>
+                            </td>
+                            <td class="px-5 py-3 text-right whitespace-nowrap">
+                                <a th:href="@{/local-admin/blogs/detail/{id}(id=${blog.id})}"
+                                   class="text-gray-600 hover:underline mr-3">Chi tiết</a>
+                                <a th:href="@{/local-admin/blogs(id=${blog.id})}"
+                                   class="text-blue-600 hover:underline mr-3">Sửa</a>
+                                <form th:action="@{/local-admin/blogs/{id}/toggle(id=${blog.id})}" method="post" class="inline">
+                                    <button type="submit" class="text-amber-600 hover:underline mr-3"
+                                            th:text="${blog.isPublished == true ? 'Ẩn' : 'Hiện'}">Ẩn</button>
+                                </form>
+                                <form th:action="@{/local-admin/blogs/{id}/delete(id=${blog.id})}" method="post" class="inline"
+                                      onsubmit="return confirm('Bạn có chắc chắn muốn xóa bài viết này?')">
+                                    <button type="submit" class="text-red-600 hover:underline">Xóa</button>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr th:if="${blogs == null or blogs.isEmpty()}">
+                            <td colspan="6" class="px-5 py-10 text-center text-gray-500">
+                                Chưa có bài viết blog nào. Hãy nhập bài viết đầu tiên ở form bên trái.
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
     </div>
-  </div>
 </main>
 </html>

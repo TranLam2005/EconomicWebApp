@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="vi"
+      layout:decorate="~{layout/layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Parfumerie</title>
+    <style>
+        .blog-page-wrap {
+            background: #fff;
+            color: #222;
+            font-family: Arial, Helvetica, sans-serif;
+            padding: 18px 0 34px;
+        }
+        .blog-container {
+            width: 92%;
+            max-width: 1120px;
+            margin: 0 auto;
+        }
+        .blog-breadcrumb {
+            font-size: 12px;
+            color: #444;
+            margin-bottom: 18px;
+        }
+        .blog-breadcrumb a {
+            color: #333;
+            text-decoration: none;
+        }
+        .blog-layout {
+            display: grid;
+            grid-template-columns: 255px minmax(0, 1fr);
+            gap: 18px;
+            align-items: start;
+        }
+        .blog-sidebar,
+        .blog-main-box {
+            border: 1px solid #e5e5e5;
+            background: #fff;
+        }
+        .sidebar-title {
+            padding: 12px 14px;
+            border-bottom: 1px solid #e9e9e9;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #111;
+        }
+        .sidebar-menu a,
+        .sidebar-menu button,
+        .sidebar-menu summary {
+            display: flex;
+            width: 100%;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            border: 0;
+            border-bottom: 1px solid #f0f0f0;
+            background: #fff;
+            color: #222;
+            font-size: 13px;
+            line-height: 1.25;
+            text-align: left;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .sidebar-menu a:hover,
+        .sidebar-menu summary:hover {
+            color: #005b4b;
+            background: #fafafa;
+        }
+        .sidebar-menu details summary::-webkit-details-marker {
+            display: none;
+        }
+        .sidebar-submenu a {
+            padding-left: 28px;
+            color: #444;
+            background: #fbfbfb;
+        }
+        .blog-main-box {
+            padding: 10px 10px 26px;
+            min-height: 620px;
+        }
+        .blog-heading-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 12px;
+        }
+        .blog-heading {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 500;
+            color: #222;
+        }
+        .blog-admin-link {
+            display: inline-flex;
+            border: 1px solid #005b4b;
+            background: #005b4b;
+            color: #fff;
+            padding: 7px 12px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+        .blog-item {
+            display: grid;
+            grid-template-columns: 220px minmax(0, 1fr);
+            gap: 12px;
+            padding: 0 0 18px;
+            margin-bottom: 18px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .blog-item:last-child {
+            border-bottom: 0;
+        }
+        .blog-thumb {
+            display: block;
+            width: 220px;
+            height: 150px;
+            overflow: hidden;
+            background: #e8e8e8;
+            text-decoration: none;
+        }
+        .blog-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .blog-thumb-fallback {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #005b4b;
+            color: #fff;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .blog-title {
+            margin: 0 0 4px;
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 1.35;
+        }
+        .blog-title a {
+            color: #202020;
+            text-decoration: none;
+        }
+        .blog-title a:hover {
+            color: #005b4b;
+        }
+        .blog-meta {
+            margin-bottom: 8px;
+            color: #777;
+            font-size: 12px;
+        }
+        .blog-excerpt {
+            margin: 0;
+            color: #333;
+            font-size: 14px;
+            line-height: 1.9;
+            text-align: justify;
+        }
+        .blog-empty {
+            margin: 40px auto;
+            max-width: 560px;
+            border: 1px dashed #cfcfcf;
+            padding: 34px 20px;
+            text-align: center;
+            color: #555;
+        }
+        .blog-pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 18px;
+            margin-top: 18px;
+            font-size: 13px;
+        }
+        .blog-pagination a,
+        .blog-pagination span {
+            color: #333;
+            text-decoration: none;
+        }
+        .blog-pagination a:hover,
+        .blog-pagination .active {
+            color: #005b4b;
+            font-weight: 700;
+        }
+        @media (max-width: 900px) {
+            .blog-layout {
+                grid-template-columns: 1fr;
+            }
+            .blog-item {
+                grid-template-columns: 1fr;
+            }
+            .blog-thumb {
+                width: 100%;
+                height: 220px;
+            }
+        }
+    </style>
+</head>
+<body layout:fragment="content">
+<div class="blog-page-wrap">
+    <div class="blog-container">
+        <div class="blog-breadcrumb">
+            <a th:href="@{/}">Trang chủ</a> &gt; <span>Blog</span>
+        </div>
+
+        <div th:if="${errorMessage}"
+             style="margin-bottom: 14px; border: 1px solid #f3c6c6; background: #fff4f4; color: #a52020; padding: 12px 14px; font-size: 14px;"
+             th:text="${errorMessage}"></div>
+
+        <div class="blog-layout">
+            <aside class="blog-sidebar">
+                <div class="sidebar-title">Danh mục</div>
+                <nav class="sidebar-menu">
+                    <a th:href="@{/}">Trang chủ</a>
+                    <a href="#">Giới thiệu</a>
+                    <details>
+                        <summary>Thương hiệu <span>⌄</span></summary>
+                        <div class="sidebar-submenu">
+                            <a th:href="@{/tim-kiem}">Tất cả thương hiệu</a>
+                        </div>
+                    </details>
+                    <details>
+                        <summary>Nước hoa <span>⌄</span></summary>
+                        <div class="sidebar-submenu">
+                            <a th:each="category : ${categories}"
+                               th:href="@{/blog(categoryId=${category.id})}"
+                               th:text="${category.name}">Danh mục</a>
+                            <a th:if="${categories == null or categories.isEmpty()}" th:href="@{/tim-kiem}">Tất cả nước hoa</a>
+                        </div>
+                    </details>
+                    <details>
+                        <summary>Nước hoa Chiết <span>⌄</span></summary>
+                        <div class="sidebar-submenu">
+                            <a th:href="@{/tim-kiem(q='Nước hoa chiết Nam')}">Nước hoa chiết Nam</a>
+                            <a th:href="@{/tim-kiem(q='Nước hoa chiết Nữ')}">Nước hoa chiết Nữ</a>
+                        </div>
+                    </details>
+                    <a href="#">Kiến thức</a>
+                    <a th:href="@{/blog}">Blog</a>
+                    <a href="#">Liên hệ</a>
+                </nav>
+            </aside>
+
+            <section class="blog-main-box">
+                <div class="blog-heading-row">
+                    <h1 class="blog-heading">
+                        <span th:if="${selectedCategoryName == null}">Blog</span>
+                        <span th:if="${selectedCategoryName != null}" th:text="${selectedCategoryName}">Blog</span>
+                    </h1>
+                    <a th:if="${isAdmin}" th:href="@{/local-admin/blogs}" class="blog-admin-link">Quản lý blog</a>
+                </div>
+
+                <div th:if="${blogs == null or blogs.isEmpty()}" class="blog-empty">
+                    <h2 style="font-size: 20px; margin: 0 0 10px; color: #222;">Chưa có bài viết blog</h2>
+                    <p style="margin: 0;">Hãy vào trang admin để thêm và bật hiển thị bài viết.</p>
+                </div>
+
+                <div th:if="${blogs != null and !blogs.isEmpty()}">
+                    <article th:each="blog : ${blogs}" class="blog-item">
+                        <a th:href="${blog.url}" class="blog-thumb">
+                            <img th:if="${blog.featuredImage != null and !#strings.isEmpty(blog.featuredImage)}"
+                                 th:src="${blog.featuredImage}"
+                                 th:alt="${blog.title}">
+                            <div th:if="${blog.featuredImage == null or #strings.isEmpty(blog.featuredImage)}"
+                                 class="blog-thumb-fallback">Parfumerie</div>
+                        </a>
+                        <div>
+                            <h2 class="blog-title">
+                                <a th:href="${blog.url}" th:text="${blog.title}">Tiêu đề bài viết</a>
+                            </h2>
+                            <div class="blog-meta">
+                                <span th:text="${blog.createdAt}">20/06/2026</span>
+                                <span> - Nhân viên Parfumerie</span>
+                            </div>
+                            <p class="blog-excerpt" th:text="${blog.excerpt}">
+                                Nội dung tóm tắt bài viết.
+                            </p>
+                        </div>
+                    </article>
+
+                    <div class="blog-pagination" th:if="${totalPages > 1}">
+                        <a th:if="${hasPrevious}" th:href="@{/blog(page=${previousPage}, categoryId=${selectedCategoryId})}">‹</a>
+                        <span th:if="${!hasPrevious}">‹</span>
+
+                        <a th:each="pageNumber : ${pageNumbers}"
+                           th:href="@{/blog(page=${pageNumber}, categoryId=${selectedCategoryId})}"
+                           th:text="${pageNumber}"
+                           th:classappend="${pageNumber == currentPage} ? 'active' : ''">1</a>
+
+                        <a th:if="${hasNext}" th:href="@{/blog(page=${nextPage}, categoryId=${selectedCategoryId})}">›</a>
+                        <span th:if="${!hasNext}">›</span>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+</body>
+</html>

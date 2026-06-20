@@ -3,6 +3,126 @@
         xmlns:th="http://www.thymeleaf.org"
         class="w-full bg-emerald-900 flex flex-col justify-center"
 >
+
+    <style>
+        .pf-main-nav {
+            position: relative;
+            z-index: 9999;
+            background: #ffffff;
+            border-top: 1px solid #b94f4f;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+        .pf-nav-inner {
+            position: relative;
+            display: flex;
+            align-items: stretch;
+            justify-content: center;
+            gap: 56px;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 32px;
+        }
+        .pf-nav-inner > a,
+        .pf-menu-item > a {
+            display: flex;
+            align-items: center;
+            padding: 20px 0;
+            color: #000000;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 16px;
+            letter-spacing: 0.02em;
+            white-space: nowrap;
+        }
+        .pf-nav-inner > a:hover,
+        .pf-menu-item > a:hover {
+            color: #005b4b;
+        }
+        .pf-menu-item {
+            position: relative;
+            display: flex;
+            align-items: stretch;
+        }
+        .pf-menu-item-brand {
+            position: static;
+        }
+        .pf-menu-item::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 100%;
+            height: 14px;
+        }
+        .pf-dropdown {
+            display: none !important;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            z-index: 10000;
+            background: #ffffff;
+            border: 1px solid #eeeeee;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.13);
+            text-align: left;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+        .pf-menu-item:hover > .pf-dropdown,
+        .pf-menu-item:focus-within > .pf-dropdown {
+            display: block !important;
+        }
+        .pf-dropdown-brand {
+            left: 50%;
+            width: min(1120px, 90vw);
+            transform: translateX(-50%);
+            padding: 24px 34px;
+            border-radius: 0 0 14px 14px;
+        }
+        .pf-dropdown-simple {
+            min-width: 260px;
+            padding: 8px 0;
+            border-radius: 0 0 12px 12px;
+        }
+        .pf-brand-grid {
+            column-count: 5;
+            column-gap: 4rem;
+        }
+        .pf-dropdown a {
+            display: block;
+            color: #111111;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 400;
+            letter-spacing: normal;
+            text-transform: uppercase;
+        }
+        .pf-brand-grid a {
+            margin-bottom: 12px;
+            break-inside: avoid;
+        }
+        .pf-dropdown-simple a,
+        .pf-dropdown-simple p {
+            padding: 10px 18px;
+            white-space: nowrap;
+            font-size: 14px;
+        }
+        .pf-dropdown a:hover {
+            color: #005b4b;
+            background: #f8faf9;
+            text-decoration: underline;
+        }
+        .pf-empty-text {
+            color: #6b7280;
+            font-size: 14px;
+            text-transform: none;
+            margin: 0;
+        }
+        @media (max-width: 900px) {
+            .pf-nav-inner { gap: 24px; overflow-x: auto; justify-content: flex-start; }
+            .pf-dropdown-brand { width: 92vw; }
+            .pf-brand-grid { column-count: 2; }
+        }
+    </style>
     <div class="bg-[#005b4b] text-white w-full flex flex-col">
         <div class="mx-auto flex max-w-400  items-center justify-between gap-8 px-12 py-8">
             <div class="w-92.5 shrink-0">
@@ -27,12 +147,12 @@
             </a>
 
             <div class="flex items-center gap-8">
-                <div class="border-r border-white/40 pr-8 text-right leading-tight">
+                <div data-auth-box class="border-r border-white/40 pr-8 text-right leading-tight">
                     <p class="text-[18px] font-semibold">Xin chào, Khách</p>
                     <p class="mt-2 text-[16px]">
-                        <a href="#" class="font-bold hover:underline">Đăng nhập</a>
+                        <a th:href="@{/dang-nhap}" class="font-bold hover:underline">Đăng nhập</a>
                         <span class="font-normal text-white/85"> hoặc </span>
-                        <a href="#" class="font-bold hover:underline">Đăng ký</a>
+                        <a th:href="@{/dang-ky}" class="font-bold hover:underline">Đăng ký</a>
                     </p>
                 </div>
 
@@ -54,6 +174,23 @@
         </div>
     </div>
 
+<<<<<<< HEAD
+    <nav class="pf-main-nav relative z-50 border-t border-[#b94f4f] bg-white shadow-sm">
+        <div class="pf-nav-inner mx-auto flex max-w-[1600px] items-stretch justify-center gap-16 px-8 text-[20px] uppercase tracking-[0.02em] text-black">
+            <a th:href="@{/}" class="flex items-center py-5 font-extrabold hover:text-[#005b4b]">Trang chủ</a>
+            <a href="#" class="flex items-center py-5 hover:text-[#005b4b]">Giới thiệu</a>
+
+            <div class="pf-menu-item pf-menu-item-brand group static flex items-center">
+                <a th:href="@{/tim-kiem}" class="flex h-full items-center py-5 font-bold hover:text-[#005b4b]">Thương hiệu <span class="ml-1">›</span></a>
+                <div class="pf-dropdown pf-dropdown-brand invisible absolute left-1/2 top-full z-50 w-[90vw] max-w-[1450px] -translate-x-1/2 rounded-b-2xl border border-gray-100 bg-white px-10 py-7 text-left normal-case opacity-0 shadow-2xl transition duration-150 group-hover:visible group-hover:opacity-100">
+                    <div class="pf-brand-grid" th:if="${navBrands != null and !navBrands.isEmpty()}" style="column-count: 5; column-gap: 4rem;">
+                        <a th:each="brand : ${navBrands}"
+                           th:href="${brand.url}"
+                           th:text="${brand.name}"
+                           class="mb-3 block break-inside-avoid text-[16px] font-normal uppercase tracking-normal text-black hover:text-[#005b4b] hover:underline">DIOR</a>
+                    </div>
+                    <p th:if="${navBrands == null or navBrands.isEmpty()}" class="pf-empty-text text-[16px] normal-case text-gray-500">Chưa có thương hiệu. Hãy thêm trong trang admin.</p>
+=======
     <nav class="border-t border-[#b94f4f] bg-white shadow-sm">
         <div class="relative mx-auto max-w-[1600px] px-8">
             <div class="flex items-center justify-center gap-14 py-5 text-[20px] uppercase tracking-[0.02em] text-black">
@@ -174,8 +311,19 @@
                         </div>
                         </div>
                     </div>
+>>>>>>> 8fc682e5b1db2d985debb300cc23b53250cadbc7
                 </div>
 
+<<<<<<< HEAD
+            <div class="pf-menu-item group relative flex items-center">
+                <a th:href="@{/tim-kiem}" class="flex h-full items-center py-5 hover:text-[#005b4b]">Nước hoa <span class="ml-1">›</span></a>
+                <div class="pf-dropdown pf-dropdown-simple invisible absolute left-0 top-full z-50 min-w-[280px] rounded-b-xl border border-gray-100 bg-white py-2 text-left normal-case opacity-0 shadow-xl transition duration-150 group-hover:visible group-hover:opacity-100">
+                    <a th:each="category : ${navCategories}"
+                       th:href="${category.url}"
+                       th:text="${category.name}"
+                       class="block whitespace-nowrap px-6 py-3 text-[16px] tracking-normal text-gray-700 hover:bg-gray-50 hover:text-[#005b4b]">Nước hoa Nam</a>
+                    <p th:if="${navCategories == null or navCategories.isEmpty()}" class="pf-empty-text whitespace-nowrap px-6 py-3 text-[16px] text-gray-500">Chưa có danh mục</p>
+=======
                 <div class="group relative flex h-full items-center">
                     <a href="/tim-kiem" data-long-menu-trigger class="font-bold hover:text-[#005b4b]">Nước hoa <span class="ml-1">›</span></a>
                     <div class="invisible absolute left-0 top-full z-[9999] w-72 border border-stone-100 bg-white py-2 text-left normal-case tracking-normal opacity-0 shadow-xl transition duration-150 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
@@ -183,16 +331,34 @@
                         <a href="/tim-kiem?gender=Nữ" data-long-menu-link class="block px-5 py-3 text-[16px] text-neutral-700 hover:bg-stone-50 hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">Nước hoa Nữ</a>
                         <a href="/tim-kiem?gender=Unisex" data-long-menu-link class="block px-5 py-3 text-[16px] text-neutral-700 hover:bg-stone-50 hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">Nước hoa Unisex</a>
                     </div>
+>>>>>>> 8fc682e5b1db2d985debb300cc23b53250cadbc7
                 </div>
 
+<<<<<<< HEAD
+            <div class="pf-menu-item group relative flex items-center">
+                <a th:href="@{/tim-kiem}" class="flex h-full items-center py-5 hover:text-[#005b4b]">Nước hoa chiết <span class="ml-1">›</span></a>
+                <div class="pf-dropdown pf-dropdown-simple invisible absolute left-0 top-full z-50 min-w-[280px] rounded-b-xl border border-gray-100 bg-white py-2 text-left normal-case opacity-0 shadow-xl transition duration-150 group-hover:visible group-hover:opacity-100">
+                    <a th:href="@{/tim-kiem(q='Nước hoa chiết Nam')}" class="block whitespace-nowrap px-6 py-3 text-[16px] tracking-normal text-gray-700 hover:bg-gray-50 hover:text-[#005b4b]">Nước hoa chiết Nam</a>
+                    <a th:href="@{/tim-kiem(q='Nước hoa chiết Nữ')}" class="block whitespace-nowrap px-6 py-3 text-[16px] tracking-normal text-gray-700 hover:bg-gray-50 hover:text-[#005b4b]">Nước hoa chiết Nữ</a>
+=======
                 <div class="group relative flex h-full items-center">
                     <a href="/tim-kiem" data-long-menu-trigger class="font-bold hover:text-[#005b4b]">Nước hoa chiết <span class="ml-1">›</span></a>
                     <div class="invisible absolute left-0 top-full z-[9999] w-80 border border-stone-100 bg-white py-2 text-left normal-case tracking-normal opacity-0 shadow-xl transition duration-150 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
                         <a href="/tim-kiem?concentration=Chiết&gender=Nam" data-long-menu-link class="block px-5 py-3 text-[16px] text-neutral-700 hover:bg-stone-50 hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">Nước hoa chiết Nam</a>
                         <a href="/tim-kiem?concentration=Chiết&gender=Nữ" data-long-menu-link class="block px-5 py-3 text-[16px] text-neutral-700 hover:bg-stone-50 hover:text-[#005b4b] relative z-[10000] cursor-pointer pointer-events-auto">Nước hoa chiết Nữ</a>
                     </div>
+>>>>>>> 8fc682e5b1db2d985debb300cc23b53250cadbc7
                 </div>
 
+<<<<<<< HEAD
+            <a href="#" class="flex items-center py-5 hover:text-[#005b4b]">Kiến thức</a>
+            <a th:href="@{/blog}" class="flex items-center py-5 hover:text-[#005b4b]">Blog</a>
+            <a href="#" class="flex items-center py-5 hover:text-[#005b4b]">Liên hệ</a>
+        </div>
+    </nav>
+    <script src="/js/long-header-cart.js" defer></script>
+    <script src="/js/auth-ui.js" defer></script>
+=======
                 <a href="#" class="font-bold hover:text-[#005b4b]">Kiến thức</a>
                 <a href="#" class="font-bold hover:text-[#005b4b]">Blog</a>
                 <a href="#" class="font-bold hover:text-[#005b4b]">Liên hệ</a>
@@ -202,4 +368,5 @@
     <script src="/js/long-header-cart.js" defer></script>
     <script src="/js/long-menu-links.js" defer></script>
 
+>>>>>>> 8fc682e5b1db2d985debb300cc23b53250cadbc7
 </header>
