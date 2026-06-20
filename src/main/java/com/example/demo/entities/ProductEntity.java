@@ -60,8 +60,7 @@ public class ProductEntity {
         this.updatedAt = LocalDateTime.now();
     }
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "product_id")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "product")
     private List<ProductVariantEntity> variants;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
@@ -69,5 +68,15 @@ public class ProductEntity {
     private List<ProductImageEntity> images;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderItemEntity>  orderProductEntities;
+    private List<OrderItemEntity> orderProductEntities;
+
+    public void addVariant(ProductVariantEntity variant) {
+        variants.add(variant);
+        variant.setProduct(this);
+    }
+
+    public void removeVariant(ProductVariantEntity variant) {
+        variants.remove(variant);
+        variant.setProduct(null);
+    }
 }

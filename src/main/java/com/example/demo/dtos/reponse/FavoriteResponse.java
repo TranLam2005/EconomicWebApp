@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class FavoriteResponse {
     private Long favoriteId;
 
-    private Integer productId;
+    private Long productId;
 
     private String productName;
 
