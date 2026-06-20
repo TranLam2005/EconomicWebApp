@@ -8,6 +8,7 @@
             <div class="w-92.5 shrink-0">
                 <form action="/tim-kiem" method="get" class="flex h-14 items-center rounded bg-white/92 px-4 shadow-sm">
                     <input
+                            name="q"
                             type="text"
                             name="q"
                             placeholder="Tìm kiếm sản phẩm..."
@@ -21,10 +22,10 @@
                 </form>
             </div>
 
-            <div class="flex-1 text-center leading-none">
+            <a th:href="@{/}" class="flex-1 text-center leading-none text-white no-underline">
                 <h1 class="brand-font text-[68px] font-semibold tracking-[0.08em]">PARFUMERIE</h1>
                 <p class="brand-font mt-1 text-[20px] tracking-[0.05em] text-white/90">Magic Of Your Emotions</p>
-            </div>
+            </a>
 
             <div class="flex items-center gap-8">
                 <div class="border-r border-white/40 pr-8 text-right leading-tight">

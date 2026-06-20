@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/layoutAdmin}" lang="vi" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Bản đồ backend</title><script src="https://cdn.tailwindcss.com"></script></head>
+<main layout:fragment="content" class="w-full min-h-screen bg-gray-50 p-6 text-gray-800">
+  <div class="max-w-7xl mx-auto space-y-6">
+    <div><h1 class="text-2xl font-bold text-gray-900">Bản đồ backend của dự án</h1><p class="text-sm text-gray-500 mt-1">Tổng hợp các controller, service, repository và entity đã tích hợp vào admin.</p></div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <section class="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+        <h2 class="font-bold text-lg mb-3">Các module đã có trong backend</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+          <div class="rounded-lg border p-3"><b>Auth</b><p class="text-gray-500">Đăng ký, đăng nhập, JWT</p></div>
+          <div class="rounded-lg border p-3"><b>User</b><p class="text-gray-500">Quản lý người dùng</p></div>
+          <div class="rounded-lg border p-3"><b>Product</b><p class="text-gray-500">Sản phẩm, ảnh, biến thể</p></div>
+          <div class="rounded-lg border p-3"><b>Category</b><p class="text-gray-500">Danh mục sản phẩm</p></div>
+          <div class="rounded-lg border p-3"><b>Brand</b><p class="text-gray-500">Thương hiệu nhập tay</p></div>
+          <div class="rounded-lg border p-3"><b>Cart</b><p class="text-gray-500">Giỏ hàng</p></div>
+          <div class="rounded-lg border p-3"><b>Favorite</b><p class="text-gray-500">Sản phẩm yêu thích</p></div>
+          <div class="rounded-lg border p-3"><b>Order</b><p class="text-gray-500">Đơn hàng</p></div>
+          <div class="rounded-lg border p-3"><b>Payment</b><p class="text-gray-500">COD/VNPAY</p></div>
+          <div class="rounded-lg border p-3"><b>Discount</b><p class="text-gray-500">Mã giảm giá</p></div>
+          <div class="rounded-lg border p-3"><b>Blog</b><p class="text-gray-500">Bài viết</p></div>
+          <div class="rounded-lg border p-3"><b>File</b><p class="text-gray-500">Import Excel/CSV</p></div>
+        </div>
+      </section>
+
+      <section class="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+        <h2 class="font-bold text-lg mb-3">Luồng xử lý theo mô hình phân lớp</h2>
+        <div class="space-y-3 text-sm">
+          <div class="rounded-lg bg-gray-50 border p-3"><b>View Layer</b><p class="text-gray-500">Thymeleaf admin pages: dashboard, catalog, orders, payments, discounts, users, blogs.</p></div>
+          <div class="rounded-lg bg-gray-50 border p-3"><b>Controller Layer</b><p class="text-gray-500">AdminBackendController nhận request từ trang admin.</p></div>
+          <div class="rounded-lg bg-gray-50 border p-3"><b>Service Layer</b><p class="text-gray-500">CategoryService, BrandService, ProductService, OrderService... xử lý nghiệp vụ.</p></div>
+          <div class="rounded-lg bg-gray-50 border p-3"><b>Repository Layer</b><p class="text-gray-500">Repository thao tác với MySQL bằng Spring Data JPA.</p></div>
+          <div class="rounded-lg bg-gray-50 border p-3"><b>Database Layer</b><p class="text-gray-500">MySQL lưu dữ liệu người dùng, sản phẩm, đơn hàng, thanh toán, blog...</p></div>
+        </div>
+      </section>
+    </div>
+
+    <section class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+      <div class="px-5 py-4 border-b"><h2 class="font-bold text-lg">Các đường dẫn admin đã thêm</h2></div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead class="bg-gray-50 text-gray-600"><tr><th class="px-5 py-3 text-left">Đường dẫn</th><th class="px-5 py-3 text-left">Chức năng</th></tr></thead>
+          <tbody class="divide-y divide-gray-100">
+            <tr><td class="px-5 py-3 font-mono">/local-admin/dashboard</td><td class="px-5 py-3">Tổng quan backend</td></tr>
+            <tr><td class="px-5 py-3 font-mono">/local-admin/catalog</td><td class="px-5 py-3">Quản lý danh mục và thương hiệu</td></tr>
+            <tr><td class="px-5 py-3 font-mono">/local-admin/orders</td><td class="px-5 py-3">Quản lý đơn hàng</td></tr>
+            <tr><td class="px-5 py-3 font-mono">/local-admin/payments</td><td class="px-5 py-3">Quản lý thanh toán</td></tr>
+            <tr><td class="px-5 py-3 font-mono">/local-admin/discounts</td><td class="px-5 py-3">Quản lý mã giảm giá</td></tr>
+            <tr><td class="px-5 py-3 font-mono">/local-admin/users</td><td class="px-5 py-3">Quản lý khách hàng</td></tr>
+            <tr><td class="px-5 py-3 font-mono">/local-admin/blogs</td><td class="px-5 py-3">Quản lý blog</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+</main>
+</html>

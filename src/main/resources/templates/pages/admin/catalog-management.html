@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/layoutAdmin}" lang="vi" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Danh mục và thương hiệu</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<main layout:fragment="content" class="w-full min-h-screen bg-gray-50 p-6 text-gray-800">
+  <div class="max-w-7xl mx-auto space-y-6">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900">Quản lý danh mục và thương hiệu</h1>
+      <p class="text-sm text-gray-500 mt-1">Nhập dữ liệu thủ công bằng bàn phím, có thể thêm, sửa, cập nhật và xóa.</p>
+    </div>
+
+    <div th:if="${successMessage}" class="rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-green-700" th:text="${successMessage}"></div>
+    <div th:if="${errorMessage}" class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-700" th:text="${errorMessage}"></div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <section class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+        <div class="p-5 border-b border-gray-100">
+          <h2 class="text-lg font-bold">Danh mục</h2>
+          <p class="text-sm text-gray-500 mt-1">Ví dụ: Nước hoa Nam, Nước hoa Nữ, Nước hoa Unisex.</p>
+        </div>
+        <div class="p-5 border-b border-gray-100 bg-gray-50">
+          <form th:action="@{/local-admin/catalog/categories/save}" th:object="${categoryForm}" method="post" class="space-y-3">
+            <input type="hidden" th:field="*{id}">
+            <div>
+              <label class="block text-sm font-medium mb-1">Tên danh mục</label>
+              <input th:field="*{name}" required class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#07503D]/20" placeholder="Nhập tên danh mục">
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">Slug</label>
+              <input th:field="*{slug}" class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#07503D]/20" placeholder="Có thể bỏ trống để tự tạo">
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">Mô tả</label>
+              <textarea th:field="*{description}" rows="3" class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#07503D]/20" placeholder="Mô tả ngắn"></textarea>
+            </div>
+            <div class="flex gap-2">
+              <button class="px-4 py-2 rounded-lg bg-[#07503D] text-white font-medium hover:bg-[#053d2e]" th:text="${categoryForm.id == null ? 'Thêm danh mục' : 'Cập nhật danh mục'}">Lưu</button>
+              <a href="/local-admin/catalog" class="px-4 py-2 rounded-lg border border-gray-300 bg-white hover:bg-gray-50">Làm mới</a>
+            </div>
+          </form>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead class="bg-white text-gray-600"><tr><th class="px-5 py-3 text-left">Tên</th><th class="px-5 py-3 text-left">Slug</th><th class="px-5 py-3 text-right">Thao tác</th></tr></thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr th:each="category : ${categories}" class="hover:bg-gray-50">
+                <td class="px-5 py-3 font-medium" th:text="${category.name}">Tên</td>
+                <td class="px-5 py-3 text-gray-500" th:text="${category.slug}">slug</td>
+                <td class="px-5 py-3 text-right space-x-2">
+                  <a th:href="@{/local-admin/catalog(categoryId=${category.id})}" class="text-blue-600 hover:underline">Sửa</a>
+                  <form th:action="@{/local-admin/catalog/categories/{id}/delete(id=${category.id})}" method="post" class="inline" onsubmit="return confirm('Xóa danh mục này?')">
+                    <button class="text-red-600 hover:underline">Xóa</button>
+                  </form>
+                </td>
+              </tr>
+              <tr th:if="${categories == null or categories.isEmpty()}"><td colspan="3" class="px-5 py-6 text-center text-gray-500">Chưa có danh mục</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+        <div class="p-5 border-b border-gray-100">
+          <h2 class="text-lg font-bold">Thương hiệu</h2>
+          <p class="text-sm text-gray-500 mt-1">Ví dụ: Dior, Chanel, Gucci, Versace.</p>
+        </div>
+        <div class="p-5 border-b border-gray-100 bg-gray-50">
+          <form th:action="@{/local-admin/catalog/brands/save}" th:object="${brandForm}" method="post" class="space-y-3">
+            <input type="hidden" th:field="*{id}">
+            <div>
+              <label class="block text-sm font-medium mb-1">Tên thương hiệu</label>
+              <input th:field="*{name}" required class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#07503D]/20" placeholder="Nhập tên thương hiệu">
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">Slug</label>
+              <input th:field="*{slug}" class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#07503D]/20" placeholder="Có thể bỏ trống để tự tạo">
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">Mô tả</label>
+              <textarea th:field="*{description}" rows="3" class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#07503D]/20" placeholder="Mô tả ngắn"></textarea>
+            </div>
+            <div class="flex gap-2">
+              <button class="px-4 py-2 rounded-lg bg-[#07503D] text-white font-medium hover:bg-[#053d2e]" th:text="${brandForm.id == null ? 'Thêm thương hiệu' : 'Cập nhật thương hiệu'}">Lưu</button>
+              <a href="/local-admin/catalog" class="px-4 py-2 rounded-lg border border-gray-300 bg-white hover:bg-gray-50">Làm mới</a>
+            </div>
+          </form>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead class="bg-white text-gray-600"><tr><th class="px-5 py-3 text-left">Tên</th><th class="px-5 py-3 text-left">Slug</th><th class="px-5 py-3 text-right">Thao tác</th></tr></thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr th:each="brand : ${brands}" class="hover:bg-gray-50">
+                <td class="px-5 py-3 font-medium" th:text="${brand.name}">Tên</td>
+                <td class="px-5 py-3 text-gray-500" th:text="${brand.slug}">slug</td>
+                <td class="px-5 py-3 text-right space-x-2">
+                  <a th:href="@{/local-admin/catalog(brandId=${brand.id})}" class="text-blue-600 hover:underline">Sửa</a>
+                  <form th:action="@{/local-admin/catalog/brands/{id}/delete(id=${brand.id})}" method="post" class="inline" onsubmit="return confirm('Xóa thương hiệu này?')">
+                    <button class="text-red-600 hover:underline">Xóa</button>
+                  </form>
+                </td>
+              </tr>
+              <tr th:if="${brands == null or brands.isEmpty()}"><td colspan="3" class="px-5 py-6 text-center text-gray-500">Chưa có thương hiệu</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+</html>

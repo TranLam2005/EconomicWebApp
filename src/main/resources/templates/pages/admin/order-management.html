@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/layoutAdmin}" lang="vi" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Quản lý đơn hàng</title><script src="https://cdn.tailwindcss.com"></script></head>
+<main layout:fragment="content" class="w-full min-h-screen bg-gray-50 p-6 text-gray-800">
+  <div class="max-w-7xl mx-auto space-y-6">
+    <div><h1 class="text-2xl font-bold text-gray-900">Quản lý đơn hàng</h1><p class="text-sm text-gray-500 mt-1">Theo dõi đơn hàng và cập nhật trạng thái xử lý.</p></div>
+    <div th:if="${successMessage}" class="rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-green-700" th:text="${successMessage}"></div>
+    <div th:if="${errorMessage}" class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-700" th:text="${errorMessage}"></div>
+    <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead class="bg-gray-50 text-gray-600"><tr><th class="px-5 py-3 text-left">Mã đơn</th><th class="px-5 py-3 text-left">Khách hàng</th><th class="px-5 py-3 text-left">Liên hệ</th><th class="px-5 py-3 text-left">Tổng tiền</th><th class="px-5 py-3 text-left">Trạng thái</th><th class="px-5 py-3 text-left">Cập nhật</th></tr></thead>
+          <tbody class="divide-y divide-gray-100">
+            <tr th:each="order : ${orders}" class="hover:bg-gray-50 align-top">
+              <td class="px-5 py-3 font-medium" th:text="${order.orderCode}">ORD</td>
+              <td class="px-5 py-3"><p class="font-medium" th:text="${order.customerName}">Tên</p><p class="text-xs text-gray-500" th:text="${order.shippingAddress}">Địa chỉ</p></td>
+              <td class="px-5 py-3"><p th:text="${order.customerPhone}">phone</p><p class="text-xs text-gray-500" th:text="${order.customerEmail}">email</p></td>
+              <td class="px-5 py-3 font-medium" th:text="${order.totalAmount != null ? #numbers.formatDecimal(order.totalAmount,0,'COMMA',0,'POINT') + ' VNĐ' : '-'}">0</td>
+              <td class="px-5 py-3"><span class="px-2 py-1 rounded-full bg-amber-50 text-amber-700 text-xs" th:text="${order.orderStatus}">PENDING</span></td>
+              <td class="px-5 py-3">
+                <form th:action="@{/local-admin/orders/{id}/status(id=${order.id})}" method="post" class="flex gap-2">
+                  <select name="orderStatus" class="rounded-lg border border-gray-300 px-2 py-1 text-xs">
+                    <option th:each="status : ${orderStatuses}" th:value="${status}" th:text="${status}" th:selected="${status == order.orderStatus}"></option>
+                  </select>
+                  <button class="rounded-lg bg-[#07503D] text-white px-3 py-1 text-xs">Lưu</button>
+                </form>
+              </td>
+            </tr>
+            <tr th:if="${orders == null or orders.isEmpty()}"><td colspan="6" class="px-5 py-8 text-center text-gray-500">Chưa có đơn hàng</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</main>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/layoutAdmin}" lang="vi" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Quản lý mã giảm giá</title><script src="https://cdn.tailwindcss.com"></script></head>
+<main layout:fragment="content" class="w-full min-h-screen bg-gray-50 p-6 text-gray-800">
+  <div class="max-w-7xl mx-auto space-y-6">
+    <div><h1 class="text-2xl font-bold text-gray-900">Quản lý mã giảm giá</h1><p class="text-sm text-gray-500 mt-1">Thêm, cập nhật và xóa mã giảm giá áp dụng cho đơn hàng.</p></div>
+    <div th:if="${successMessage}" class="rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-green-700" th:text="${successMessage}"></div>
+    <div th:if="${errorMessage}" class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-700" th:text="${errorMessage}"></div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <section class="bg-white rounded-xl border border-gray-200 shadow-sm p-5 lg:col-span-1">
+        <h2 class="font-bold text-lg mb-4" th:text="${discountForm.id == null ? 'Thêm mã giảm giá' : 'Cập nhật mã giảm giá'}">Thêm</h2>
+        <form action="/local-admin/discounts/save" method="post" class="space-y-3">
+          <input type="hidden" name="id" th:value="${discountForm.id}">
+          <div><label class="block text-sm font-medium mb-1">Mã giảm giá</label><input required name="discountCode" th:value="${discountForm.discountCode}" class="w-full rounded-lg border border-gray-300 px-3 py-2" placeholder="SALE10"></div>
+          <div><label class="block text-sm font-medium mb-1">Tên chương trình</label><input required name="discountName" th:value="${discountForm.discountName}" class="w-full rounded-lg border border-gray-300 px-3 py-2" placeholder="Giảm giá tháng này"></div>
+          <div>
+            <label class="block text-sm font-medium mb-1">Loại giảm</label>
+            <select name="discountType" class="w-full rounded-lg border border-gray-300 px-3 py-2">
+              <option th:each="type : ${discountTypes}" th:value="${type}" th:text="${type}" th:selected="${discountForm.discountType == type}"></option>
+            </select>
+          </div>
+          <div><label class="block text-sm font-medium mb-1">Giá trị</label><input required type="number" step="0.01" name="discountValue" th:value="${discountForm.discountValue}" class="w-full rounded-lg border border-gray-300 px-3 py-2" placeholder="10 hoặc 50000"></div>
+          <div><label class="block text-sm font-medium mb-1">Đơn tối thiểu</label><input type="number" step="0.01" name="minOrderAmount" th:value="${discountForm.minOrderAmount}" class="w-full rounded-lg border border-gray-300 px-3 py-2"></div>
+          <div><label class="block text-sm font-medium mb-1">Giảm tối đa</label><input type="number" step="0.01" name="maxDiscountAmount" th:value="${discountForm.maxDiscountAmount}" class="w-full rounded-lg border border-gray-300 px-3 py-2"></div>
+          <label class="flex items-center gap-2 text-sm"><input type="checkbox" name="active" th:checked="${discountForm.active == null or discountForm.active}" class="rounded"> Đang hoạt động</label>
+          <div class="flex gap-2 pt-2">
+            <button class="px-4 py-2 rounded-lg bg-[#07503D] text-white font-medium hover:bg-[#053d2e]">Lưu</button>
+            <a href="/local-admin/discounts" class="px-4 py-2 rounded-lg border border-gray-300 bg-white hover:bg-gray-50">Làm mới</a>
+          </div>
+        </form>
+      </section>
+
+      <section class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden lg:col-span-2">
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead class="bg-gray-50 text-gray-600"><tr><th class="px-5 py-3 text-left">Mã</th><th class="px-5 py-3 text-left">Tên</th><th class="px-5 py-3 text-left">Loại</th><th class="px-5 py-3 text-left">Giá trị</th><th class="px-5 py-3 text-left">Trạng thái</th><th class="px-5 py-3 text-right">Thao tác</th></tr></thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr th:each="discount : ${discounts}" class="hover:bg-gray-50">
+                <td class="px-5 py-3 font-medium" th:text="${discount.discountCode}">SALE</td>
+                <td class="px-5 py-3" th:text="${discount.discountName}">Tên</td>
+                <td class="px-5 py-3" th:text="${discount.discountType}">TYPE</td>
+                <td class="px-5 py-3" th:text="${discount.discountValue}">0</td>
+                <td class="px-5 py-3"><span class="px-2 py-1 rounded-full text-xs" th:classappend="${discount.active == true} ? ' bg-green-50 text-green-700' : ' bg-gray-100 text-gray-600'" th:text="${discount.active == true ? 'Active' : 'Inactive'}">Active</span></td>
+                <td class="px-5 py-3 text-right space-x-2">
+                  <a th:href="@{/local-admin/discounts(id=${discount.id})}" class="text-blue-600 hover:underline">Sửa</a>
+                  <form th:action="@{/local-admin/discounts/{id}/delete(id=${discount.id})}" method="post" class="inline" onsubmit="return confirm('Xóa mã giảm giá này?')"><button class="text-red-600 hover:underline">Xóa</button></form>
+                </td>
+              </tr>
+              <tr th:if="${discounts == null or discounts.isEmpty()}"><td colspan="6" class="px-5 py-8 text-center text-gray-500">Chưa có mã giảm giá</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+</html>
