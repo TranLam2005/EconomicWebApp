@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.swing.text.html.Option;
 import java.util.*;
 
 @Service
@@ -196,5 +198,10 @@ public class ProductServiceImpl implements ProductService {
             .successRows(productEntities.size())
             .failedRows(failedCount)
             .build();
+  }
+
+  @Override
+  public Optional<ProductEntity> findByNormalizedKey(String normalizedKey) {
+    return productRepository.findByNormalizedKey(normalizedKey);
   }
 }

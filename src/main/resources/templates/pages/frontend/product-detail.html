@@ -1,56 +1,261 @@
 <!doctype html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<html
+        layout:decorate="~{layout/layout}"
+        lang="vi" xmlns:layout="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Chi tiết sản phẩm</title>
-    <link rel="stylesheet" href="/frontend/css/parfumerie-pages.css">
+    <title>Ex Nihilo Blue Talisman EDP | Chi tiết sản phẩm</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body data-page="detail" th:attr="data-product-id=${productId}">
-<div th:replace="~{fragments/shop-header :: shopHeader}"></div>
+<body layout:fragment="content" data-page="detail" data-product-id="1" class="bg-[#f9f9f9]">
 
-<main>
-    <section class="page-title">
-        <p class="eyebrow">Đăng</p>
-        <h1>Trang sản phẩm chi tiết</h1>
-        <p>Hiển thị ảnh, giá, biến thể dung tích, mô tả, nút thêm giỏ hàng và yêu thích.</p>
+<!-- Sticky Header (hiện khi cuộn quá sản phẩm) -->
+<div id="sticky-header" class="hidden fixed top-0 left-0 w-full bg-white shadow-md z-50 py-2 transition-transform duration-300 transform -translate-y-full">
+    <div class="max-w-6xl mx-auto px-5 flex items-center justify-between">
+        <div class="flex items-center gap-4">
+            <img src="https://bizweb.dktcdn.net/thumb/large/100/429/123/products/z7280237716951-8a988ce1e825d84b6f747f38c1f46def-1764562860583.jpg"
+                 alt="Ex Nihilo Blue Talisman EDP" class="w-12 h-12 object-contain border">
+            <div>
+                <h3 class="font-bold text-sm">EX NIHILO BLUE TALISMAN EDP</h3>
+                <p class="text-[#084c3c] font-bold text-sm">895.000đ</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-2">
+            <button type="button" data-detail-add-cart
+                    class="bg-[#084c3c] text-white px-6 py-2 text-sm font-bold rounded-sm hover:bg-[#063b2f] transition-colors">
+                THÊM VÀO GIỎ HÀNG
+            </button>
+            <button type="button"
+                    class="bg-[#052b22] text-white px-6 py-2 text-sm font-bold rounded-sm flex flex-col items-center leading-tight hover:bg-black transition-colors">
+                <span>HÃY GỌI</span>
+                <span class="text-xs font-normal">Liên hệ 0888070308</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<main class="max-w-6xl mx-auto px-5 py-6 text-stone-900">
+
+    <!-- Breadcrumb -->
+    <nav class="text-sm text-stone-600 mb-5" aria-label="breadcrumb">
+        <a href="/" class="hover:text-[#084c3c]">Trang chủ</a>
+        <span class="mx-1">›</span>
+        <span class="mx-1">›</span>
+        <span class="text-[#084c3c]">Ex Nihilo Blue Talisman EDP</span>
+    </nav>
+
+    <!-- ===== Khu vực sản phẩm chính ===== -->
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-8 border border-stone-200 rounded-sm p-7 bg-white mb-8">
+
+        <!-- ===== Gallery (Bên trái) ===== -->
+        <div>
+            <div class="aspect-[4/5] rounded-sm bg-white flex items-center justify-center overflow-hidden mb-4">
+                <img th:each="image : ${product.images}" th:if="${image.isMain}" th:src="${image.secureUrl}"
+                     alt="Ex Nihilo Blue Talisman EDP"
+                     class="w-full h-full object-contain p-2"
+                     data-pd-main-image>
+            </div>
+
+            <!-- Thumbnails -->
+            <div class="flex gap-2.5 justify-center" th:each="image : ${product.images}">
+                <button type="button"
+                        th:data-image-url="${image.secureUrl}"
+                        class="w-[80px] h-[80px] rounded-sm border border-[#084c3c] bg-white hover:border-[#084c3c] transition-colors"
+                        data-pd-thumb>
+                    <img th:src="${image.secureUrl}"
+                         alt="Ex Nihilo Blue Talisman EDP ảnh 1" class="w-full h-full object-contain p-1">
+                </button>
+            </div>
+        </div>
+
+        <!-- ===== Thông tin chính (Bên phải) ===== -->
+        <div class="flex flex-col">
+            <h1 class="text-2xl font-normal text-stone-800 mb-2" th:text="${product.productName}"></h1>
+
+            <p class="text-sm text-stone-600 mb-2">
+                <span>Tình trạng:</span>
+                <strong class="text-[#084c3c] font-medium">Còn hàng</strong>
+            </p>
+
+            <div class="text-3xl font-medium text-[#084c3c] mb-4" data-pd-price th:text="${product.price}">
+            </div>
+
+            <p class="text-stone-600 text-sm leading-relaxed mb-6">
+                Hương thơm đủ thanh lịch cho những ngày đi làm, đủ thoải mái cho những buổi dạo phố,
+                và cũng đủ tinh tế để đồng hành trong những cuộc hẹn nhẹ nhàng, Blue Talisman là mùi
+                hương xứng đáng để bạn trải nghiệm!
+            </p>
+
+            <!-- Attributes -->
+            <div class="space-y-4 mb-6">
+                <div>
+                    <label class="block text-sm font-bold text-stone-800 mb-2">Giới tính</label>
+                    <div class="inline-block border border-stone-300 rounded-sm px-4 py-1.5 text-xs text-stone-700 uppercase" th:text="${product.gender}"></div>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-stone-800 mb-2">Nhãn hàng</label>
+                    <div class="inline-block border border-stone-300 rounded-sm px-4 py-1.5 text-xs text-stone-700 uppercase" th:text="${product.brand}"></div>
+                </div>
+            </div>
+
+            <!-- Dung tích (Variants) -->
+            <div class="mb-6">
+                <label class="block text-sm font-bold text-stone-800 mb-2">Dung tích</label>
+                <div class="flex flex-wrap gap-2" th:each="variant : ${product.variants}">
+                    <button type="button"
+                            th:data-price="${variant.price}" th:data-stock="${variant.stockQuantity}"
+                            class="border rounded-sm px-3 py-1.5 text-xs uppercase hover:border-[#084c3c] hover:text-[#084c3c] transition-colors bg-white border-[#084c3c] text-[#084c3c]"
+                            data-pd-variant
+                            th:text="${variant.variantName}">
+                    </button>
+                </div>
+            </div>
+
+            <!-- Số lượng & Buttons -->
+            <div class="mb-6">
+                <label for="pd-qty" class="block text-sm font-bold text-stone-800 mb-2">Số lượng</label>
+                <div class="flex items-center w-max border border-stone-300 rounded-sm overflow-hidden mb-6">
+                    <button type="button" class="w-10 h-10 bg-white text-stone-500 hover:bg-stone-100 transition-colors" data-pd-qty-minus aria-label="Giảm số lượng">−</button>
+                    <input type="number" id="pd-qty" value="1" min="1"
+                           class="w-12 h-10 text-center border-x border-stone-300 outline-none text-sm"
+                           data-pd-qty-input>
+                    <button type="button" class="w-10 h-10 bg-white text-stone-500 hover:bg-stone-100 transition-colors" data-pd-qty-plus aria-label="Tăng số lượng">+</button>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <button type="button" data-detail-buy-now
+                            class="rounded-sm py-3.5 px-4 text-sm font-bold text-white bg-[#084c3c] hover:bg-[#063b2f] transition-colors shadow-sm">
+                        MUA NGAY
+                    </button>
+                    <button type="button" data-detail-add-cart
+                            class="rounded-sm py-3.5 px-4 text-sm font-bold text-white bg-[#084c3c] hover:bg-[#063b2f] transition-colors shadow-sm">
+                        THÊM VÀO GIỎ HÀNG
+                    </button>
+                </div>
+
+                <button type="button" data-detail-add-fav
+                        class="inline-flex items-center gap-2 border border-stone-200 bg-white rounded-sm px-4 py-2 text-sm text-stone-600 hover:text-red-500 transition-colors mb-4 shadow-sm">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-stone-400">
+                        <path d="M12 21s-7.5-4.6-10-9.1C.5 8.4 2.2 5 5.6 5c2 0 3.3 1 4.4 2.5C11.1 6 12.4 5 14.4 5c3.4 0 5.1 3.4 3.6 6.9C19.5 16.4 12 21 12 21z"/>
+                    </svg>
+                    Thêm vào yêu thích
+                </button>
+
+                <p class="text-sm text-stone-600">
+                    Hiện tại có <strong class="text-[#084c3c]">56</strong> người đang xem sản phẩm này
+                </p>
+            </div>
+        </div>
     </section>
 
-    <section class="detail-layout" data-detail-root>
-        <div class="detail-gallery">
-            <div class="product-art large" data-detail-art></div>
-            <div class="thumb-row"><span></span><span></span><span></span></div>
+    <!-- ===== Tabs thông tin & Sidebar ===== -->
+    <section class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
+        <!-- Khu vực Tab -->
+        <div class="lg:col-span-2 border border-stone-200 bg-white rounded-sm">
+            <div class="flex bg-[#084c3c] border-b border-stone-200" role="tablist">
+                <button type="button" data-pd-tab="info" role="tab"
+                        class="px-5 py-3.5 text-sm font-bold text-white border-b-2 border-white uppercase tracking-wide">
+                    THÔNG TIN SẢN PHẨM
+                </button>
+                <button type="button" data-pd-tab="usage" role="tab"
+                        class="px-5 py-3.5 text-sm font-medium text-white/80 hover:text-white uppercase tracking-wide">
+                    HƯỚNG DẪN SỬ DỤNG & BẢO QUẢN
+                </button>
+                <button type="button" data-pd-tab="policy" role="tab"
+                        class="px-5 py-3.5 text-sm font-medium text-white/80 hover:text-white uppercase tracking-wide">
+                    CHÍNH SÁCH ĐỔI TRẢ - BẢO HÀNH
+                </button>
+            </div>
+
+            <!-- Nội dung Tab -->
+            <div data-pd-panel="info" class="p-6">
+                <ul class="space-y-3 text-sm text-stone-700">
+                    <li><span class="font-medium text-stone-900">• Xuất xứ:</span> Pháp</li>
+                    <li><span class="font-medium text-stone-900">• Hãng:</span> Ex Nihilo</li>
+                    <li><span class="font-medium text-stone-900">• Giới tính:</span> Unisex</li>
+                    <li><span class="font-medium text-stone-900">• Độ tuổi khuyên dùng:</span> Trên 20</li>
+                    <li><span class="font-medium text-stone-900">• Năm ra mắt:</span> 2023</li>
+                    <li><span class="font-medium text-stone-900">• Nồng độ:</span> EDP</li>
+                    <li><span class="font-medium text-stone-900">• Độ lưu hương:</span> Trung bình 7 tiếng</li>
+                </ul>
+                <div class="mt-6 text-center">
+                    <button class="text-blue-600 text-sm font-medium hover:underline flex items-center justify-center gap-1 mx-auto">
+                        Xem thêm
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 9l6 6 6-6"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- (Ẩn đi) Nội dung các tab khác -->
+            <div data-pd-panel="usage" class="hidden p-6 text-sm text-stone-700">
+                <p>Nội dung hướng dẫn sử dụng...</p>
+            </div>
+            <div data-pd-panel="policy" class="hidden p-6 text-sm text-stone-700">
+                <p>Nội dung chính sách...</p>
+            </div>
         </div>
-        <div class="detail-info">
-            <p class="eyebrow" data-detail-brand>Thương hiệu</p>
-            <h2 data-detail-name>Đang tải sản phẩm...</h2>
-            <div class="price-line" data-detail-price>0đ</div>
-            <div class="meta-grid">
-                <div><small>Giới tính</small><strong data-detail-gender>-</strong></div>
-                <div><small>Nồng độ</small><strong data-detail-concentration>-</strong></div>
-                <div><small>Năm phát hành</small><strong data-detail-year>-</strong></div>
+
+        <!-- Sidebar chính sách -->
+        <aside class="flex flex-col gap-6">
+            <div class="border border-stone-200 bg-white p-5 rounded-sm shadow-sm">
+                <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 mt-1 flex-shrink-0">
+                        <img src="https://cdn-icons-png.flaticon.com/512/6662/6662916.png" alt="Delivery" class="w-full h-full object-contain">
+                    </div>
+                    <div>
+                        <h3 class="text-stone-800 font-medium mb-3 text-sm">Giao hàng nhanh chóng</h3>
+                        <ul class="text-[13px] text-stone-600 space-y-3">
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-500 mt-0.5">✔</span> Giao hàng nhanh tận nơi toàn quốc; giao hoả tốc hoặc trong vòng 24h khu vực nội thành HCM.
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-500 mt-0.5">✔</span> Miễn phí giao hàng đối với đơn hàng có giá trị trên 1 triệu đồng.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <p class="detail-desc" data-detail-desc></p>
-            <div class="variant-box">
-                <label>Dung tích</label>
-                <div class="variant-options" data-detail-variants></div>
+
+            <div class="border border-stone-200 bg-white p-5 rounded-sm shadow-sm">
+                <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 mt-1 flex-shrink-0">
+                        <img src="https://cdn-icons-png.flaticon.com/512/5658/5658826.png" alt="Guarantee" class="w-full h-full object-contain">
+                    </div>
+                    <div>
+                        <h3 class="text-stone-800 font-medium mb-3 text-sm">Bảo đảm chất lượng</h3>
+                        <ul class="text-[13px] text-stone-600 space-y-3">
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-500 mt-0.5">✔</span> Cam kết nước hoa chính hãng 100%.
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-500 mt-0.5">✔</span> Nói không với các sản phẩm nước hoa kém chất lượng.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <div class="detail-actions">
-                <button class="primary-btn" data-detail-add-cart>Thêm vào giỏ</button>
-                <button class="ghost-btn" data-detail-add-fav>Thêm yêu thích</button>
-            </div>
-        </div>
+        </aside>
     </section>
 
-    <section class="section-block">
-        <div class="section-heading">
-            <p class="eyebrow">Có thể bạn thích</p>
-            <h2>Sản phẩm liên quan</h2>
+    <!-- ===== Sản phẩm liên quan ===== -->
+    <section class="border border-stone-200 bg-white p-6 rounded-sm mb-12">
+        <h2 class="text-xl font-normal text-stone-800 mb-6 pb-2 border-b border-stone-100">Sản phẩm liên quan</h2>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            <a href="#" class="block group">
+                <div class="aspect-square bg-white flex items-center justify-center mb-3">
+                    <img src="https://bizweb.dktcdn.net/thumb/large/100/429/123/products/fleur-narcotique.jpg"
+                         alt="Ex Nihilo Fleur Narcotique EDP"
+                         class="w-[80%] h-[80%] object-contain group-hover:scale-105 transition-transform duration-300">
+                </div>
+                <p class="text-sm text-stone-800 mb-1 leading-snug h-10 overflow-hidden line-clamp-2">Ex Nihilo Fleur Narcotique EDP</p>
+                <p class="text-sm font-bold text-[#084c3c]">955.000đ - 8.800.000đ</p>
+            </a>
         </div>
-        <div class="product-grid" data-related-products></div>
     </section>
 </main>
 
-<script src="/frontend/js/parfumerie-pages.js"></script>
+<script src="/js/product-detail.js"></script>
 </body>
 </html>

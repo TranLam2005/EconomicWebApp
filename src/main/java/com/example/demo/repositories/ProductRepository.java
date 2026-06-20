@@ -9,4 +9,5 @@ import com.example.demo.entities.ProductEntity;
 public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
     Optional<ProductEntity> findByNormalizedKey(String normalizedKey);
     Optional<ProductEntity> findProductById(Long id);
+    Long countByBrandIgnoreCase(String brand);
 }

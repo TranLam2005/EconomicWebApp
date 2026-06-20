@@ -1,14 +1,15 @@
 <!doctype html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<html
+        layout:decorate="~{layout/layout}"
+        lang="vi"
+        xmlns:layout="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Parfumerie - Trang chủ</title>
     <link rel="stylesheet" href="/frontend/css/parfumerie-pages.css">
 </head>
-<body data-page="home">
-<div th:replace="~{fragments/shop-header :: shopHeader}"></div>
-
+<body layout:fragment="content" data-page="home">
 <main>
     <section class="hero-section">
         <div class="hero-copy">
